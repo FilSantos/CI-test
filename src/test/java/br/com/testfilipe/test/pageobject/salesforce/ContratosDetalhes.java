@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author everton cognizant
  */
@@ -15,7 +17,8 @@ public class ContratosDetalhes extends BaseWebPage {
     private static By FINALVALIDITY_TEXTBOX = By.xpath ("//td[contains(text(),'Vigência final')]/following-sibling::td/div");
     private static By IDPARTNERAGREEMENT_TEXTBOX = By.xpath ("//td[contains(text(),'id Contrato Parceiro')]/following-sibling::td/div");
     private static By ISSUEDATE_TEXTBOX = By.xpath ("//td[contains(text(),'Data de emissão')]/following-sibling::td/div");
-    private static By CONTRACTORSNUMBER_LINK = By.xpath ("//a[text()='00005752']");
+    private static By CONTRACTORSNUMBER_LINK = By.xpath ("//h3[text()='Contratantes do contrato']/../../../../../.././/th/a");
+    private static By ACCOUNTNAME_LINK = By.xpath("//td[contains(text(),'Nome da conta')]/following-sibling::td//a");
 
     public ContratosDetalhes(WebDriver webDriver) {
         super(webDriver);
@@ -26,19 +29,81 @@ public class ContratosDetalhes extends BaseWebPage {
         return false;
     }
     
-    /** Retorna a data de inicio de vigencia
-     * @author filipe cognizant
+    /** Retorna o número da proposta
+     * @author everton cognizant
      * @return String
      * @throws Exception 
      */
-    public String getInitialValidity() throws Exception {
+    public String getPorposal() throws Exception {
     	
-    	WebElement date = searchElement.findElementBy(INITIALVALIDITY_TEXTBOX, "Data Inicio da vigência");
-    	return date.getText();
+    	WebElement text = searchElement.findElementBy(PROPOSAL_TEXTBOX "Número da Proposta");
+
+    	return text.getText();
     }
-    
-    
-    
-    
-    
+    /** Retorna a data de inicio de vigencia
+     * @author everton cognizant
+     * @return String
+     * @throws Exception
+     */
+    public String getInitialValidity() throws Exception {
+
+        WebElement date = searchElement.findElementBy(INITIALVALIDITY_TEXTBOX "Data Inicio da vigência");
+
+        return date.getText();
+    }
+    /** Retorna a data do final da vigencia
+     * @author everton cognizant
+     * @return String
+     * @throws Exception
+     */
+    public String getFinalValidity() throws Exception {
+
+        WebElement date = searchElement.findElementBy(FINALVALIDITY_TEXTBOX "Data Final da vigência");
+
+        return date.getText();
+    }
+    /** Retorna o id contrato parceiro
+     * @author everton cognizant
+     * @return String
+     * @throws Exception
+     */
+    public String getIDPartner() throws Exception {
+
+        WebElement text = searchElement.findElementBy(IDPARTNERAGREEMENT_TEXTBOX "Id Contrato parceiro");
+
+        return text.getText();
+    }
+    /** Retorna a data de emissão
+     * @author everton cognizant
+     * @return String
+     * @throws Exception
+     */
+    public String getIssueDate() throws Exception {
+
+        WebElement date = searchElement.findElementBy(ISSUEDATE_TEXTBOX "Data de Emissão");
+
+        return date.getText();
+    }
+    /** Clica no número do contratante
+     * @author everton cognizant
+     * @return String
+     * @throws Exception
+     */
+    public String getContactorsNumber() throws Exception {
+
+        WebElement link = searchElement.findElementBy(CONTRACTORSNUMBER_LINK "Número");
+
+        command.click(link);
+    }
+    /** Clica no Nome da Conta
+     * @author everton cognizant
+     * @return String
+     * @throws Exception
+     */
+    public String getAccountName() throws Exception {
+
+        WebElement link = searchElement.findElementBy(ACCOUNTNAME_LINK "Nome da conta");
+
+        command.click(link);
+    }
 }
