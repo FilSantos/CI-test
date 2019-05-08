@@ -3,6 +3,7 @@ package br.com.testfilipe.test.pageobject.salesforce;
 import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author everton cognizant
@@ -24,4 +25,20 @@ public class ContratosDetalhes extends BaseWebPage {
     public boolean isDisplayed() {
         return false;
     }
+    
+    /** Retorna a data de inicio de vigencia
+     * @author filipe cognizant
+     * @return String
+     * @throws Exception 
+     */
+    public String getInitialValidity() throws Exception {
+    	
+    	WebElement date = searchElement.findElementBy(INITIALVALIDITY_TEXTBOX, "Data Inicio da vigência");
+    	return date.getText();
+    }
+    
+    
+    
+    
+    
 }
