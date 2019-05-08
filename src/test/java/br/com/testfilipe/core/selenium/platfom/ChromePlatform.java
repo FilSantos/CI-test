@@ -34,8 +34,16 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 	public WebDriver getLocalWebDriver() {
 		logger.info("Starting Local WebDriver");
 		
+		
+		String userhome = System.getProperty("user.home");
+		if (OS.contains("windows")) {
+			userhome = userhome + "\\AppData\\Local\\Google\\Chrome\\User Data";
+		}else {
+			userhome = userhome + "/.config/google-chrome";
+		}
+		
 		ChromeOptions chromeOptions = new ChromeOptions(); 
-		chromeOptions.addArguments("--user-data-dir", "/home/filipe/.config/google-chrome");
+		chromeOptions.addArguments("--user-data-dir", userhome);
 		//chromeOptions.addArguments("--headless"); 
 		chromeOptions.addArguments("start-maximized");
 		System.setProperty("webdriver.chrome.driver", GETBINARYPATH);
