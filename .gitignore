@@ -9,4 +9,6 @@ Local State
 data/
 Default/*
 Default/Preferences
-
+_windows/
+editor.xml
+debugger.xml
