@@ -8,8 +8,8 @@ import org.openqa.selenium.WebDriver;
  * @autor everton cognizant
  */
 
-public class Detalhes_Contratantes extends BaseWebPage {
-    public Detalhes_Contratantes(WebDriver webDriver) {
+public class ContratantesDetalhes extends BaseWebPage {
+    public ContratantesDetalhes(WebDriver webDriver) {
 		super(webDriver);
 		// TODO Auto-generated constructor stub
 	}

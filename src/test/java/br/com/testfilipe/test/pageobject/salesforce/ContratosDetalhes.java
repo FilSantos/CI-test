@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 /**
  * @author everton cognizant
  */
-public class Detalhes_Contratos extends BaseWebPage {
+public class ContratosDetalhes extends BaseWebPage {
 
     private static By PROPOSAL_TEXTBOX = By.xpath("//td[contains(text(),'Proposta')]/following-sibling::td/div");
     private static By INITIALVALIDITY_TEXTBOX = By.xpath ("//td[contains(text(),'Vigência inicial')]/following-sibling::td/div");
@@ -16,7 +16,7 @@ public class Detalhes_Contratos extends BaseWebPage {
     private static By ISSUEDATE_TEXTBOX = By.xpath ("//td[contains(text(),'Data de emissão')]/following-sibling::td/div");
     private static By CONTRACTORSNUMBER_LINK = By.xpath ("//a[text()='00005752']");
 
-    public Detalhes_Contratos(WebDriver webDriver) {
+    public ContratosDetalhes(WebDriver webDriver) {
         super(webDriver);
         // TODO Auto-generated constructor stub
     }
