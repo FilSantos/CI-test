@@ -37,7 +37,7 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 		
 		String userhome = System.getProperty("user.home");
 		if (OS.contains("windows")) {
-			userhome = userhome + "\\AppData\\Local\\Google\\Chrome\\User Data";
+			userhome = userhome + "/AppData/Local/Google/Chrome/User Data/Default";
 		}else {
 			userhome = userhome + "/.config/google-chrome";
 		}

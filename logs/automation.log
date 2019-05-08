@@ -906,3 +906,13 @@ Driver info: driver.version: unknown
 2019-05-08 14:44:06[THREAD ID=main]  INFO  TestAdesaoArquivo:108 - Dados importados
 2019-05-08 14:45:16[THREAD ID=main]  INFO  TestAdesaoArquivo:124 - Dados Classificados
 2019-05-08 14:45:21[THREAD ID=main]  INFO  SearchElement:54 -  Object Propostas found
+2019-05-08 15:12:57[THREAD ID=main]  INFO  ChromePlatform:35 - Starting Local WebDriver
+2019-05-08 15:14:29[THREAD ID=main]  INFO  ChromePlatform:35 - Starting Local WebDriver
+2019-05-08 15:17:12[THREAD ID=main]  INFO  ChromePlatform:35 - Starting Local WebDriver
+2019-05-08 15:21:01[THREAD ID=main]  INFO  ChromePlatform:35 - Starting Local WebDriver
+2019-05-08 15:21:17[THREAD ID=main]  INFO  SearchElement:54 -  Object Usuario logado found
+2019-05-08 15:21:18[THREAD ID=main]  INFO  SearchElement:54 -  Object Acessar found
+2019-05-08 15:21:24[THREAD ID=main]  INFO  SearchElement:54 -  Object Inicio found
+2019-05-08 15:21:37[THREAD ID=main]  INFO  TestAdesaoArquivo:108 - Dados importados
+2019-05-08 15:22:30[THREAD ID=main]  INFO  TestAdesaoArquivo:124 - Dados Classificados
+2019-05-08 15:22:31[THREAD ID=main]  INFO  SearchElement:54 -  Object Propostas found
