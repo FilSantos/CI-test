@@ -97,21 +97,20 @@ public class TestAdesaoNG {
 	public Object[][] getData() throws Exception {
 		
 		numeroLinha = 1;
-		numeroProposta  = 1;
-		NumeroContrato = 1;
+		numeroProposta  = 0;
+		NumeroContrato = 0;
 		
 		file = new FileGenerator();
 		importacaoArquivo(gerarArquivo());
 		file = null;
 		
 		String     sqlQuery = "SELECT NumeroPropostaPorto";
-		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
+		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10 ORDER BY NumeroPropostaPorto ";
 		ResultSet returnResultSet = H2sql.returnResultSet(sqlQuery);
 	    int colCount = returnResultSet.getMetaData().getColumnCount();
 	    returnResultSet.last();
 	    int rowCount = returnResultSet.getRow();
 	    returnResultSet.beforeFirst();
-	    returnResultSet.next();
 	    Object[][] data = new Object[rowCount][colCount];
 	    int row = 0;
 	    while (returnResultSet.next()) {
@@ -241,7 +240,10 @@ private String gerarArquivo() throws IOException {
 		fw.write(header + "\r\n");
 		
 		//Detail do arquivo
-		gerarDetalhe(localDate, fw, tamanhoLinha, 50, 4);
+		gerarDetalhe(localDate, fw, tamanhoLinha, 3000, 4);
+		gerarDetalhe(localDate, fw, tamanhoLinha, 3000, 5);
+		gerarDetalhe(localDate, fw, tamanhoLinha, 10000, 7);
+		gerarDetalhe(localDate, fw, tamanhoLinha, 10000, 11);
 		
 		//Footer do arquivo
 		fw.write(file.footer(tamanhoLinha, numeroLinha));
