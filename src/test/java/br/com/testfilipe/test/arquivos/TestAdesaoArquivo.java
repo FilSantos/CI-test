@@ -87,19 +87,17 @@ public class TestAdesaoArquivo {
 		ResultSet returnResultSet = H2sql.returnResultSet(sqlQuery);
 
 		ContratosDetalhes contrato = new ContratosDetalhes(webDriver);
-		ContaDetalhes contaDetalhes = new ContaDetalhes(webDriver);
+		ContaDetalhes conta = new ContaDetalhes(webDriver);
 		
 		while (returnResultSet.next()) {
 			try {
 				mainMenu.searchValue(returnResultSet.getString("numeroContratoPorto")); //adicionar validação
-				searchResults.tapContractTable(contract);
-				contrato.getProposal().equals(returnResultSet.getString("numeroProposta")) //adicionar validação
-				contrato.getInitialValidity().equals(returnResultSet.getString("inicioVigencia")) //adicionar validação
-                contrato.getFinalValidity().equals(returnResultSet.getString("finalVigencia")) //adicionar validação
-                contrato.getIDPartner().equals(returnResultSet.getString("IDContratoParceiro")) //adicionar validação
+				searchResults.tapContractTable(returnResultSet.getString ("numeroContratoPorto"));
+				contrato.getProposal().equals(returnResultSet.getString("numeroProposta")); //adicionar validação
+				contrato.getInitialValidity().equals(returnResultSet.getString("inicioVigencia")); //adicionar validação
+                contrato.getFinalValidity().equals(returnResultSet.getString("finalVigencia")); //adicionar validação
+                contrato.getIDPartner().equals(returnResultSet.getString("IDContratoParceiro")); //adicionar validação
                 contrato.tapAccountName();
-				contaDetalhes.
-				
 				
 			} catch (Exception e) {
 				// TODO: handle exception

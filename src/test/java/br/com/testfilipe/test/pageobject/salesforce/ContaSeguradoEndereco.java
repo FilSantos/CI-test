@@ -41,9 +41,9 @@ public class ContaSeguradoEndereco extends BaseWebPage {
      */
     public String getCEP () throws Exception{
 
-        WebElement text = searchElement.findElementBy(CEP_TEXTBOX "CEP");
+        WebElement text = searchElement.findElementBy(CEP_TEXTBOX, "CEP");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o logradouro
@@ -53,9 +53,9 @@ public class ContaSeguradoEndereco extends BaseWebPage {
      */
     public String getStreet () throws Exception{
 
-        WebElement text = searchElement.findElementBy(STREET_TEXTAREA "Logradouro");
+        WebElement text = searchElement.findElementBy(STREET_TEXTAREA, "Logradouro");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o complemento
@@ -65,9 +65,9 @@ public class ContaSeguradoEndereco extends BaseWebPage {
      */
     public String getComplement () throws Exception{
 
-        WebElement text = searchElement.findElementBy(COMPLEMENT_TEXTBOX "Complemento");
+        WebElement text = searchElement.findElementBy(COMPLEMENT_TEXTBOX, "Complemento");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o número da residencia
@@ -77,9 +77,9 @@ public class ContaSeguradoEndereco extends BaseWebPage {
      */
     public String getResidencialNumber () throws Exception{
 
-        WebElement text = searchElement.findElementBy(RESIDENCIALNUMBER_TEXTBOX "Número da residencia");
+        WebElement text = searchElement.findElementBy(RESIDENCIALNUMBER_TEXTBOX, "Número da residencia");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o bairro
@@ -89,9 +89,9 @@ public class ContaSeguradoEndereco extends BaseWebPage {
      */
     public String getDistrict () throws Exception{
 
-        WebElement text = searchElement.findElementBy(DISTRICT_TEXTBOX "Bairro");
+        WebElement text = searchElement.findElementBy(DISTRICT_TEXTBOX, "Bairro");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna a cidade
@@ -101,9 +101,9 @@ public class ContaSeguradoEndereco extends BaseWebPage {
      */
     public String getCity () throws Exception{
 
-        WebElement text = searchElement.findElementBy(CITY_TEXTBOX "Cidade");
+        WebElement text = searchElement.findElementBy(CITY_TEXTBOX, "Cidade");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o estado
@@ -113,9 +113,9 @@ public class ContaSeguradoEndereco extends BaseWebPage {
      */
     public String getState () throws Exception{
 
-        WebElement text = searchElement.findElementBy(STATE_SELECT "Estado");
+        WebElement text = searchElement.findElementBy(STATE_SELECT, "Estado");
 
-        return text.getText()
+        return text.getText();
     }
 
 }
