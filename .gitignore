@@ -16,3 +16,4 @@ debugger.xml
 logs/
 logs/*
 /bin/
+test-output/

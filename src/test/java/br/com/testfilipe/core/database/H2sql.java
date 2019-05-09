@@ -61,7 +61,7 @@ public class H2sql {
    public static ResultSet returnResultSet(String sql) {
 	   ResultSet rs = null;
        try {
-    	   Statement st = conn.createStatement();
+    	   Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
            rs = st.executeQuery(sql);
        } catch (SQLException ex) {
     	   logger.error(sql,ex);

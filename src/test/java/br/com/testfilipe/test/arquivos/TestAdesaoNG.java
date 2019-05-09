@@ -1,33 +1,108 @@
 package br.com.testfilipe.test.arquivos;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import br.com.testfilipe.core.database.H2sql;
+import br.com.testfilipe.core.log.LogConstants;
+import br.com.testfilipe.core.selenium.platfom.ChromePlatform;
+import br.com.testfilipe.core.selenium.platfom.Platform;
+import br.com.testfilipe.core.utils.BrazilianDocuments;
+import br.com.testfilipe.test.pageobject.salesforce.ContaDetalhes;
+import br.com.testfilipe.test.pageobject.salesforce.ContaSeguradoEndereco;
+import br.com.testfilipe.test.pageobject.salesforce.ContratantesDetalhes;
+import br.com.testfilipe.test.pageobject.salesforce.ContratosDetalhes;
+import br.com.testfilipe.test.pageobject.salesforce.Login;
+import br.com.testfilipe.test.pageobject.salesforce.MainMenu;
+import br.com.testfilipe.test.pageobject.salesforce.MainMenuItem;
+import br.com.testfilipe.test.pageobject.salesforce.SearchResults;
+import br.com.testfilipe.test.utils.FileGenerator;
 
 public class TestAdesaoNG {
 
 	final static Logger logger = Logger.getLogger(TestAdesaoNG.class);
 	
+	private static WebDriver webDriver;
+	private static MainMenu mainMenu;
+	private static SearchResults searchResults;
+	private static FileGenerator file;
+	private static int numeroLinha;
+	private static int numeroProposta;
+	private static int NumeroContrato;
+	private static ContratosDetalhes contrato;
+	private static ContaDetalhes conta;
+	private static ContaSeguradoEndereco contaseguradoendereco;
+	private static ContratantesDetalhes contratantes;
 	
 	@Test(dataProvider="getData")
-	public void validaDados(String NumeroPropostaPorto) {
+	public void validaDados(int NumeroPropostaPorto) {
+		
+		if (NumeroPropostaPorto == 49) {
+			System.out.println("eppaaa");
+		}
 		System.out.println("Instance DataProvider Example: Data(" + NumeroPropostaPorto + ")");
 	}
 	
+	@BeforeSuite
+	public static void initiate() throws Exception {
+		
+		PropertyConfigurator.configure(LogConstants.PROPERTIES);
+		
+		H2sql.openConnection();
+		
+		Platform platformWebDriver =  ChromePlatform.StartWebDriver();
+		webDriver = platformWebDriver.getLocalWebDriver();
+
+		webDriver.navigate().to("https://portoseguro--uat.cs53.my.salesforce.com");
+		Login login = new Login(webDriver);
+		mainMenu = new MainMenu(webDriver);
+		searchResults = new SearchResults(webDriver);
+		
+		login.setcredentials("filipe.santos@portoseguro.com.br.uat", "235802@Gl");
+
+		contrato = new ContratosDetalhes(webDriver);
+		conta = new ContaDetalhes(webDriver);
+		contaseguradoendereco = new ContaSeguradoEndereco (webDriver);
+		contratantes = new ContratantesDetalhes (webDriver);
+		
+	}
+	@BeforeTest
+	public void startTest() throws Exception {
+		//mainMenu.navigateMenu(MainMenuItem.INICIO_TAB);
+		
+	}
+	
+	@AfterSuite
+	public static void tearDown() {
+		webDriver.close();
+	}
 	
 	@DataProvider
 	public Object[][] getData() throws Exception {
 		
-		H2sql.openConnection();
-		String arquivoGerado = "/home/filipe/git/CI-test/data/000010_080520191443_VG01_V0003064.PRO";
-		importacaoArquivo(arquivoGerado);
+		numeroLinha = 1;
+		numeroProposta  = 1;
+		NumeroContrato = 1;
 		
+		file = new FileGenerator();
+		importacaoArquivo(gerarArquivo());
+		file = null;
 		
 		String     sqlQuery = "SELECT NumeroPropostaPorto";
 		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
@@ -50,6 +125,8 @@ public class TestAdesaoNG {
 	}
 	
 	private void importacaoArquivo(String arquivoGerado) {
+		logger.info("Dados sendo importados");
+
 		List<String> createTables = new ArrayList<String>();
 		createTables.add("DROP VIEW IF EXISTS V_Proposta");
 		createTables.add("DROP VIEW IF EXISTS V_Segurado");
@@ -126,19 +203,86 @@ public class TestAdesaoNG {
 						 "TipoRegistro = cast(SUBSTRING(DATA, 1, 2) as int)");
 		createTables.add("CREATE TABLE ADESAOPARCELAS AS SELECT * FROM ADESAO where TipoRegistro = 30");
 		createTables.add("ALTER TABLE ADESAOPARCELAS add NumeroParcela int;");
-		createTables.add("ALTER TABLE ADESAOPARCELAS add DataVencimentoParcela DECIMAL;");
+		createTables.add("ALTER TABLE ADESAOPARCELAS add DataVencimentoParcela DATE;");
 		createTables.add("ALTER TABLE ADESAOPARCELAS add ValorParcela DECIMAL;");
 		createTables.add("ALTER TABLE ADESAOPARCELAS add ValorPrêmioParcela DECIMAL;");
-		createTables.add("update ADESAOPARCELAS set NumeroParcela = CAST(SUBSTRING(DATA, 34, 2 ) AS INT), " +
-				 "DataVencimentoParcela  = CAST(SUBSTRING(DATA, 36, 10 ) AS DECIMAL), " + 
-				 "ValorParcela = CAST(SUBSTRING(DATA, 46, 15,02 )AS DECIMAL), " +
-				 "ValorPrêmioParcela = CAST(SUBSTRING(DATA, 61,02, 15 ) AS DECIMAL)");
+		//createTables.add("update ADESAOPARCELAS set NumeroParcela = CAST(SUBSTRING(DATA, 34, 2 ) AS INT), " +
+		//		 "DataVencimentoParcela  = CAST(SUBSTRING(DATA, 36, 10 ) AS DECIMAL), " + 
+		//		 "ValorParcela = CAST(SUBSTRING(DATA, 46, 15,02 )AS DECIMAL), " +
+		//		 "ValorPrêmioParcela = CAST(SUBSTRING(DATA, 61,02, 15 ) AS DECIMAL)");
 		createTables.add("DELETE FROM ADESAO where TipoRegistro = 30");
 		
 		for (String table : createTables) {
 			H2sql.executeStatement(table);
 		}
 		logger.info("Dados Classificados");
+		
 	}
+private String gerarArquivo() throws IOException {
+		
+		System.out.println("Gerando dados");
+		
+		LocalDateTime localDate = LocalDateTime.now();
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter fileFormat = DateTimeFormatter.ofPattern("ddMMyyyyHHmm");
+		
+		String fileName = Paths.get(".").toAbsolutePath().normalize().toString() + 
+						  "/" + "data/ 000010_" + fileFormat.format(localDate) + "_VG01_V0003064.PRO";
+		
+		FileWriter fw = new FileWriter(fileName);
+		
+		int tamanhoLinha = 450;
+		int versao = (int )(Math.random() * 999 + 1);
+		
+		//Header do arquivo
+		String header = file.preencheHeader(dtf.format(localDate), tamanhoLinha, versao, 1, 
+						"REALIZE CFI - CREDITO, FINANCIAMENTO E INVESTIMENTO S.A.", "27929879000126", "EP");
+		fw.write(header + "\r\n");
+		
+		//Detail do arquivo
+		gerarDetalhe(localDate, fw, tamanhoLinha, 50, 4);
+		
+		//Footer do arquivo
+		fw.write(file.footer(tamanhoLinha, numeroLinha));
+		fw.close();
+		System.out.println("Dados gerados");
+		return fileName;
+	}
+
+private void gerarDetalhe(LocalDateTime localDate, FileWriter fw, int tamanhoLinha, int contratosQuantidade,
+		int parcelasQuantidade) throws IOException {
 	
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	for (int i = 0; i < contratosQuantidade; i++) {
+		//Detalhes
+		int origemProposta = 18;
+
+		String cpfSegurado = BrazilianDocuments.person(false);
+		String detail = file.geraProposta(tamanhoLinha, parcelasQuantidade, dtf, localDate, numeroLinha, origemProposta, numeroProposta, NumeroContrato);
+		
+		fw.write(detail + "\r\n");
+		numeroLinha ++;
+		
+		//Segurado
+		String segurado = StringUtils.repeat(" ", tamanhoLinha);
+		segurado = file.geraSegurado(tamanhoLinha, numeroLinha, origemProposta, numeroProposta, NumeroContrato,
+				cpfSegurado);
+		fw.write(segurado + "\r\n");
+		numeroLinha ++;
+		
+		// Parcelas
+		for (int j = 0; j < parcelasQuantidade; j++) {
+			LocalDateTime venctoData = localDate.plusMonths(j);
+			String parcela = StringUtils.repeat(" ", tamanhoLinha);
+			parcela = file.geraParcelas(tamanhoLinha, dtf, numeroLinha, origemProposta, numeroProposta, NumeroContrato, j, venctoData);
+			
+			fw.write(parcela + "\r\n");
+			numeroLinha ++;
+		}
+		numeroProposta ++;
+		NumeroContrato++;
+	}
+}
 }
