@@ -97,7 +97,7 @@ public class TestAdesaoArquivo {
 			try {
 				mainMenu.searchValue(returnResultSet.getString("numeroContratoPorto")); //adicionar validação
 				searchResults.tapContractTable(contract);
-				contrato.getProposal().equals(returnResultSet.getString("numeroProposta")) //adicionar proposta
+				contrato.getProposal().equals(returnResultSet.getString("numeroProposta")) //adicionar validação
 				
 				
 				
