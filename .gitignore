@@ -12,3 +12,6 @@ Default/Preferences
 _windows/
 editor.xml
 debugger.xml
+/logs/*
+logs/
+logs/*
