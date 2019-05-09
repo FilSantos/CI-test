@@ -1,14 +1,19 @@
 package br.com.testfilipe.test.pageobject.salesforce;
 
-import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
-import com.sun.corba.se.impl.encoding.CodeSetConversion;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
+
 public class ContaDetalhes extends BaseWebPage {
 
-    private static By ACCOUNTNAME_TEXTBOX = By.xpath("//td[contains(text(),'Nome da conta')]/following-sibling::td[1]/div");
+    public ContaDetalhes(WebDriver webDriver) {
+		super(webDriver);
+		// TODO Auto-generated constructor stub
+	}
+
+	private static By ACCOUNTNAME_TEXTBOX = By.xpath("//td[contains(text(),'Nome da conta')]/following-sibling::td[1]/div");
     private static By SEX_TEXTBOX = By.xpath("//td[contains(text(),'Sexo')]/following-sibling::td[1]/div");
     private static By DATEOFBIRTH_TEXBOX = By.xpath("//td[contains(text(),'Data de nascimento')]/following-sibling::td[1]/div");
     private static By CPF_TEXBOX = By.xpath("//td[contains(text(),'CPF')]/following-sibling::td[1]/div");
@@ -18,10 +23,6 @@ public class ContaDetalhes extends BaseWebPage {
     private static By PHONENUMBER_TEXTBOX = By.xpath("//td[contains(text(),'Telefone residencial')]/following-sibling::td[1]/div");
     private static By EDITADRESS_LINK = By.xpath("//h3[text()='Endereços']/../../../../../..//tr//a[@class='actionLink'][contains(text(), 'Editar')]");
 
-    public ContaDetalhes (WebDriver webdriver){
-        super (webDriver);
-        // TODO Auto-generated constructor stub
-    }
 
     @Override
     public boolean isDisplayed() {
@@ -35,9 +36,9 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private String getAccountName () throws Exception{
 
-        WebElement text = searchElement.findElementBy (ACCOUNTNAME_TEXTBOX "Nome da conta");
+        WebElement text = searchElement.findElementBy (ACCOUNTNAME_TEXTBOX, "Nome da conta");
 
-        return text.getText()
+        return text.getText();
     }
 
     /** Retorna o sexo do contratante
@@ -47,9 +48,9 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private String getSex () throws Exception{
 
-        WebElement text = searchElement.findElementBy (SEX_TEXTBOX "sexo");
+        WebElement text = searchElement.findElementBy (SEX_TEXTBOX, "sexo");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna a data de nascimento
@@ -59,9 +60,9 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private String getDateOfBirth () throws Exception{
 
-        WebElement text = searchElement.findElementBy(DATEOFBIRTH_TEXBOX "Data de nascimento");
+        WebElement text = searchElement.findElementBy(DATEOFBIRTH_TEXBOX, "Data de nascimento");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o cpf
@@ -71,9 +72,9 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private String getCPF () throws Exception{
 
-        WebElement text = searchElement.findElementBy(CPF_TEXBOX "CPF");
+        WebElement text = searchElement.findElementBy(CPF_TEXBOX, "CPF");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o estado civil
@@ -83,9 +84,9 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private String getMaritalStatus () throws Exception{
 
-        WebElement text = searchElement.findElementBy(MARITALSTATUS_TEXBOX "Estado civil");
+        WebElement text = searchElement.findElementBy(MARITALSTATUS_TEXBOX, "Estado civil");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna número do celular
@@ -95,9 +96,9 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private String getCellphoneNumber () throws Exception{
 
-        WebElement text = searchElement.findElementBy(CELLPHONENUM_TEXTBOX "Número do celular");
+        WebElement text = searchElement.findElementBy(CELLPHONENUM_TEXTBOX, "Número do celular");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o telefone comercial
@@ -107,9 +108,9 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private String getCommercialNumber () throws Exception{
 
-        WebElement text = searchElement.findElementBy(COMMERCPHONENUM_TEXTBOX "Telefone Comercial");
+        WebElement text = searchElement.findElementBy(COMMERCPHONENUM_TEXTBOX, "Telefone Comercial");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Retorna o telefone residencial
@@ -119,9 +120,9 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private String getPhoneNumber () throws Exception{
 
-        WebElement text = searchElement.findElementBy(PHONENUMBER_TEXTBOX "Telefone residencial")
+        WebElement text = searchElement.findElementBy(PHONENUMBER_TEXTBOX, "Telefone residencial");
 
-        return text.getText()
+        return text.getText();
     }
 
     /**Clica em Editar (aba Endereços)
@@ -130,7 +131,7 @@ public class ContaDetalhes extends BaseWebPage {
      */
     private void tapEditAdress () throws Exception{
 
-        WebElement link = searchElement.findElementBy(EDITADRESS_LINK "Endereços - EDITAR");
+        WebElement link = searchElement.findElementBy(EDITADRESS_LINK, "Endereços - EDITAR");
 
         command.click(link);
     }
