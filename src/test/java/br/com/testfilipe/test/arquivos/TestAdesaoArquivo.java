@@ -24,7 +24,6 @@ import br.com.testfilipe.core.log.LogConstants;
 import br.com.testfilipe.core.selenium.platfom.ChromePlatform;
 import br.com.testfilipe.core.selenium.platfom.Platform;
 import br.com.testfilipe.core.utils.BrazilianDocuments;
-import br.com.testfilipe.core.utils.StringFormat;
 import br.com.testfilipe.test.pageobject.salesforce.SearchResults;
 import br.com.testfilipe.test.utils.FileGenerator;
 
@@ -88,6 +87,7 @@ public class TestAdesaoArquivo {
 
 		ContratosDetalhes contrato = new ContratosDetalhes(webDriver);
 		ContaDetalhes conta = new ContaDetalhes(webDriver);
+		ContaSeguradoEndereco contaseguradoendereco = new ContaSeguradoEndereco (webDriver);
 		
 		while (returnResultSet.next()) {
 			try {
@@ -97,7 +97,21 @@ public class TestAdesaoArquivo {
 				contrato.getInitialValidity().equals(returnResultSet.getString("inicioVigencia")); //adicionar validação
                 contrato.getFinalValidity().equals(returnResultSet.getString("finalVigencia")); //adicionar validação
                 contrato.getIDPartner().equals(returnResultSet.getString("IDContratoParceiro")); //adicionar validação
-                contrato.tapAccountName();
+                contrato.tapAccountName(); //adicionar validação
+				conta.getAccountName().equals(returnResultSet.getString("Nome da conta"));//adicionar validação
+				conta.getSex().equals(returnResultSet.getString("Sexo")); //adicionar validação
+				conta.getDateOfBirth().equals(returnResultSet.getString("Data de nascimento")); //adicionar validação
+				conta.getCPF().equals(returnResultSet.getString("CPF")); // adicionar validação
+				conta.getMaritalStatus().equals(returnResultSet.getString("Estado civil")); //adicionar validação
+				conta.getCellphoneNumber().equals(returnResultSet.getString("Número do celular")); //adicionar validação
+				conta.getCommercialNumber().equals(returnResultSet.getString("Número comercial")); //adicionar validação
+				conta.getPhoneNumber().equals(returnResultSet.getString("Telefone residencial")); //adicionar validação
+				conta.tapEditAdress(); //adicionar validação
+				contaseguradoendereco.getCEP().equals(returnResultSet.getString("CEP")); //adicionar validação
+				contaseguradoendereco.getStreet().equals(returnResultSet.getString("Logradouro")); //adicionar validação
+				contaseguradoendereco.getComplement().equals(returnResultSet.getString("Complemento")); //adicionar validação
+				contaseguradoendereco.getDistrict().equals(returnResultSet.getString("Bairro")); //adicionar validação
+				contaseguradoendereco.getCity().equals(returnResultSet.getString("Cidade")); //adicionar validação
 				
 			} catch (Exception e) {
 				// TODO: handle exception

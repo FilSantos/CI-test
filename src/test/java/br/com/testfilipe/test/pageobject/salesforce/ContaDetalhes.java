@@ -34,7 +34,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception
      */
-    private String getAccountName () throws Exception{
+    public String getAccountName () throws Exception{
 
         WebElement text = searchElement.findElementBy (ACCOUNTNAME_TEXTBOX, "Nome da conta");
 
@@ -46,7 +46,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception
      */
-    private String getSex () throws Exception{
+    public String getSex () throws Exception{
 
         WebElement text = searchElement.findElementBy (SEX_TEXTBOX, "sexo");
 
@@ -58,7 +58,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception
      */
-    private String getDateOfBirth () throws Exception{
+    public String getDateOfBirth () throws Exception{
 
         WebElement text = searchElement.findElementBy(DATEOFBIRTH_TEXBOX, "Data de nascimento");
 
@@ -70,7 +70,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception
      */
-    private String getCPF () throws Exception{
+    public String getCPF () throws Exception{
 
         WebElement text = searchElement.findElementBy(CPF_TEXBOX, "CPF");
 
@@ -82,7 +82,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception
      */
-    private String getMaritalStatus () throws Exception{
+    public String getMaritalStatus () throws Exception{
 
         WebElement text = searchElement.findElementBy(MARITALSTATUS_TEXBOX, "Estado civil");
 
@@ -94,7 +94,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception
      */
-    private String getCellphoneNumber () throws Exception{
+    public String getCellphoneNumber () throws Exception{
 
         WebElement text = searchElement.findElementBy(CELLPHONENUM_TEXTBOX, "Número do celular");
 
@@ -106,7 +106,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception
      */
-    private String getCommercialNumber () throws Exception{
+    public String getCommercialNumber () throws Exception{
 
         WebElement text = searchElement.findElementBy(COMMERCPHONENUM_TEXTBOX, "Telefone Comercial");
 
@@ -118,7 +118,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception
      */
-    private String getPhoneNumber () throws Exception{
+    public String getPhoneNumber () throws Exception{
 
         WebElement text = searchElement.findElementBy(PHONENUMBER_TEXTBOX, "Telefone residencial");
 
@@ -129,7 +129,7 @@ public class ContaDetalhes extends BaseWebPage {
      * @author everton cognizant
      * @throws Exception
      */
-    private void tapEditAdress () throws Exception{
+    public void tapEditAdress () throws Exception{
 
         WebElement link = searchElement.findElementBy(EDITADRESS_LINK, "Endereços - EDITAR");
 
