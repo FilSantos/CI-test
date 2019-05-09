@@ -88,6 +88,7 @@ public class TestAdesaoArquivo {
 		ContratosDetalhes contrato = new ContratosDetalhes(webDriver);
 		ContaDetalhes conta = new ContaDetalhes(webDriver);
 		ContaSeguradoEndereco contaseguradoendereco = new ContaSeguradoEndereco (webDriver);
+		ContratantesDetalhes contratantes = new ContratantesDetalhes (webDriver);
 		
 		while (returnResultSet.next()) {
 			try {
@@ -97,7 +98,11 @@ public class TestAdesaoArquivo {
 				contrato.getInitialValidity().equals(returnResultSet.getString("inicioVigencia")); //adicionar validação
                 contrato.getFinalValidity().equals(returnResultSet.getString("finalVigencia")); //adicionar validação
                 contrato.getIDPartner().equals(returnResultSet.getString("IDContratoParceiro")); //adicionar validação
-                contrato.tapAccountName(); //adicionar validação
+                contrato.tapContactorsNumber(); //adicionar validação
+                contratantes.getQuantityParcel().equals(returnResultSet.getString("QuantidadeParcelas")); //adicionar validação
+                contratantes.getMatchFirstParcel().equals(returnResultSet.getString("VencimentoPrimeiraParcela")); //adicionar validação
+                contratantes.getParcelAward().equals(returnResultSet.getString("PremioParcela")); //adicionar validação
+                contratantes.tapAccount(); //adicionar validação
 				conta.getAccountName().equals(returnResultSet.getString("Nome da conta"));//adicionar validação
 				conta.getSex().equals(returnResultSet.getString("Sexo")); //adicionar validação
 				conta.getDateOfBirth().equals(returnResultSet.getString("Data de nascimento")); //adicionar validação
@@ -112,6 +117,8 @@ public class TestAdesaoArquivo {
 				contaseguradoendereco.getComplement().equals(returnResultSet.getString("Complemento")); //adicionar validação
 				contaseguradoendereco.getDistrict().equals(returnResultSet.getString("Bairro")); //adicionar validação
 				contaseguradoendereco.getCity().equals(returnResultSet.getString("Cidade")); //adicionar validação
+				contaseguradoendereco.getState().equals(returnResultSet.getString("Estado")); //adicionar validação
+				
 				
 			} catch (Exception e) {
 				// TODO: handle exception
