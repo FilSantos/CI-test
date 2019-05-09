@@ -30,8 +30,8 @@ public class ContratantesDetalhes extends BaseWebPage {
 	 */
 	private String getQuantityParcel() throws Exception{
 
-		WebElement text = searchElement.findElementBy(QUANTITYPARCEL_TEXTBOX "Quantidade de Parcelas");
+		WebElement text = searchElement.findElementBy(QUANTITYPARCEL_TEXTBOX, "Quantidade de Parcelas");
 
-		return text.getText()
+		return text.getText();
 	}
 }
