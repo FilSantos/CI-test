@@ -23,11 +23,13 @@ import br.com.testfilipe.core.log.LogConstants;
 import br.com.testfilipe.core.selenium.platfom.ChromePlatform;
 import br.com.testfilipe.core.selenium.platfom.Platform;
 import br.com.testfilipe.core.utils.BrazilianDocuments;
+import br.com.testfilipe.core.utils.StringFormat;
 import br.com.testfilipe.test.pageobject.salesforce.Contas;
 import br.com.testfilipe.test.pageobject.salesforce.ContratosDetalhes;
 import br.com.testfilipe.test.pageobject.salesforce.Login;
 import br.com.testfilipe.test.pageobject.salesforce.MainMenu;
 import br.com.testfilipe.test.pageobject.salesforce.MainMenuItem;
+import br.com.testfilipe.test.pageobject.salesforce.SearchResults;
 import br.com.testfilipe.test.utils.FileGenerator;
 
 
@@ -36,6 +38,7 @@ public class TestAdesaoArquivo {
 			
 	private static WebDriver webDriver;
 	private static MainMenu mainMenu;
+	private static SearchResults searchResults;
 	private static FileGenerator file;
 	private static int numeroLinha;
 	private static int numeroProposta;
@@ -54,7 +57,7 @@ public class TestAdesaoArquivo {
 		webDriver.navigate().to("https://portoseguro--uat.cs53.my.salesforce.com");
 		Login login = new Login(webDriver);
 		mainMenu = new MainMenu(webDriver);
-		file = new FileGenerator();
+		searchResults = new SearchResults(webDriver);
 		
 		login.setcredentials("filipe.santos@portoseguro.com.br.uat", "235802@Gl");
 	}
@@ -87,11 +90,21 @@ public class TestAdesaoArquivo {
 		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
 		ResultSet returnResultSet = H2sql.returnResultSet(sqlQuery);
 
-		ContratosDetalhes contratos = new ContratosDetalhes(webDriver);
-		Contas contas = new Contas(webDriver);
+		ContratosDetalhes contrato = new ContratosDetalhes(webDriver);
+		Contas conta = new Contas(webDriver);
 		
 		while (returnResultSet.next()) {
-			mainMenu.searchValue(returnResultSet.getString("numeroProposta"));
+			try {
+				mainMenu.searchValue(returnResultSet.getString("numeroContratoPorto")); //adicionar validação
+				searchResults.tapContractTable(contract);
+				contrato.getProposal().equals(returnResultSet.getString("numeroProposta")) //adicionar proposta
+				
+				
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
 
 		
 		}

@@ -1,11 +1,10 @@
 package br.com.testfilipe.test.pageobject.salesforce;
 
-import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.concurrent.ExecutionException;
+import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
 
 /**
  * @author everton cognizant
@@ -34,11 +33,11 @@ public class ContratosDetalhes extends BaseWebPage {
      * @return String
      * @throws Exception 
      */
-    public String getPorposal() throws Exception {
+    public String getProposal() throws Exception {
     	
-    	WebElement text = searchElement.findElementBy(PROPOSAL_TEXTBOX "Número da Proposta");
+    	WebElement proposal = searchElement.findElementBy(PROPOSAL_TEXTBOX, "Número da Proposta");
 
-    	return text.getText();
+    	return proposal.getText();
     }
     /** Retorna a data de inicio de vigencia
      * @author everton cognizant
@@ -47,7 +46,7 @@ public class ContratosDetalhes extends BaseWebPage {
      */
     public String getInitialValidity() throws Exception {
 
-        WebElement date = searchElement.findElementBy(INITIALVALIDITY_TEXTBOX "Data Inicio da vigência");
+        WebElement date = searchElement.findElementBy(INITIALVALIDITY_TEXTBOX, "Data Inicio da vigência");
 
         return date.getText();
     }
@@ -58,7 +57,7 @@ public class ContratosDetalhes extends BaseWebPage {
      */
     public String getFinalValidity() throws Exception {
 
-        WebElement date = searchElement.findElementBy(FINALVALIDITY_TEXTBOX "Data Final da vigência");
+        WebElement date = searchElement.findElementBy(FINALVALIDITY_TEXTBOX, "Data Final da vigência");
 
         return date.getText();
     }
@@ -69,7 +68,7 @@ public class ContratosDetalhes extends BaseWebPage {
      */
     public String getIDPartner() throws Exception {
 
-        WebElement text = searchElement.findElementBy(IDPARTNERAGREEMENT_TEXTBOX "Id Contrato parceiro");
+        WebElement text = searchElement.findElementBy(IDPARTNERAGREEMENT_TEXTBOX, "Id Contrato parceiro");
 
         return text.getText();
     }
@@ -80,29 +79,27 @@ public class ContratosDetalhes extends BaseWebPage {
      */
     public String getIssueDate() throws Exception {
 
-        WebElement date = searchElement.findElementBy(ISSUEDATE_TEXTBOX "Data de Emissão");
+        WebElement date = searchElement.findElementBy(ISSUEDATE_TEXTBOX, "Data de Emissão");
 
         return date.getText();
     }
     /** Clica no número do contratante
      * @author everton cognizant
-     * @return String
      * @throws Exception
      */
-    public String getContactorsNumber() throws Exception {
+    public void tapContactorsNumber() throws Exception {
 
-        WebElement link = searchElement.findElementBy(CONTRACTORSNUMBER_LINK "Número");
+        WebElement link = searchElement.findElementBy(CONTRACTORSNUMBER_LINK, "Número");
 
         command.click(link);
     }
     /** Clica no Nome da Conta
      * @author everton cognizant
-     * @return String
      * @throws Exception
      */
-    public String getAccountName() throws Exception {
+    public void tapAccountName() throws Exception {
 
-        WebElement link = searchElement.findElementBy(ACCOUNTNAME_LINK "Nome da conta");
+        WebElement link = searchElement.findElementBy(ACCOUNTNAME_LINK, "Nome da conta");
 
         command.click(link);
     }

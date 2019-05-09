@@ -1,5 +1,9 @@
 package br.com.testfilipe.core.utils;
 
+import java.text.ParseException;
+
+import javax.swing.text.MaskFormatter;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class StringFormat {
@@ -28,4 +32,15 @@ public class StringFormat {
 		
 		return null;
 	}
+	
+	public static String formatString(String value, String pattern) {
+        MaskFormatter mf;
+        try {
+            mf = new MaskFormatter(pattern);
+            mf.setValueContainsLiteralCharacters(false);
+            return mf.valueToString(value);
+        } catch (ParseException ex) {
+            return value;
+        }
+    }
 }
