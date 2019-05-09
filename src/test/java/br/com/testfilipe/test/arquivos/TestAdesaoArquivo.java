@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.testfilipe.test.pageobject.salesforce.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -24,11 +25,6 @@ import br.com.testfilipe.core.selenium.platfom.ChromePlatform;
 import br.com.testfilipe.core.selenium.platfom.Platform;
 import br.com.testfilipe.core.utils.BrazilianDocuments;
 import br.com.testfilipe.core.utils.StringFormat;
-import br.com.testfilipe.test.pageobject.salesforce.Contas;
-import br.com.testfilipe.test.pageobject.salesforce.ContratosDetalhes;
-import br.com.testfilipe.test.pageobject.salesforce.Login;
-import br.com.testfilipe.test.pageobject.salesforce.MainMenu;
-import br.com.testfilipe.test.pageobject.salesforce.MainMenuItem;
 import br.com.testfilipe.test.pageobject.salesforce.SearchResults;
 import br.com.testfilipe.test.utils.FileGenerator;
 
@@ -91,14 +87,18 @@ public class TestAdesaoArquivo {
 		ResultSet returnResultSet = H2sql.returnResultSet(sqlQuery);
 
 		ContratosDetalhes contrato = new ContratosDetalhes(webDriver);
-		Contas conta = new Contas(webDriver);
+		ContaDetalhes contaDetalhes = new ContaDetalhes(webDriver);
 		
 		while (returnResultSet.next()) {
 			try {
 				mainMenu.searchValue(returnResultSet.getString("numeroContratoPorto")); //adicionar validação
 				searchResults.tapContractTable(contract);
 				contrato.getProposal().equals(returnResultSet.getString("numeroProposta")) //adicionar validação
-				
+				contrato.getInitialValidity().equals(returnResultSet.getString("inicioVigencia")) //adicionar validação
+                contrato.getFinalValidity().equals(returnResultSet.getString("finalVigencia")) //adicionar validação
+                contrato.getIDPartner().equals(returnResultSet.getString("IDContratoParceiro")) //adicionar validação
+                contrato.tapAccountName();
+				contaDetalhes.
 				
 				
 			} catch (Exception e) {
