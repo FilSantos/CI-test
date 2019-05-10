@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
 /** Helper to get Objects for browser or devices
  * 
  * @author filipesantos
@@ -49,7 +50,7 @@ public abstract class SearchElement {
 			WebElement temp = webElement;
 			if (reportName != null && !reportName.trim().isEmpty()) {
 				try {
-					System.out.println("-Found object " + reportName.trim());
+					Reporter.log("-Found object " + reportName.trim());
 				} finally {
 					logger.info(String.format(" Object %s found",  reportName.trim()) );
 				}
@@ -78,7 +79,7 @@ public abstract class SearchElement {
 			webDriverWait.until(ExpectedConditions.presenceOfElementLocated(by));
 			List<WebElement> webElements = webDriver.findElements(by);
 			if (reportName != null && !reportName.trim().isEmpty()) {
-				System.out.println("-Found object list " + reportName.trim());
+				Reporter.log("-Found object list " + reportName.trim());
 				logger.info(String.format("Object list %s found with %s ",  reportName.trim() ,   by.toString()) );
 			}
 			
@@ -105,7 +106,7 @@ public abstract class SearchElement {
 			webDriverWait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(parent, by));
 			WebElement webElement = parent.findElement(by);
 			if (reportName != null && !reportName.trim().isEmpty()) {
-				System.out.println("-Found object " + reportName.trim());
+				Reporter.log("-Found object " + reportName.trim());
 				logger.info(String.format(" Object %s found with %s ",  reportName.trim() ,   by.toString()) );
 			}
 			return webElement;
@@ -131,7 +132,7 @@ public abstract class SearchElement {
 			webDriverWait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(parent, by));			
 			List<WebElement> webElements = parent.findElements(by);
 			if (reportName != null && !reportName.trim().isEmpty()) {
-				System.out.println("-Found object list " + reportName.trim());
+				Reporter.log("-Found object list " + reportName.trim());
 				logger.info(String.format("Object list %s found ",  reportName.trim()) );
 			}
 			

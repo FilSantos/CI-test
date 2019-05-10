@@ -13,9 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -52,12 +52,36 @@ public class TestAdesaoNG {
 	private ResultSet returnResultSet;
 	
 	@Test(dataProvider="getData")
-	public void validaDados(int NumeroPropostaPorto) {
+	public void validaDados(int NumeroPropostaPorto) throws Exception {
 		
-		if (NumeroPropostaPorto == 49) {
-			System.out.println("eppaaa");
-		}
-		System.out.println("Instance DataProvider Example: Data(" + NumeroPropostaPorto + ")");
+		mainMenu.searchValue(returnResultSet.getString("numeroContratoPorto"));
+		searchResults.tapContractTable(returnResultSet.getString ("numeroContratoPorto"));
+		Assert.assertEquals(contrato.getProposal(), returnResultSet.getString("numeroProposta"), "Proposta");
+		Assert.assertEquals(contrato.getInitialValidity(), returnResultSet.getString("inicioVigencia"),"Inicio Vigencia");
+		Assert.assertEquals(contrato.getFinalValidity(),returnResultSet.getString("finalVigencia"),"Final Vigencia");
+		Assert.assertEquals(contrato.getIDPartner(), returnResultSet.getString("IDContratoParceiro"), "ID contrato Parceiro");
+		
+
+        contrato.tapContactorsNumber(); //adicionar validação
+        contratantes.getQuantityParcel().equals(returnResultSet.getString("QuantidadeParcelas")); //adicionar validação
+        contratantes.getMatchFirstParcel().equals(returnResultSet.getString("VencimentoPrimeiraParcela")); //adicionar validação
+        contratantes.getParcelAward().equals(returnResultSet.getString("PremioParcela")); //adicionar validação
+        contratantes.tapAccount(); //adicionar validação
+		conta.getAccountName().equals(returnResultSet.getString("Nome da conta"));//adicionar validação
+		conta.getSex().equals(returnResultSet.getString("Sexo")); //adicionar validação
+		conta.getDateOfBirth().equals(returnResultSet.getString("Data de nascimento")); //adicionar validação
+		conta.getCPF().equals(returnResultSet.getString("CPF")); // adicionar validação
+		conta.getMaritalStatus().equals(returnResultSet.getString("Estado civil")); //adicionar validação
+		conta.getCellphoneNumber().equals(returnResultSet.getString("Número do celular")); //adicionar validação
+		conta.getCommercialNumber().equals(returnResultSet.getString("Número comercial")); //adicionar validação
+		conta.getPhoneNumber().equals(returnResultSet.getString("Telefone residencial")); //adicionar validação
+		conta.tapEditAdress(); //adicionar validação
+		contaseguradoendereco.getCEP().equals(returnResultSet.getString("CEP")); //adicionar validação
+		contaseguradoendereco.getStreet().equals(returnResultSet.getString("Logradouro")); //adicionar validação
+		contaseguradoendereco.getComplement().equals(returnResultSet.getString("Complemento")); //adicionar validação
+		contaseguradoendereco.getDistrict().equals(returnResultSet.getString("Bairro")); //adicionar validação
+		contaseguradoendereco.getCity().equals(returnResultSet.getString("Cidade")); //adicionar validação
+		contaseguradoendereco.getState().equals(returnResultSet.getString("Estado")); //adicionar validação	
 	}
 	
 	@BeforeSuite
@@ -82,36 +106,6 @@ public class TestAdesaoNG {
 		contaseguradoendereco = new ContaSeguradoEndereco (webDriver);
 		contratantes = new ContratantesDetalhes (webDriver);
 		
-	}
-	@BeforeTest
-	public void startTest() throws Exception {
-		returnResultSet = null;
-		mainMenu.searchValue(returnResultSet.getString("numeroContratoPorto")); //adicionar validação
-		searchResults.tapContractTable(returnResultSet.getString ("numeroContratoPorto"));
-		contrato.getProposal().equals(returnResultSet.getString("numeroProposta")); //adicionar validação
-		contrato.getInitialValidity().equals(returnResultSet.getString("inicioVigencia")); //adicionar validação
-        contrato.getFinalValidity().equals(returnResultSet.getString("finalVigencia")); //adicionar validação
-        contrato.getIDPartner().equals(returnResultSet.getString("IDContratoParceiro")); //adicionar validação
-        contrato.tapContactorsNumber(); //adicionar validação
-        contratantes.getQuantityParcel().equals(returnResultSet.getString("QuantidadeParcelas")); //adicionar validação
-        contratantes.getMatchFirstParcel().equals(returnResultSet.getString("VencimentoPrimeiraParcela")); //adicionar validação
-        contratantes.getParcelAward().equals(returnResultSet.getString("PremioParcela")); //adicionar validação
-        contratantes.tapAccount(); //adicionar validação
-		conta.getAccountName().equals(returnResultSet.getString("Nome da conta"));//adicionar validação
-		conta.getSex().equals(returnResultSet.getString("Sexo")); //adicionar validação
-		conta.getDateOfBirth().equals(returnResultSet.getString("Data de nascimento")); //adicionar validação
-		conta.getCPF().equals(returnResultSet.getString("CPF")); // adicionar validação
-		conta.getMaritalStatus().equals(returnResultSet.getString("Estado civil")); //adicionar validação
-		conta.getCellphoneNumber().equals(returnResultSet.getString("Número do celular")); //adicionar validação
-		conta.getCommercialNumber().equals(returnResultSet.getString("Número comercial")); //adicionar validação
-		conta.getPhoneNumber().equals(returnResultSet.getString("Telefone residencial")); //adicionar validação
-		conta.tapEditAdress(); //adicionar validação
-		contaseguradoendereco.getCEP().equals(returnResultSet.getString("CEP")); //adicionar validação
-		contaseguradoendereco.getStreet().equals(returnResultSet.getString("Logradouro")); //adicionar validação
-		contaseguradoendereco.getComplement().equals(returnResultSet.getString("Complemento")); //adicionar validação
-		contaseguradoendereco.getDistrict().equals(returnResultSet.getString("Bairro")); //adicionar validação
-		contaseguradoendereco.getCity().equals(returnResultSet.getString("Cidade")); //adicionar validação
-		contaseguradoendereco.getState().equals(returnResultSet.getString("Estado")); //adicionar validação		
 	}
 	
 	@AfterSuite

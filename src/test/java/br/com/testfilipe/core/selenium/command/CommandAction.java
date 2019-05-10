@@ -12,6 +12,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
 
 
 public abstract class CommandAction {
@@ -70,7 +71,8 @@ public abstract class CommandAction {
 		try {
 			webElement.sendKeys(value);
 			logger.debug("Object: '" + webElement.toString() + "' filled: '" + value + "'");
-			System.out.println(" and input: '" + value + "'. ");
+			Reporter.log(" and input: '" + value + "'.");
+
 		} catch (TimeoutException e) {
 			msgError = " TimeOut exception after " + TIME_OUT + " seconds, object: '" + webElement.toString()
 					+ "' not filled with '" + value + "'";
@@ -96,7 +98,7 @@ public abstract class CommandAction {
 			Select dropdown= new Select(webElement);
 			dropdown.selectByVisibleText(value);
 			logger.debug("Object: '" + webElement.toString() + "' selected: '" + value + "'");
-			System.out.println(" and selected: '" + value + "'. ");
+			Reporter.log(" and selected: '" + value + "'. ");
 		} catch (TimeoutException e) {
 			msgError = " TimeOut exception after " + TIME_OUT + " seconds, object: '" + webElement.toString()
 					+ "' not filled with '" + value + "'";
@@ -156,7 +158,7 @@ public abstract class CommandAction {
 				webElement.sendKeys(key);
 			}
 			
-			logger.debug( webElement != null ? "Object: '" + webElement.toString() + "' " : "" 
+			Reporter.log( webElement != null ? "Object: '" + webElement.toString() + "' " : "" 
 						  + "pressed key'" + keyPress  + "'");	
 		} catch (Exception e) {
 			logger.error( webElement != null ? "Object: '" + webElement.toString() + "' " : "" 
@@ -177,7 +179,7 @@ public abstract class CommandAction {
 			webElement.click();
 			//webDriver.switchTo().window(webDriver.getWindowHandle());
 			logger.debug("Object: '" + webElement.toString() + "' click action");
-			System.out.println(" and clicked .");
+			Reporter.log(" and clicked .");
 		} catch (Exception e) {
 			msgError = "Object: '" + webElement.toString() + "' cannot click action";
 			logger.fatal(msgError, e);
@@ -240,7 +242,7 @@ public abstract class CommandAction {
 	public String getAlertText() {
 		if (isAlertPresent()) {
 			String text = webDriver.switchTo().alert().getText();
-			System.out.println("Alert - "+ text);
+			Reporter.log("Alert - "+ text);
 			return text;
 		} else {
 			return null;
