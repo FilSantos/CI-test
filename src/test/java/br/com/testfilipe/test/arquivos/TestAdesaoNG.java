@@ -60,28 +60,26 @@ public class TestAdesaoNG {
 		Assert.assertEquals(contrato.getInitialValidity(), returnResultSet.getString("inicioVigencia"),"Inicio Vigencia");
 		Assert.assertEquals(contrato.getFinalValidity(),returnResultSet.getString("finalVigencia"),"Final Vigencia");
 		Assert.assertEquals(contrato.getIDPartner(), returnResultSet.getString("IDContratoParceiro"), "ID contrato Parceiro");
-		
-
-        contrato.tapContactorsNumber(); //adicionar validação
-        contratantes.getQuantityParcel().equals(returnResultSet.getString("QuantidadeParcelas")); //adicionar validação
-        contratantes.getMatchFirstParcel().equals(returnResultSet.getString("VencimentoPrimeiraParcela")); //adicionar validação
-        contratantes.getParcelAward().equals(returnResultSet.getString("PremioParcela")); //adicionar validação
-        contratantes.tapAccount(); //adicionar validação
-		conta.getAccountName().equals(returnResultSet.getString("Nome da conta"));//adicionar validação
-		conta.getSex().equals(returnResultSet.getString("Sexo")); //adicionar validação
-		conta.getDateOfBirth().equals(returnResultSet.getString("Data de nascimento")); //adicionar validação
-		conta.getCPF().equals(returnResultSet.getString("CPF")); // adicionar validação
-		conta.getMaritalStatus().equals(returnResultSet.getString("Estado civil")); //adicionar validação
-		conta.getCellphoneNumber().equals(returnResultSet.getString("Número do celular")); //adicionar validação
-		conta.getCommercialNumber().equals(returnResultSet.getString("Número comercial")); //adicionar validação
-		conta.getPhoneNumber().equals(returnResultSet.getString("Telefone residencial")); //adicionar validação
-		conta.tapEditAdress(); //adicionar validação
-		contaseguradoendereco.getCEP().equals(returnResultSet.getString("CEP")); //adicionar validação
-		contaseguradoendereco.getStreet().equals(returnResultSet.getString("Logradouro")); //adicionar validação
-		contaseguradoendereco.getComplement().equals(returnResultSet.getString("Complemento")); //adicionar validação
-		contaseguradoendereco.getDistrict().equals(returnResultSet.getString("Bairro")); //adicionar validação
-		contaseguradoendereco.getCity().equals(returnResultSet.getString("Cidade")); //adicionar validação
-		contaseguradoendereco.getState().equals(returnResultSet.getString("Estado")); //adicionar validação	
+		Assert.assertEquals(contrato.tapContactorsNumber(),"Número - Contratantes");
+		Assert.assertEquals(contratantes.getQuantityParcel(),returnResultSet.getString("Quantidade Parcelas");
+		Assert.assertEquals(contratantes.getMatchFirstParcel(), returnResultSet.getString("Vencimento primeira parcela");
+		Assert.assertEquals(contratantes.getParcelAward(),returnResultSet.getString("Prêmio da parcela");
+		Assert.assertEquals(contratantes.tapAccount();, "Conta - Nome");
+		Assert.assertEquals(conta.getAccountName(), returnResultSet.getString("Nome da Conta");
+		Assert.assertEquals(conta.getSex(),returnResultSet.getString("Sexo");
+		Assert.assertEquals(conta.getDateOfBirth(), returnResultSet.getString("Data de Nascimento");
+		Assert.assertEquals(conta.getCPF(), returnResultSet.getString("CPF");
+		Assert.assertEquals(conta.getMaritalStatus(), returnResultSet.getString("Estado civil");
+		Assert.assertEquals(conta.getCellphoneNumber(), returnResultSet.getString("Celular");
+		Assert.assertEquals(conta.getCommercialNumber(), returnResultSet.getString("Número comercial");
+		Assert.assertEquals(conta.getPhoneNumber(), returnResultSet.getString("Telefone residencial");
+		Assert.assertEquals(conta.tapEditAdress();, "Endereço - Editar");
+		Assert.assertEquals(contaseguradoendereco.getCEP(), returnResultSet.getString("CEP");
+		Assert.assertEquals(contaseguradoendereco.getStreet(), returnResultSet.getString("Logradouro");
+		Assert.assertEquals(contaseguradoendereco.getComplement(), returnResultSet.getString("Complemento");
+		Assert.assertEquals(contaseguradoendereco.getDistrict(), returnResultSet.getString("Bairro");
+		Assert.assertEquals(contaseguradoendereco.getCity(), returnResultSet.getString("Cidade");
+		Assert.assertEquals(contaseguradoendereco.getState(), returnResultSet.getString("Estado");
 	}
 	
 	@BeforeSuite
