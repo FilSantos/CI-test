@@ -30,7 +30,6 @@ import br.com.testfilipe.test.pageobject.salesforce.ContratantesDetalhes;
 import br.com.testfilipe.test.pageobject.salesforce.ContratosDetalhes;
 import br.com.testfilipe.test.pageobject.salesforce.Login;
 import br.com.testfilipe.test.pageobject.salesforce.MainMenu;
-import br.com.testfilipe.test.pageobject.salesforce.MainMenuItem;
 import br.com.testfilipe.test.pageobject.salesforce.SearchResults;
 import br.com.testfilipe.test.utils.FileGenerator;
 
@@ -49,6 +48,8 @@ public class TestAdesaoNG {
 	private static ContaDetalhes conta;
 	private static ContaSeguradoEndereco contaseguradoendereco;
 	private static ContratantesDetalhes contratantes;
+
+	private ResultSet returnResultSet;
 	
 	@Test(dataProvider="getData")
 	public void validaDados(int NumeroPropostaPorto) {
@@ -84,8 +85,33 @@ public class TestAdesaoNG {
 	}
 	@BeforeTest
 	public void startTest() throws Exception {
-		//mainMenu.navigateMenu(MainMenuItem.INICIO_TAB);
-		
+		returnResultSet = null;
+		mainMenu.searchValue(returnResultSet.getString("numeroContratoPorto")); //adicionar validação
+		searchResults.tapContractTable(returnResultSet.getString ("numeroContratoPorto"));
+		contrato.getProposal().equals(returnResultSet.getString("numeroProposta")); //adicionar validação
+		contrato.getInitialValidity().equals(returnResultSet.getString("inicioVigencia")); //adicionar validação
+        contrato.getFinalValidity().equals(returnResultSet.getString("finalVigencia")); //adicionar validação
+        contrato.getIDPartner().equals(returnResultSet.getString("IDContratoParceiro")); //adicionar validação
+        contrato.tapContactorsNumber(); //adicionar validação
+        contratantes.getQuantityParcel().equals(returnResultSet.getString("QuantidadeParcelas")); //adicionar validação
+        contratantes.getMatchFirstParcel().equals(returnResultSet.getString("VencimentoPrimeiraParcela")); //adicionar validação
+        contratantes.getParcelAward().equals(returnResultSet.getString("PremioParcela")); //adicionar validação
+        contratantes.tapAccount(); //adicionar validação
+		conta.getAccountName().equals(returnResultSet.getString("Nome da conta"));//adicionar validação
+		conta.getSex().equals(returnResultSet.getString("Sexo")); //adicionar validação
+		conta.getDateOfBirth().equals(returnResultSet.getString("Data de nascimento")); //adicionar validação
+		conta.getCPF().equals(returnResultSet.getString("CPF")); // adicionar validação
+		conta.getMaritalStatus().equals(returnResultSet.getString("Estado civil")); //adicionar validação
+		conta.getCellphoneNumber().equals(returnResultSet.getString("Número do celular")); //adicionar validação
+		conta.getCommercialNumber().equals(returnResultSet.getString("Número comercial")); //adicionar validação
+		conta.getPhoneNumber().equals(returnResultSet.getString("Telefone residencial")); //adicionar validação
+		conta.tapEditAdress(); //adicionar validação
+		contaseguradoendereco.getCEP().equals(returnResultSet.getString("CEP")); //adicionar validação
+		contaseguradoendereco.getStreet().equals(returnResultSet.getString("Logradouro")); //adicionar validação
+		contaseguradoendereco.getComplement().equals(returnResultSet.getString("Complemento")); //adicionar validação
+		contaseguradoendereco.getDistrict().equals(returnResultSet.getString("Bairro")); //adicionar validação
+		contaseguradoendereco.getCity().equals(returnResultSet.getString("Cidade")); //adicionar validação
+		contaseguradoendereco.getState().equals(returnResultSet.getString("Estado")); //adicionar validação		
 	}
 	
 	@AfterSuite
