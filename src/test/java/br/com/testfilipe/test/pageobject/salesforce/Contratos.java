@@ -11,6 +11,7 @@ import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
  *
  */
 
+@SuppressWarnings("unused")
 public class Contratos extends BaseWebPage{
 
 	private static By NEW_BUTTON = By.xpath("//li[contains(@class, 'button')]//div[@title='Novo(a)']");	

@@ -49,37 +49,53 @@ public class TestAdesaoNG {
 	private static ContaSeguradoEndereco contaseguradoendereco;
 	private static ContratantesDetalhes contratantes;
 
-	private ResultSet returnResultSet;
+	
 	
 	@Test(dataProvider="getData")
 	public void validaDados(int NumeroPropostaPorto) throws Exception {
 		
-		mainMenu.searchValue(returnResultSet.getString("numeroContratoPorto"));
-		searchResults.tapContractTable(returnResultSet.getString ("numeroContratoPorto"));
-		Assert.assertEquals(contrato.getProposal(), returnResultSet.getString("numeroProposta"), "Proposta");
-		Assert.assertEquals(contrato.getInitialValidity(), returnResultSet.getString("inicioVigencia"),"Inicio Vigencia");
-		Assert.assertEquals(contrato.getFinalValidity(),returnResultSet.getString("finalVigencia"),"Final Vigencia");
-		Assert.assertEquals(contrato.getIDPartner(), returnResultSet.getString("IDContratoParceiro"), "ID contrato Parceiro");
+		ResultSet resultSetProposta = H2sql.returnResultSet
+				("Select * from V_Proposta WHERE numeropropostaporto = "+ NumeroPropostaPorto);
+		ResultSet resultSetSegurado = H2sql.returnResultSet
+				("Select * from V_Segurado WHERE numeropropostaporto = "+ NumeroPropostaPorto);
+		ResultSet resultSetParcela = H2sql.returnResultSet
+				("Select * from AdesaoParcelas WHERE numeropropostaporto = "+ NumeroPropostaPorto);
+		
+		resultSetProposta.first();
+		resultSetSegurado.first();
+		resultSetParcela.first();
+		
+		mainMenu.searchValue(String.valueOf(resultSetProposta.getInt("numeroContrato")));
+		try {
+			searchResults.tapContractTable(resultSetProposta.getString ("numeroContrato"));
+		} catch (Exception e) {
+		Assert.fail("Contrato não localizado");
+		}
+	
+		Assert.assertEquals(contrato.getProposal(), resultSetProposta.getString("numeroProposta"), "Proposta");
+		Assert.assertEquals(contrato.getInitialValidity(), resultSetProposta.getString("datainíciovigênciaseguro"),"Inicio Vigencia");
+		Assert.assertEquals(contrato.getFinalValidity(),resultSetProposta.getString("datafinalvigênciaseguro"),"Final Vigencia");
+		Assert.assertEquals(contrato.getIDPartner(), resultSetParcela.getString("IDContratoParceiro"), "ID contrato Parceiro");
 		contrato.tapContactorsNumber();
-		Assert.assertEquals(contratantes.getQuantityParcel(),returnResultSet.getString("Quantidade Parcelas"));
-		Assert.assertEquals(contratantes.getMatchFirstParcel(), returnResultSet.getString("Vencimento primeira parcela"));
-		Assert.assertEquals(contratantes.getParcelAward(),returnResultSet.getString("Prêmio da parcela"));
+		Assert.assertEquals(contratantes.getQuantityParcel(),resultSetProposta.getString("Quantidade Parcelas"));
+		Assert.assertEquals(contratantes.getMatchFirstParcel(), resultSetParcela.getString("Vencimento primeira parcela"));
+		Assert.assertEquals(contratantes.getParcelAward(),resultSetParcela.getString("Prêmio da parcela"));
 		contratantes.tapAccount();
-		Assert.assertEquals(conta.getAccountName(), returnResultSet.getString("Nome da Conta"));
-		Assert.assertEquals(conta.getSex(),returnResultSet.getString("Sexo"));
-		Assert.assertEquals(conta.getDateOfBirth(), returnResultSet.getString("Data de Nascimento"));
-		Assert.assertEquals(conta.getCPF(), returnResultSet.getString("CPF"));
-		Assert.assertEquals(conta.getMaritalStatus(), returnResultSet.getString("Estado civil"));
-		Assert.assertEquals(conta.getCellphoneNumber(), returnResultSet.getString("Celular"));
-		Assert.assertEquals(conta.getCommercialNumber(), returnResultSet.getString("Número comercial"));
-		Assert.assertEquals(conta.getPhoneNumber(), returnResultSet.getString("Telefone residencial"));
+		Assert.assertEquals(conta.getAccountName(), resultSetSegurado.getString("Nome da Conta"));
+		Assert.assertEquals(conta.getSex(),resultSetSegurado.getString("Sexo"));
+		Assert.assertEquals(conta.getDateOfBirth(), resultSetSegurado.getString("Data de Nascimento"));
+		Assert.assertEquals(conta.getCPF(), resultSetSegurado.getString("CPF"));
+		Assert.assertEquals(conta.getMaritalStatus(), resultSetSegurado.getString("Estado civil"));
+		Assert.assertEquals(conta.getCellphoneNumber(), resultSetSegurado.getString("Celular"));
+		Assert.assertEquals(conta.getCommercialNumber(), resultSetSegurado.getString("Número comercial"));
+		Assert.assertEquals(conta.getPhoneNumber(), resultSetSegurado.getString("Telefone residencial"));
 		conta.tapEditAdress();
-		Assert.assertEquals(contaseguradoendereco.getCEP(), returnResultSet.getString("CEP"));
-		Assert.assertEquals(contaseguradoendereco.getStreet(), returnResultSet.getString("Logradouro"));
-		Assert.assertEquals(contaseguradoendereco.getComplement(), returnResultSet.getString("Complemento"));
-		Assert.assertEquals(contaseguradoendereco.getDistrict(), returnResultSet.getString("Bairro"));
-		Assert.assertEquals(contaseguradoendereco.getCity(), returnResultSet.getString("Cidade"));
-		Assert.assertEquals(contaseguradoendereco.getState(), returnResultSet.getString("Estado"));
+		Assert.assertEquals(contaseguradoendereco.getCEP(), resultSetSegurado.getString("CEP"));
+		Assert.assertEquals(contaseguradoendereco.getStreet(), resultSetSegurado.getString("Logradouro"));
+		Assert.assertEquals(contaseguradoendereco.getComplement(), resultSetSegurado.getString("Complemento"));
+		Assert.assertEquals(contaseguradoendereco.getDistrict(), resultSetSegurado.getString("Bairro"));
+		Assert.assertEquals(contaseguradoendereco.getCity(), resultSetSegurado.getString("Cidade"));
+		Assert.assertEquals(contaseguradoendereco.getState(), resultSetSegurado.getString("Estado"));
 	}
 	
 	@BeforeSuite
@@ -258,10 +274,10 @@ private String gerarArquivo() throws IOException {
 		fw.write(header + "\r\n");
 		
 		//Detail do arquivo
-		gerarDetalhe(localDate, fw, tamanhoLinha, 3000, 4);
-		gerarDetalhe(localDate, fw, tamanhoLinha, 3000, 5);
-		gerarDetalhe(localDate, fw, tamanhoLinha, 10000, 7);
-		gerarDetalhe(localDate, fw, tamanhoLinha, 10000, 11);
+		gerarDetalhe(localDate, fw, tamanhoLinha, 1, 4);
+		//gerarDetalhe(localDate, fw, tamanhoLinha, 3000, 5);
+		//gerarDetalhe(localDate, fw, tamanhoLinha, 10000, 7);
+		//gerarDetalhe(localDate, fw, tamanhoLinha, 10000, 11);
 		
 		//Footer do arquivo
 		fw.write(file.footer(tamanhoLinha, numeroLinha));

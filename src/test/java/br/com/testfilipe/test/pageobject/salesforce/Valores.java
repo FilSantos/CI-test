@@ -9,6 +9,7 @@ import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
  * @author everton cognizant
  *
  */
+@SuppressWarnings("unused")
 public class Valores extends BaseWebPage{
 	private static By NEW_BUTTON = By.xpath("//li[contains(@class, 'button')]//div[@title='Novo(a)']");
 	private static By COMMERCIALCONTRIBUTION_TEXTBOX = By.xpath(".//*[text()='Contribuição comercial']/../..//input");

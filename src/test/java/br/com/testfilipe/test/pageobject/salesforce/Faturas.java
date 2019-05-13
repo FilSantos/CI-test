@@ -9,6 +9,7 @@ import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
  * @author everton cognizant
  *
  */
+@SuppressWarnings("unused")
 public class Faturas extends BaseWebPage{
 	private static By NEW_BUTTON = By.xpath("//li[contains(@class, 'button')]//div[@title='Novo(a)']");
 	private static By INVOICETYPE_SELECT = By.xpath(".//*[text()='Tipo de fatura']/../..//a[@class='select']");

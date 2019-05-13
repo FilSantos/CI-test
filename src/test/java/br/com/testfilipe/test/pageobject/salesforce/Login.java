@@ -48,8 +48,13 @@ public class Login  extends BaseWebPage{
 			WebElement usernameLogged = searchElement.findElementBy(USERNAME_SAVED_TEXTBOX, "Usuario logado");
 			noLogin = usernameLogged.getText().trim().equals(email.trim()) ? false : true;
 			if (noLogin) {
-				WebElement clearUsername = searchElement.findElementBy(USERNAME_SAVED_CLEAR_BUTTON, "Limpar Usuário");
-				command.clear(clearUsername);
+				try {
+					WebElement clearUsername = searchElement.findElementBy(USERNAME_SAVED_CLEAR_BUTTON, "Limpar Usuário");
+					command.clear(clearUsername);
+				} finally {
+					
+				}
+
 			}
 		}
 		

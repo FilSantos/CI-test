@@ -10,7 +10,7 @@ import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
  * @author everton cognizant
  *
  */
-
+@SuppressWarnings("unused")
 public class Propostas extends BaseWebPage {
 
 	private static By SEARCHGRID_TEXTBOX = By.xpath("//div[@class='slds-from-element']//input[@name='Opportunity-search-input']");
