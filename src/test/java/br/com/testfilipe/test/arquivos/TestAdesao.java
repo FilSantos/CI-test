@@ -33,9 +33,9 @@ import br.com.testfilipe.test.pageobject.salesforce.MainMenu;
 import br.com.testfilipe.test.pageobject.salesforce.SearchResults;
 import br.com.testfilipe.test.utils.FileGenerator;
 
-public class TestAdesaoNG {
+public class TestAdesao {
 
-	final static Logger logger = Logger.getLogger(TestAdesaoNG.class);
+	final static Logger logger = Logger.getLogger(TestAdesao.class);
 	
 	private static WebDriver webDriver;
 	private static MainMenu mainMenu;
@@ -52,7 +52,7 @@ public class TestAdesaoNG {
 	
 	
 	@Test(dataProvider="getData")
-	public void validaDados(int NumeroPropostaPorto) throws Exception {
+	public void validaDados(String NumeroPropostaPorto) throws Exception {
 		
 		ResultSet resultSetProposta = H2sql.returnResultSet
 				("Select * from V_Proposta WHERE numeropropostaporto = "+ NumeroPropostaPorto);
@@ -65,7 +65,7 @@ public class TestAdesaoNG {
 		resultSetSegurado.first();
 		resultSetParcela.first();
 		
-		mainMenu.searchValue(String.valueOf(resultSetProposta.getInt("numeroContrato")));
+		mainMenu.searchValue(resultSetProposta.getString("numeroContrato"));
 		try {
 			searchResults.tapContractTable(resultSetProposta.getString ("numeroContrato"));
 		} catch (Exception e) {
@@ -135,11 +135,11 @@ public class TestAdesaoNG {
 		NumeroContrato = 0;
 		
 		file = new FileGenerator();
-		importacaoArquivo(gerarArquivo());
+		importacaoArquivo("//home/filipe/Downloads/vg1.pro");
 		file = null;
 		
-		String     sqlQuery = "SELECT NumeroPropostaPorto";
-		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10 ORDER BY NumeroPropostaPorto ";
+		String     sqlQuery = "SELECT CAST(ORIGEMPROPOSTA,CHAR(2)) + '-' + NumeroPropostaPorto AS PROPOSTA";
+		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
 		ResultSet returnResultSet = H2sql.returnResultSet(sqlQuery);
 	    int colCount = returnResultSet.getMetaData().getColumnCount();
 	    returnResultSet.last();
@@ -176,7 +176,7 @@ public class TestAdesaoNG {
 		
 		logger.info("Dados importados");
 		createTables.add("ALTER TABLE ADESAO add OrigemProposta int;");
-		createTables.add("ALTER TABLE ADESAO add NumeroPropostaPorto int;");
+		createTables.add("ALTER TABLE ADESAO add NumeroPropostaPorto char(8);");
 		createTables.add("ALTER TABLE ADESAO add NumeroContrato int;");
 		createTables.add("ALTER TABLE ADESAO add TipoRegistro int;");
 		createTables.add("CREATE VIEW V_Proposta AS \r\n" + 
@@ -231,7 +231,7 @@ public class TestAdesaoNG {
 				"FROM ADESAO \r\n where Tiporegistro = 20;");
 		createTables.add("delete from adesao  where SUBSTRING(DATA, 1, 2) = '00' OR SUBSTRING(DATA, 1, 2) = '99'");
 		createTables.add("update adesao set ORIGEMPROPOSTA =cast( SUBSTRING(DATA, 10, 2) as int), " +
-						 "NUMEROPROPOSTAPORTO  =cast(SUBSTRING(DATA, 12, 8) as int), " + 
+						 "NUMEROPROPOSTAPORTO  = SUBSTRING(DATA, 12, 8), " + 
 						 "NUMEROCONTRATO = cast(SUBSTRING(DATA, 20, 14) as int), " +
 						 "TipoRegistro = cast(SUBSTRING(DATA, 1, 2) as int)");
 		createTables.add("CREATE TABLE ADESAOPARCELAS AS SELECT * FROM ADESAO where TipoRegistro = 30");

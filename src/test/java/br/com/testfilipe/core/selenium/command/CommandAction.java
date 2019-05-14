@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
 
 
-public abstract class CommandAction {
+public abstract class CommandAction{
 
 	final static Logger logger = Logger.getLogger(CommandAction.class);
 
@@ -71,7 +71,7 @@ public abstract class CommandAction {
 		try {
 			webElement.sendKeys(value);
 			logger.debug("Object: '" + webElement.toString() + "' filled: '" + value + "'");
-			Reporter.log(" and input: '" + value + "'.");
+			Reporter.log(" and input: '" + value + "'.\r\n");
 
 		} catch (TimeoutException e) {
 			msgError = " TimeOut exception after " + TIME_OUT + " seconds, object: '" + webElement.toString()
@@ -98,7 +98,7 @@ public abstract class CommandAction {
 			Select dropdown= new Select(webElement);
 			dropdown.selectByVisibleText(value);
 			logger.debug("Object: '" + webElement.toString() + "' selected: '" + value + "'");
-			Reporter.log(" and selected: '" + value + "'. ");
+			Reporter.log(" and selected: '" + value + "'.\r\n");
 		} catch (TimeoutException e) {
 			msgError = " TimeOut exception after " + TIME_OUT + " seconds, object: '" + webElement.toString()
 					+ "' not filled with '" + value + "'";
@@ -158,8 +158,8 @@ public abstract class CommandAction {
 				webElement.sendKeys(key);
 			}
 			
-			Reporter.log( webElement != null ? "Object: '" + webElement.toString() + "' " : "" 
-						  + "pressed key'" + keyPress  + "'");	
+			Reporter.log( (webElement != null ? "Object: '" + webElement.toString() + "' " :  
+						   "pressed key'" + keyPress  + "'") + "\r\n");	
 		} catch (Exception e) {
 			logger.error( webElement != null ? "Object: '" + webElement.toString() + "' " : "" 
 						  + "not pressed key'" + keyPress  + "'",e);	
@@ -179,7 +179,7 @@ public abstract class CommandAction {
 			webElement.click();
 			//webDriver.switchTo().window(webDriver.getWindowHandle());
 			logger.debug("Object: '" + webElement.toString() + "' click action");
-			Reporter.log(" and clicked .");
+			Reporter.log(" and clicked .\r\n");
 		} catch (Exception e) {
 			msgError = "Object: '" + webElement.toString() + "' cannot click action";
 			logger.fatal(msgError, e);

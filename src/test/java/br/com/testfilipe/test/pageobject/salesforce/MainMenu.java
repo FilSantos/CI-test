@@ -34,7 +34,7 @@ public class MainMenu extends BaseWebPage{
 	 */
 	public void searchValue(String search) throws Exception {
 		WebElement searchTextbox = searchElement.findElementBy(SEARCH_TEXTBOX, "Caixa de Pesquisa");
-		searchTextbox.sendKeys(search);
+		command.send(searchTextbox, search);
 		
 		WebElement searchButton = searchElement.findElementBy(SEARCH_BUTTON, "Caixa de Pesquisa");
 		command.click(searchButton);

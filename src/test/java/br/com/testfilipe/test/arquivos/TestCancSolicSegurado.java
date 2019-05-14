@@ -1,14 +1,13 @@
 package br.com.testfilipe.test.arquivos;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
 import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import br.com.testfilipe.core.utils.StringFormat;
 
 
@@ -23,7 +22,7 @@ public class TestCancSolicSegurado {
 		
 	}
 	
-	@AfterClass
+	@AfterMethod
 	public static void tearDown() {
 		//webDriver.close();
 		
