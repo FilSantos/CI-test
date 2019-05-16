@@ -16,9 +16,7 @@ public class SalesForceUtil {
 	private static String oAuth = null;
 	private static String instanceURL = null;
 	
-	private static HashMap<String, String> oAuthResult = new HashMap<String, String>();
-	
-	private static void getAuth(){
+	public static void startAuth(){
 
 		if (oAuth== null) {
 			HashMap<String, String> param = new HashMap<String, String>();
@@ -44,7 +42,7 @@ public class SalesForceUtil {
 	}
 	
 	public static String getQuery(String query) {
-		getAuth();
+		startAuth();
 		Response response = RestAssured.given()
                 .header("Authorization", oAuth)
                 .queryParam("q", query)
@@ -54,11 +52,24 @@ public class SalesForceUtil {
                 .extract()
                 .response();
 
-		Assert.assertEquals(200, response.getStatusCode(), "Resposta da Query");
+		Assert.assertEquals(200, response.getStatusCode(), "Resposta da pesquisa");
 		return response.body().asString();
 	}
 	
-	
+	public static String getObject(String query) {
+		startAuth();
+		Response response = RestAssured.given()
+                .header("Authorization", oAuth)
+                .queryParam("q", query)
+                .when()
+                .get(instanceURL + "/services/data/v45.0/sobjects/")
+                .then()
+                .extract()
+                .response();
+
+		Assert.assertEquals(200, response.getStatusCode(), "Resposta do Objeto");
+		return response.body().asString();
+	}
 	
 	
 }

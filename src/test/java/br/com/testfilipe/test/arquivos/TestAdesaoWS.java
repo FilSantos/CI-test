@@ -1,12 +1,19 @@
 package br.com.testfilipe.test.arquivos;
 
+import static org.testng.Assert.fail;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
@@ -33,12 +40,105 @@ public class TestAdesaoWS {
 		resultSetProposta.first();
 		resultSetSegurado.first();
 		resultSetParcela.first();
-	
-		String queryUri = "SELECT AccountId,Id,Proposta__c FROM Contract WHERE NumeroProposta__c = '%s' AND Origem__c = '%s'";
-		String Query = SalesForceUtil.getQuery(String.format(queryUri, 
-												resultSetProposta.getString("NumeroPropostaPorto"),
-												resultSetProposta.getString("OrigemProposta")));
-		System.out.println(Query);
+
+		Reporter.log("Verificando dados no SalesForce - Objeto: Contrato");
+		String queryUri = "SELECT AccountId,Id FROM Quote WHERE Name = '%s-%s'";
+		String retorno = SalesForceUtil.getQuery(String.format(queryUri, 
+												resultSetProposta.getString("OrigemProposta"),
+												resultSetProposta.getString("NumeroPropostaPorto")));
+		
+		JSONParser parser = new JSONParser();
+		JSONObject search = (JSONObject) parser.parse(retorno);
+		
+		if ((long) search.get("totalSize") ==  (long) 0 ) {
+			Assert.fail("Proposta não encontrada no salesforce (Quote)");
+		}else if ((long) search.get("totalSize") !=  (long) 1 ) {
+			Assert.fail("Existe mais de um registro com essa chave no Quote");
+		}
+
+		JSONArray searchArray = (JSONArray) search.get("records"); 
+		search = (JSONObject) searchArray.get(0);
+		
+		String quoteId = (String) search.get("Id");
+		String accountId = (String) search.get("AccountId");
+
+		queryUri = "SELECT Id FROM Contract WHERE Proposta__c = '%s'";
+		retorno = SalesForceUtil.getQuery(String.format(queryUri, quoteId));
+		parser = new JSONParser();
+		search = (JSONObject) parser.parse(retorno);
+		
+		if ((long) search.get("totalSize") ==  (long) 0 ) {
+			Assert.fail("Proposta não encontrada no salesforce (Contract)");
+		}else if ((long) search.get("totalSize") !=  (long) 1 ) {
+			Assert.fail("Existe mais de um registro com essa chave no Contract");
+		}
+		searchArray = (JSONArray) search.get("records"); 
+		search = (JSONObject) searchArray.get(0);
+		String contractId = (String) search.get("Id");
+
+
+		Thread account = new Thread("AccountId - " + accountId) {
+			public void run(){
+				// /services/data/v45.0/sobjects/Account/{ID}
+				Reporter.log("Validando Conta do Cliente");
+				SalesForceUtil.getObject("Account/" + accountId);
+				
+				
+			}
+		};
+		
+
+		Thread quote = new Thread("Quote - " + quoteId) {
+			public void run(){
+			//	 /services/data/v45.0/sobjects/Quote/{ID}
+				Reporter.log("Validando Proposta");
+				SalesForceUtil.getObject("Quote/" + quoteId);
+				
+			}
+		};
+		
+		Thread contract = new Thread("Contract - " + contractId) {
+			public void run(){
+			//	/services/data/v45.0/sobjects/Contract/{ID}
+				Reporter.log("Validando Contrato");
+				String retorno = SalesForceUtil.getObject("Contract/" + contractId);
+				JSONParser parser = new JSONParser();
+				try {
+					JSONObject search = (JSONObject) parser.parse(retorno);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("");
+				
+				String mensagemCritica = null;
+				compararvalor(esperado, retornado, Descricao);
+				
+				if (mensagemCritica!= null) {
+					assert.fail(mensagemCritica);
+				}
+				
+				
+				
+			}
+		};
+		
+		
+		
+
+		
+	    
+		Thread validacaoThread[] = new Thread[3];
+		validacaoThread[0] = contract;
+		validacaoThread[1] = account;
+		validacaoThread[2] = quote;
+		
+		for (int j = 0; j < validacaoThread.length; j++) {
+			validacaoThread[j].start();
+		}
+		for (int j = 0; j < validacaoThread.length; j++) {
+			validacaoThread[j].join(); 
+		}
 		
 		
 		
@@ -78,12 +178,24 @@ public class TestAdesaoWS {
 		**/
 	}
 	
+	private void compararvalor(Object esperado , Object retornado, String descricao) {
+		
+		if(!esperado.equals(retornado) ) {
+			mensagemCritica = mensagemCritica + descricao + ";";
+		}
+
+		
+		
+	}
+	
+	
 	@BeforeSuite
 	public static void initiate() throws Exception {
 		
 		PropertyConfigurator.configure(LogConstants.PROPERTIES);
 		
 		H2sql.openConnection();
+		SalesForceUtil.startAuth();
 	}
 	
 	@AfterSuite
