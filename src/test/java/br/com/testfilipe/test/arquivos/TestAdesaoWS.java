@@ -196,7 +196,7 @@ public class TestAdesaoWS {
 	@DataProvider
 	public Object[][] getData() throws Exception {
 
-		importacaoArquivo("//home/filipe/Downloads/vg1.pro");
+		importacaoArquivo("C:\\Users/738994/git/CI-test/prodata/Adesao de Seguro13052019153512.pro");
 		
 		String     sqlQuery = "SELECT CAST(ORIGEMPROPOSTA as CHAR(2)) as OrigemProposta , NumeroPropostaPorto";
 		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
