@@ -196,7 +196,12 @@ public class TestAdesaoWS {
 	@DataProvider
 	public Object[][] getData() throws Exception {
 
-		importacaoArquivo("C:\\Users/738994/git/CI-test/prodata/Adesao de Seguro13052019153512.pro");
+		
+		
+		
+		
+		String currentPath = new java.io.File( "." ).getCanonicalPath();
+		importacaoArquivo( currentPath+"\\prodata\\Adesao.pro");
 		
 		String     sqlQuery = "SELECT CAST(ORIGEMPROPOSTA as CHAR(2)) as OrigemProposta , NumeroPropostaPorto";
 		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
@@ -226,8 +231,8 @@ public class TestAdesaoWS {
 		createTables.add("DROP TABLE IF EXISTS ADESAO");
 		createTables.add("DROP TABLE IF EXISTS ADESAOPARCELAS");
 		createTables.add("CREATE TABLE ADESAO (DATA VARCHAR(450)) AS " + 
-						 "SELECT * FROM CSVREAD ('"+ arquivoGerado +"'," +
-						 "'DATA', 'charset=UTF-8 fieldSeparator=|')");
+						 "SELECT * FROM CSVREAD ('" + arquivoGerado  +
+						 "', 'DATA', 'charset=UTF-8 fieldSeparator=|')");
 		
 		for (String table : createTables) {
 			H2sql.executeStatement(table);
