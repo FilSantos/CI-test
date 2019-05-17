@@ -43,14 +43,19 @@ public class SalesForceUtil {
 	
 	public static String getQuery(String query) {
 		startAuth();
-		Response response = RestAssured.given()
-                .header("Authorization", oAuth)
-                .queryParam("q", query)
-                .when()
-                .get(instanceURL + "/services/data/v45.0/query/")
-                .then()
-                .extract()
-                .response();
+		Response response = null;
+		try {
+			response = RestAssured.given()
+	                .header("Authorization", oAuth)
+	                .queryParam("q", query)
+	                .when()
+	                .get(instanceURL + "/services/data/v45.0/query/")
+	                .then()
+	                .extract()
+	                .response();
+		} catch (Exception e) {
+			Assert.fail("Falha ao acessar o SalesForce");
+		}
 
 		Assert.assertEquals(200, response.getStatusCode(), "Resposta da pesquisa");
 		return response.body().asString();
@@ -58,14 +63,19 @@ public class SalesForceUtil {
 	
 	public static String getObject(String query) {
 		startAuth();
-		Response response = RestAssured.given()
-                .header("Authorization", oAuth)
-                .queryParam("q", query)
-                .when()
-                .get(instanceURL + "/services/data/v45.0/sobjects/")
-                .then()
-                .extract()
-                .response();
+		Response response = null;
+		try {
+			response = RestAssured.given()
+	                .header("Authorization", oAuth)
+	                .queryParam("q", query)
+	                .when()
+	                .get(instanceURL + "/services/data/v45.0/sobjects/")
+	                .then()
+	                .extract()
+	                .response();
+		} catch (Exception e) {
+			Assert.fail("Falha ao acessar o SalesForce");
+		}
 
 		Assert.assertEquals(200, response.getStatusCode(), "Resposta do Objeto");
 		return response.body().asString();

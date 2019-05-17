@@ -23,7 +23,7 @@ import br.com.testfilipe.test.utils.SalesForceUtil;
 public class TestAdesaoWS {
 
 	final static Logger logger = Logger.getLogger(TestAdesaoWS.class);
-	private static String mensagemCritica = null;
+	private static String mensagemCritica = "";
 	
 	@Test(dataProvider="getData")
 	public void validaDados(String OrigemProposta, String NumeroPropostaPorto) throws Exception {
@@ -127,44 +127,11 @@ public class TestAdesaoWS {
 			validacaoThread[j].join(); 
 		}
 		
-		if (mensagemCritica!= null) {
+		if (mensagemCritica!= "") {
 			Assert.fail(mensagemCritica);
 		}
 		
-		
-		/**
-		mainMenu.searchValue(resultSetProposta.getString("numeroContrato"));
-		try {
-			searchResults.tapContractTable(resultSetProposta.getString ("numeroContrato"));
-		} catch (Exception e) {
-		Assert.fail("Contrato não localizado");
-		}
 	
-		Assert.assertEquals(contrato.getProposal(), resultSetProposta.getString("numeroProposta"), "Proposta");
-		Assert.assertEquals(contrato.getInitialValidity(), resultSetProposta.getString("datainíciovigênciaseguro"),"Inicio Vigencia");
-		Assert.assertEquals(contrato.getFinalValidity(),resultSetProposta.getString("datafinalvigênciaseguro"),"Final Vigencia");
-		Assert.assertEquals(contrato.getIDPartner(), resultSetParcela.getString("IDContratoParceiro"), "ID contrato Parceiro");
-		contrato.tapContactorsNumber();
-		Assert.assertEquals(contratantes.getQuantityParcel(),resultSetProposta.getString("Quantidade Parcelas"));
-		Assert.assertEquals(contratantes.getMatchFirstParcel(), resultSetParcela.getString("Vencimento primeira parcela"));
-		Assert.assertEquals(contratantes.getParcelAward(),resultSetParcela.getString("Prêmio da parcela"));
-		contratantes.tapAccount();
-		Assert.assertEquals(conta.getAccountName(), resultSetSegurado.getString("Nome da Conta"));
-		Assert.assertEquals(conta.getSex(),resultSetSegurado.getString("Sexo"));
-		Assert.assertEquals(conta.getDateOfBirth(), resultSetSegurado.getString("Data de Nascimento"));
-		Assert.assertEquals(conta.getCPF(), resultSetSegurado.getString("CPF"));
-		Assert.assertEquals(conta.getMaritalStatus(), resultSetSegurado.getString("Estado civil"));
-		Assert.assertEquals(conta.getCellphoneNumber(), resultSetSegurado.getString("Celular"));
-		Assert.assertEquals(conta.getCommercialNumber(), resultSetSegurado.getString("Número comercial"));
-		Assert.assertEquals(conta.getPhoneNumber(), resultSetSegurado.getString("Telefone residencial"));
-		conta.tapEditAdress();
-		Assert.assertEquals(contaseguradoendereco.getCEP(), resultSetSegurado.getString("CEP"));
-		Assert.assertEquals(contaseguradoendereco.getStreet(), resultSetSegurado.getString("Logradouro"));
-		Assert.assertEquals(contaseguradoendereco.getComplement(), resultSetSegurado.getString("Complemento"));
-		Assert.assertEquals(contaseguradoendereco.getDistrict(), resultSetSegurado.getString("Bairro"));
-		Assert.assertEquals(contaseguradoendereco.getCity(), resultSetSegurado.getString("Cidade"));
-		Assert.assertEquals(contaseguradoendereco.getState(), resultSetSegurado.getString("Estado"));
-		**/
 	}
 	
 	private void compararvalor(Object esperado , Object retornado, String descricao) {
@@ -189,7 +156,7 @@ public class TestAdesaoWS {
 	
 	@BeforeTest
 	public static void startTest() {
-		 mensagemCritica = null;
+		 mensagemCritica = "";
 	}
 	
 	
