@@ -101,7 +101,7 @@ public class TestAdesaoWS {
 						compararvalor(resultSetProposta.getString("NUMEROPROPOSTAPORTO"), (String) returnData.get("NumeroProposta__c"), "Numero da Proposta");
 						compararvalor(resultSetProposta.getString("QTDETOTALPARCELAS"), (String) returnData.get("QuantidadeParcelas__c"), "Qtde Parcelas");
 						compararvalor(resultSetProposta.getString("IDENTSEGURADOPARCEIRO"), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
-						 
+																													 
 					} catch (Exception e) {
 						logger.error(e);
 						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
