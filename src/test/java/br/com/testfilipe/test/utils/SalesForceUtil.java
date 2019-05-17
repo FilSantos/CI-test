@@ -69,7 +69,7 @@ public class SalesForceUtil {
 	                .header("Authorization", oAuth)
 	                .queryParam("q", query)
 	                .when()
-	                .get(instanceURL + "/services/data/v45.0/sobjects/")
+	                .get(instanceURL + "/services/data/v45.0/sobjects/" + query)
 	                .then()
 	                .extract()
 	                .response();
