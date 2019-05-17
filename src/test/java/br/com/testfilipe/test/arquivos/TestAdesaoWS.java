@@ -86,19 +86,28 @@ public class TestAdesaoWS {
 		
 
 		Thread quote = new Thread("Quote - " + quoteId) {
-			public void run(){
+			public void run() {
 			//	 /services/data/v45.0/sobjects/Quote/{ID}
 				Reporter.log("Validando Proposta");
-				try {
 					String quote = SalesForceUtil.getObject("Quote/" + quoteId);
 					JSONParser parser = new JSONParser();
-					JSONObject returnData = (JSONObject) parser.parse(quote);
-					String numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
-					compararvalor(numeroContrato, (String) returnData.get("Name"), "Numero do Contrato");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					JSONObject returnData =null;
+					String numeroContrato = null;
+					try{
+						returnData = (JSONObject) parser.parse(quote);
+						numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
+						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
+						compararvalor(resultSetProposta.getString("ORIGEMPROPOSTA"), (String) returnData.get("Origem__c"), "Origem da Proposta");
+						compararvalor(resultSetProposta.getString("NUMEROPROPOSTAPORTO"), (String) returnData.get("NumeroProposta__c"), "Numero da Proposta");
+						compararvalor(resultSetProposta.getString("QTDETOTALPARCELAS"), (String) returnData.get("QuantidadeParcelas__c"), "Qtde Parcelas");
+						compararvalor(resultSetProposta.getString("IDENTSEGURADOPARCEIRO"), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
+						 
+					} catch (Exception e) {
+						logger.error(e);
+						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
+					}
+
+
 					
 				
 
