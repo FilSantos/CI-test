@@ -1,7 +1,5 @@
 package br.com.testfilipe.test.arquivos;
 
-import static org.testng.Assert.fail;
-
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +9,10 @@ import org.apache.log4j.PropertyConfigurator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.Reporter;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -26,6 +23,7 @@ import br.com.testfilipe.test.utils.SalesForceUtil;
 public class TestAdesaoWS {
 
 	final static Logger logger = Logger.getLogger(TestAdesaoWS.class);
+	private static String mensagemCritica = null;
 	
 	@Test(dataProvider="getData")
 	public void validaDados(String OrigemProposta, String NumeroPropostaPorto) throws Exception {
@@ -83,7 +81,6 @@ public class TestAdesaoWS {
 				Reporter.log("Validando Conta do Cliente");
 				SalesForceUtil.getObject("Account/" + accountId);
 				
-				
 			}
 		};
 		
@@ -92,7 +89,20 @@ public class TestAdesaoWS {
 			public void run(){
 			//	 /services/data/v45.0/sobjects/Quote/{ID}
 				Reporter.log("Validando Proposta");
-				SalesForceUtil.getObject("Quote/" + quoteId);
+				try {
+					String quote = SalesForceUtil.getObject("Quote/" + quoteId);
+					JSONParser parser = new JSONParser();
+					JSONObject returnData = (JSONObject) parser.parse(quote);
+					String numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
+					compararvalor(numeroContrato, (String) returnData.get("Name"), "Numero do Contrato");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					
+				
+
+				
 				
 			}
 		};
@@ -101,33 +111,10 @@ public class TestAdesaoWS {
 			public void run(){
 			//	/services/data/v45.0/sobjects/Contract/{ID}
 				Reporter.log("Validando Contrato");
-				String retorno = SalesForceUtil.getObject("Contract/" + contractId);
-				JSONParser parser = new JSONParser();
-				try {
-					JSONObject search = (JSONObject) parser.parse(retorno);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("");
-				
-				String mensagemCritica = null;
-				compararvalor(esperado, retornado, Descricao);
-				
-				if (mensagemCritica!= null) {
-					assert.fail(mensagemCritica);
-				}
-				
-				
 				
 			}
 		};
 		
-		
-		
-
-		
-	    
 		Thread validacaoThread[] = new Thread[3];
 		validacaoThread[0] = contract;
 		validacaoThread[1] = account;
@@ -140,7 +127,9 @@ public class TestAdesaoWS {
 			validacaoThread[j].join(); 
 		}
 		
-		
+		if (mensagemCritica!= null) {
+			Assert.fail(mensagemCritica);
+		}
 		
 		
 		/**
@@ -198,10 +187,11 @@ public class TestAdesaoWS {
 		SalesForceUtil.startAuth();
 	}
 	
-	@AfterSuite
-	public static void tearDown() {
-
+	@BeforeTest
+	public static void startTest() {
+		 mensagemCritica = null;
 	}
+	
 	
 	@DataProvider
 	public Object[][] getData() throws Exception {
