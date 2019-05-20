@@ -86,15 +86,15 @@ public class TestAdesaoWS {
 			public void run(){
 				// /services/data/v45.0/sobjects/Account/{ID}
 				Reporter.log("Validando Conta do Cliente");
-				SalesForceUtil.getObject("Account/" + accountId);
+				String account = SalesForceUtil.getObject("Account/" + accountId);
 				JSONParser parser = new JSONParser();
 				JSONObject returnData = null;
 				String numeroContrato = null;
 				try{
-					returnData = (JSONObject) parser.parse(accountId);
+					returnData = (JSONObject) parser.parse(account);
 					numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
 					compararvalor(numeroContrato, (String) returnData.get("Name"), "AccountId");
-					compararvalor(resultSetProposta.getString("NAME"), (String) returnData.get("Name"), "Nome da conta");
+					compararvalor(resultSetSegurado.getString("NomeSegurado"), (String) returnData.get("Name"), "Nome da conta");
 					compararvalor(resultSetProposta.getString("CPF"), (String) returnData.get("Cpf__c"), "CPF");
 					compararvalor(resultSetProposta.getString("PERSONBIRTHDATE"), (String) returnData.get("PersonBirthdate"), "Data de nascimento");
 					compararvalor(resultSetProposta.getString("SEXO"), (String) returnData.get("Sexo__c"), "Sexo");
@@ -133,7 +133,7 @@ public class TestAdesaoWS {
 						compararvalor(resultSetProposta.getString("NUMEROPROPOSTAPORTO"), (String) returnData.get("NumeroProposta__c"), "Numero da Proposta");
 						compararvalor(resultSetProposta.getString("QTDETOTALPARCELAS"), (String) returnData.get("QuantidadeParcelas__c"), "Qtde Parcelas");
 						compararvalor(resultSetProposta.getString("IDENTSEGURADOPARCEIRO"), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
-						compararvalor(resultSetProposta.getString("ENTRADANEGOCIO"), (String) returnData.get("EntradaNegocio__c"), "Entrada Negócio");
+						compararvalor(resultSetProposta.getString("Filial"), (String) returnData.get("EntradaNegocio__c"), "Entrada Negócio");
 						compararvalor(resultSetProposta.getString("DATAINICIODAVIGENCIA"), (String) returnData.get("VigenciaInicial__c"), "Data Ini. Vigência");
 						compararvalor(resultSetProposta.getString("DATAFINALDAVIGENCIA"), (String) returnData.get("VigenciaFinal__c"), "Data Final Vigência");	
 					
@@ -156,7 +156,7 @@ public class TestAdesaoWS {
 						returnData = (JSONObject) parser.parse(contract);
 						numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
 						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
-						compararvalor(resultSetProposta.getString("NUMERODOCONTRATO"), (String) returnData.get("ContractNumber"), "Número do Contrato");
+						compararvalor(resultSetProposta.getString("NUMEROCONTRATO"), (String) returnData.get("ContractNumber"), "Número do Contrato");
 										
 					} catch (Exception e) {
 						logger.error(e);
