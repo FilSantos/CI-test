@@ -181,8 +181,8 @@ public class TestAdesaoWS {
 	
 	private void compararvalor(Object esperado , Object retornado, String descricao) {
 		
-		if (esperado ==  null | retornado == null) {
-			mensagemCritica = mensagemCritica + descricao + ";";
+		if ( retornado == null) {
+			retornado ="";
 		}
 		
 		if(!esperado.equals(retornado) ) {
