@@ -96,7 +96,7 @@ public class TestAdesaoWS {
 					compararvalor(resultSetSegurado.getString("NumeroFone2"), (String) returnData.get("PersonHomePhone"), "Telefone");
 					compararvalor(resultSetSegurado.getString("Email"), (String) returnData.get("PersonEmail"), "E-mail");
 					compararvalor(resultSetSegurado.getString("CodigoProfissao"), (String) returnData.get("Profissao__c"), "Profissão");
-					compararvalor(resultSetSegurado.getString("ValorRendaMensal"), (String) returnData.get("Renda__c"), "Renda");
+					compararvalor(resultSetSegurado.getString("ValorRendaMensal"), String.valueOf((Double) returnData.get("Renda__c")), "Renda");
 					compararvalor(resultSetSegurado.getString("EnderecoSegurado"), (String) returnData.get("BillingStreet"), "Rua");
 					compararvalor(resultSetSegurado.getString("CEP"), (String) returnData.get("BillingPostalCode"), "CEP");
 					compararvalor(resultSetSegurado.getString("Cidade"), (String) returnData.get("BillingCity"), "Cidade");
@@ -180,6 +180,10 @@ public class TestAdesaoWS {
 	}
 	
 	private void compararvalor(Object esperado , Object retornado, String descricao) {
+		
+		if (esperado ==  null | retornado == null) {
+			mensagemCritica = mensagemCritica + descricao + ";";
+		}
 		
 		if(!esperado.equals(retornado) ) {
 			mensagemCritica = mensagemCritica + descricao + ";";
