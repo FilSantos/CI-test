@@ -1,12 +1,5 @@
 package br.com.testfilipe.test.arquivos;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.Test;
-
-import com.google.gson.JsonObject;
-
-import org.testng.annotations.Test;
-import org.testng.annotations.Test;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,6 +132,7 @@ public class TestAdesaoWS {
 					
 					} catch (Exception e) {
 						logger.error(e);
+						mensagemCritica = mensagemCritica + e.getLocalizedMessage() + ";";
 						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
 					}
 			}
@@ -160,6 +154,7 @@ public class TestAdesaoWS {
 										
 					} catch (Exception e) {
 						logger.error(e);
+						mensagemCritica = mensagemCritica + e.getLocalizedMessage() + ";";
 						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
 					}
 			}
