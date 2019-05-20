@@ -1,5 +1,12 @@
 package br.com.testfilipe.test.arquivos;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.Test;
+
+import com.google.gson.JsonObject;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.Test;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,18 +87,43 @@ public class TestAdesaoWS {
 				// /services/data/v45.0/sobjects/Account/{ID}
 				Reporter.log("Validando Conta do Cliente");
 				SalesForceUtil.getObject("Account/" + accountId);
+				JSONParser parser = new JSONParser();
+				JSONObject returnData = null;
+				String numeroContrato = null;
+				try{
+					returnData = (JSONObject) parser.parse(accountId);
+					numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
+					compararvalor(numeroContrato, (String) returnData.get("Name"), "AccountId");
+					compararvalor(resultSetProposta.getString("NAME"), (String) returnData.get("Name"), "Nome da conta");
+					compararvalor(resultSetProposta.getString("CPF"), (String) returnData.get("Cpf__c"), "CPF");
+					compararvalor(resultSetProposta.getString("PERSONBIRTHDATE"), (String) returnData.get("PersonBirthdate"), "Data de nascimento");
+					compararvalor(resultSetProposta.getString("SEXO"), (String) returnData.get("Sexo__c"), "Sexo");
+					compararvalor(resultSetProposta.getString("ESTADOCIVIL"), (String) returnData.get("EstadoCivil__c"), "Estado Civil");
+					compararvalor(resultSetProposta.getString("CELULAR"), (String) returnData.get("PersonMobilePhone"), "Celular");
+					compararvalor(resultSetProposta.getString("TELEFONERESIDENCIAL"), (String) returnData.get("Phone"), "Telefone");
+					compararvalor(resultSetProposta.getString("E-MAIL"), (String) returnData.get("PersonEmail"), "E-mail");
+					compararvalor(resultSetProposta.getString("PROFISSÃO"), (String) returnData.get("Profissao__c"), "Profissão");
+					compararvalor(resultSetProposta.getString("RENDA"), (String) returnData.get("Renda__c"), "Renda");
+					compararvalor(resultSetProposta.getString("RUADEENTREGA"), (String) returnData.get("BillingStreet"), "Rua");
+					compararvalor(resultSetProposta.getString("CODIGOPOSTAL"), (String) returnData.get("BillingPostalCode"), "CEP");
+					compararvalor(resultSetProposta.getString("CIDADE"), (String) returnData.get("BillingCity"), "Cidade");
+					compararvalor(resultSetProposta.getString("ESTADO"), (String) returnData.get("BillingState"), "Estado");					
+					
+				} catch (Exception e) {
+					logger.error(e);
+					Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
+				}
 				
 			}
 		};
 		
-
 		Thread quote = new Thread("Quote - " + quoteId) {
 			public void run() {
 			//	 /services/data/v45.0/sobjects/Quote/{ID}
 				Reporter.log("Validando Proposta");
 					String quote = SalesForceUtil.getObject("Quote/" + quoteId);
 					JSONParser parser = new JSONParser();
-					JSONObject returnData =null;
+					JSONObject returnData = null;
 					String numeroContrato = null;
 					try{
 						returnData = (JSONObject) parser.parse(quote);
@@ -101,18 +133,14 @@ public class TestAdesaoWS {
 						compararvalor(resultSetProposta.getString("NUMEROPROPOSTAPORTO"), (String) returnData.get("NumeroProposta__c"), "Numero da Proposta");
 						compararvalor(resultSetProposta.getString("QTDETOTALPARCELAS"), (String) returnData.get("QuantidadeParcelas__c"), "Qtde Parcelas");
 						compararvalor(resultSetProposta.getString("IDENTSEGURADOPARCEIRO"), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
-																													 
+						compararvalor(resultSetProposta.getString("ENTRADANEGOCIO"), (String) returnData.get("EntradaNegocio__c"), "Entrada Negócio");
+						compararvalor(resultSetProposta.getString("DATAINICIODAVIGENCIA"), (String) returnData.get("VigenciaInicial__c"), "Data Ini. Vigência");
+						compararvalor(resultSetProposta.getString("DATAFINALDAVIGENCIA"), (String) returnData.get("VigenciaFinal__c"), "Data Final Vigência");	
+					
 					} catch (Exception e) {
 						logger.error(e);
 						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
 					}
-
-
-					
-				
-
-				
-				
 			}
 		};
 		
@@ -120,7 +148,20 @@ public class TestAdesaoWS {
 			public void run(){
 			//	/services/data/v45.0/sobjects/Contract/{ID}
 				Reporter.log("Validando Contrato");
-				
+					String contract = SalesForceUtil.getObject("Contract/" + contractId);
+					JSONParser parser = new JSONParser();
+					JSONObject returnData = null;
+					String numeroContrato = null;
+					try{
+						returnData = (JSONObject) parser.parse(contract);
+						numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
+						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
+						compararvalor(resultSetProposta.getString("NUMERODOCONTRATO"), (String) returnData.get("ContractNumber"), "Número do Contrato");
+										
+					} catch (Exception e) {
+						logger.error(e);
+						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
+					}
 			}
 		};
 		
