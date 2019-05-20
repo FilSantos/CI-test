@@ -85,22 +85,22 @@ public class TestAdesaoWS {
 				String numeroContrato = null;
 				try{
 					returnData = (JSONObject) parser.parse(account);
-					numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
+					numeroContrato = resultSetSegurado.getString("OrigemProposta") + "-" + resultSetSegurado.getString("NumeroPropostaPorto");
 					compararvalor(numeroContrato, (String) returnData.get("Name"), "AccountId");
 					compararvalor(resultSetSegurado.getString("NomeSegurado"), (String) returnData.get("Name"), "Nome da conta");
-					compararvalor(resultSetProposta.getString("CPF"), (String) returnData.get("Cpf__c"), "CPF");
-					compararvalor(resultSetProposta.getString("PERSONBIRTHDATE"), (String) returnData.get("PersonBirthdate"), "Data de nascimento");
-					compararvalor(resultSetProposta.getString("SEXO"), (String) returnData.get("Sexo__c"), "Sexo");
-					compararvalor(resultSetProposta.getString("ESTADOCIVIL"), (String) returnData.get("EstadoCivil__c"), "Estado Civil");
-					compararvalor(resultSetProposta.getString("CELULAR"), (String) returnData.get("PersonMobilePhone"), "Celular");
-					compararvalor(resultSetProposta.getString("TELEFONERESIDENCIAL"), (String) returnData.get("Phone"), "Telefone");
-					compararvalor(resultSetProposta.getString("E-MAIL"), (String) returnData.get("PersonEmail"), "E-mail");
-					compararvalor(resultSetProposta.getString("PROFISSÃO"), (String) returnData.get("Profissao__c"), "Profissão");
-					compararvalor(resultSetProposta.getString("RENDA"), (String) returnData.get("Renda__c"), "Renda");
-					compararvalor(resultSetProposta.getString("RUADEENTREGA"), (String) returnData.get("BillingStreet"), "Rua");
-					compararvalor(resultSetProposta.getString("CODIGOPOSTAL"), (String) returnData.get("BillingPostalCode"), "CEP");
-					compararvalor(resultSetProposta.getString("CIDADE"), (String) returnData.get("BillingCity"), "Cidade");
-					compararvalor(resultSetProposta.getString("ESTADO"), (String) returnData.get("BillingState"), "Estado");					
+					compararvalor(resultSetSegurado.getString("CPFSegurado"), (String) returnData.get("Cpf__c"), "CPF");
+					compararvalor(resultSetSegurado.getString("DataNascimentoSegurado"), (String) returnData.get("PersonBirthdate"), "Data de nascimento");
+					compararvalor(resultSetSegurado.getString("SexoSegurado"), (String) returnData.get("Sexo__c"), "Sexo");
+					compararvalor(resultSetSegurado.getString("EstadoCivilSegurado"), (String) returnData.get("EstadoCivil__c"), "Estado Civil");
+					compararvalor(resultSetSegurado.getString("NumeroFone1"), (String) returnData.get("PersonMobilePhone"), "Celular");
+					compararvalor(resultSetSegurado.getString("NumeroFone2"), (String) returnData.get("PersonHomePhone"), "Telefone");
+					compararvalor(resultSetSegurado.getString("Email"), (String) returnData.get("PersonEmail"), "E-mail");
+					compararvalor(resultSetSegurado.getString("CodigoProfissao"), (String) returnData.get("Profissao__c"), "Profissão");
+					compararvalor(resultSetSegurado.getString("ValorRendaMensal"), (String) returnData.get("Renda__c"), "Renda");
+					compararvalor(resultSetSegurado.getString("EnderecoSegurado"), (String) returnData.get("BillingStreet"), "Rua");
+					compararvalor(resultSetSegurado.getString("CEP"), (String) returnData.get("BillingPostalCode"), "CEP");
+					compararvalor(resultSetSegurado.getString("Cidade"), (String) returnData.get("BillingCity"), "Cidade");
+					compararvalor(resultSetSegurado.getString("Estado"), (String) returnData.get("BillingState"), "Estado");					
 					
 				} catch (Exception e) {
 					logger.error(e);
@@ -124,11 +124,11 @@ public class TestAdesaoWS {
 						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
 						compararvalor(resultSetProposta.getString("ORIGEMPROPOSTA"), (String) returnData.get("Origem__c"), "Origem da Proposta");
 						compararvalor(resultSetProposta.getString("NUMEROPROPOSTAPORTO"), (String) returnData.get("NumeroProposta__c"), "Numero da Proposta");
-						compararvalor(resultSetProposta.getString("QTDETOTALPARCELAS"), (String) returnData.get("QuantidadeParcelas__c"), "Qtde Parcelas");
-						compararvalor(resultSetProposta.getString("IDENTSEGURADOPARCEIRO"), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
+						compararvalor(resultSetProposta.getString("QtdeTotalParcelas"), (String) returnData.get("QuantidadeParcelas__c"), "Qtde Parcelas");
+						compararvalor(resultSetProposta.getString("IdentSeguradoParceiro"), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
 						compararvalor(resultSetProposta.getString("Filial"), (String) returnData.get("EntradaNegocio__c"), "Entrada Negócio");
-						compararvalor(resultSetProposta.getString("DATAINICIODAVIGENCIA"), (String) returnData.get("VigenciaInicial__c"), "Data Ini. Vigência");
-						compararvalor(resultSetProposta.getString("DATAFINALDAVIGENCIA"), (String) returnData.get("VigenciaFinal__c"), "Data Final Vigência");	
+						compararvalor(resultSetProposta.getString("DataInícioVigênciaSeguro"), (String) returnData.get("VigenciaInicial__c"), "Data Ini. Vigência");
+						compararvalor(resultSetProposta.getString("DataFinalVigênciaSeguro"), (String) returnData.get("VigenciaFinal__c"), "Data Final Vigência");	
 					
 					} catch (Exception e) {
 						logger.error(e);
@@ -149,8 +149,8 @@ public class TestAdesaoWS {
 					try{
 						returnData = (JSONObject) parser.parse(contract);
 						numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
-						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
-						compararvalor(resultSetProposta.getString("NUMEROCONTRATO"), (String) returnData.get("ContractNumber"), "Número do Contrato");
+//						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
+//						compararvalor(resultSetProposta.getString("NUMEROCONTRATO"), (String) returnData.get("ContractNumber"), "Número do Contrato");
 										
 					} catch (Exception e) {
 						logger.error(e);
