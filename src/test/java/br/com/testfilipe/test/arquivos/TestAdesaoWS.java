@@ -82,25 +82,24 @@ public class TestAdesaoWS {
 				String account = SalesForceUtil.getObject("Account/" + accountId);
 				JSONParser parser = new JSONParser();
 				JSONObject returnData = null;
-				String numeroContrato = null;
+				String contaSegurado = null;
 				try{
 					returnData = (JSONObject) parser.parse(account);
-					numeroContrato = resultSetSegurado.getString("OrigemProposta") + "-" + resultSetSegurado.getString("NumeroPropostaPorto");
-					compararvalor(numeroContrato, (String) returnData.get("Name"), "AccountId");
-					compararvalor(resultSetSegurado.getString("NomeSegurado"), (String) returnData.get("Name"), "Nome da conta");
-					compararvalor(resultSetSegurado.getString("CPFSegurado"), (String) returnData.get("Cpf__c"), "CPF");
-					compararvalor(resultSetSegurado.getString("DataNascimentoSegurado"), (String) returnData.get("PersonBirthdate"), "Data de nascimento");
-					compararvalor(resultSetSegurado.getString("SexoSegurado"), (String) returnData.get("Sexo__c"), "Sexo");
-					compararvalor(resultSetSegurado.getString("EstadoCivilSegurado"), (String) returnData.get("EstadoCivil__c"), "Estado Civil");
-					compararvalor(resultSetSegurado.getString("NumeroFone1"), (String) returnData.get("PersonMobilePhone"), "Celular");
-					compararvalor(resultSetSegurado.getString("NumeroFone2"), (String) returnData.get("PersonHomePhone"), "Telefone");
-					compararvalor(resultSetSegurado.getString("Email"), (String) returnData.get("PersonEmail"), "E-mail");
-					compararvalor(resultSetSegurado.getString("CodigoProfissao"), (String) returnData.get("Profissao__c"), "Profissão");
-					compararvalor(resultSetSegurado.getString("ValorRendaMensal"), String.valueOf((Double) returnData.get("Renda__c")), "Renda");
-					compararvalor(resultSetSegurado.getString("EnderecoSegurado"), (String) returnData.get("BillingStreet"), "Rua");
+					contaSegurado = resultSetSegurado.getString("OrigemProposta") + "-" + resultSetSegurado.getString("NumeroPropostaPorto");
+					compararvalor(resultSetSegurado.getString("NomeSegurado"), (String) returnData.get("Name"), "Nome do Segurado");
+					compararvalor(resultSetSegurado.getString("CPFSegurado"), (String) returnData.get("Cpf__c"), "CPF do Segurado");
+					compararvalor(resultSetSegurado.getString("DataNascimentoSegurado"), (String) returnData.get("PersonBirthdate"), "Data Nascimento Segurado");
+					compararvalor(resultSetSegurado.getString("SexoSegurado"), (String) returnData.get("Sexo__c"), "Sexo Segurado");
+					compararvalor(resultSetSegurado.getString("EstadoCivilSegurado"), (String) returnData.get("EstadoCivil__c"), "Estado Civil Segurado");
+					compararvalor(resultSetSegurado.getString("NumeroFone1"), (String) returnData.get("PersonMobilePhone"), "Numero Fone1");
+					compararvalor(resultSetSegurado.getString("NumeroFone2"), (String) returnData.get("PersonHomePhone"), "Numero Fone2");
+					compararvalor(resultSetSegurado.getString("Email"), (String) returnData.get("PersonEmail"), "Email");
+					compararvalor(resultSetSegurado.getString("CodigoProfissao"), (String) returnData.get("Profissao__c"), "Codigo Profissao");
+					compararvalor(resultSetSegurado.getString("ValorRendaMensal"), String.valueOf((Double) returnData.get("Renda__c")), "Valor Renda Mensal");
+					compararvalor(resultSetSegurado.getString("EnderecoSegurado"), (String) returnData.get("BillingStreet"), "Endereco Segurado");
 					compararvalor(resultSetSegurado.getString("CEP"), (String) returnData.get("BillingPostalCode"), "CEP");
 					compararvalor(resultSetSegurado.getString("Cidade"), (String) returnData.get("BillingCity"), "Cidade");
-					compararvalor(resultSetSegurado.getString("Estado"), (String) returnData.get("BillingState"), "Estado");					
+					compararvalor(resultSetSegurado.getString("Estado"), (String) returnData.get("BillingState"), "Estado");	
 					
 				} catch (Exception e) {
 					logger.error(e);
@@ -217,7 +216,7 @@ public class TestAdesaoWS {
 		
 		
 		String currentPath = new java.io.File( "." ).getCanonicalPath();
-		importacaoArquivo( currentPath+"\\prodata\\Adesao.pro");
+		importacaoArquivo(currentPath+"\\prodata\\Adesao.pro");
 		
 		String     sqlQuery = "SELECT CAST(ORIGEMPROPOSTA as CHAR(2)) as OrigemProposta , NumeroPropostaPorto";
 		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
