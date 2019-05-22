@@ -128,17 +128,12 @@ public class TestAdesaoWS {
 						break;
 					}
 					
-					
-					
-					
 					String phone = "55 (%s) %s-%s";
 					
 					String homePhone = null;
 					String mobilePhone = null;
 					String workPhone = null;
 					String faxPhone = null;
-					
-				
 					
 					switch (resultSetSegurado.getString("TipoFone1")){
 						case "1":
@@ -294,9 +289,9 @@ public class TestAdesaoWS {
 			}
 		};
 		
-		Thread contract = new Thread("Contract - " + contractId) {
+		Thread contract = new Thread("ContratanteContrato__c - " + contractId) {
 			public void run(){
-			//	/services/data/v45.0/sobjects/Contract/{ID}
+			//	/services/data/v45.0/sobjects/ContratanteContrato__c/{ID}
 				Reporter.log("Validando Contrato");
 					String contract = SalesForceUtil.getObject("Contract/" + contractId);
 					JSONParser parser = new JSONParser();
