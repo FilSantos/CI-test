@@ -39,9 +39,7 @@ public class TestWSConsultaLote {
 		JsonPath jsonPath = response.body().jsonPath();
 		oAuth = "Bearer " + jsonPath.get("access_token");
 	}	
-	
-	
-	@Test
+
 	public void getLote()
 	{
 		
