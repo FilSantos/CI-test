@@ -1,7 +1,10 @@
 package br.com.testfilipe.test.arquivos;
 
+import java.io.File;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,6 +19,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.google.common.io.Files;
+
 import br.com.testfilipe.core.database.H2sql;
 import br.com.testfilipe.core.log.LogConstants;
 import br.com.testfilipe.test.utils.SalesForceUtil;
@@ -26,7 +31,7 @@ public class TestAdesaoWS {
 	private static String mensagemCritica = "";
 	
 	@Test(dataProvider="getData")
-	public void validaDados(String OrigemProposta, String NumeroPropostaPorto) throws Exception {
+	public void adesao_Proposta(String OrigemProposta, String NumeroPropostaPorto) throws Exception {
 		
 		ResultSet resultSetProposta = H2sql.returnResultSet
 				("Select * from V_Proposta WHERE numeropropostaporto = "+ NumeroPropostaPorto);
@@ -82,24 +87,74 @@ public class TestAdesaoWS {
 				String account = SalesForceUtil.getObject("Account/" + accountId);
 				JSONParser parser = new JSONParser();
 				JSONObject returnData = null;
-				String contaSegurado = null;
 				try{
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat dateFile = new SimpleDateFormat("dd/MM/yyyy");
+					Date nascto = dateFile.parse(resultSetSegurado.getString("DataNascimentoSegurado"));
+					
 					returnData = (JSONObject) parser.parse(account);
-					contaSegurado = resultSetSegurado.getString("OrigemProposta") + "-" + resultSetSegurado.getString("NumeroPropostaPorto");
-					compararvalor(resultSetSegurado.getString("NomeSegurado"), (String) returnData.get("Name"), "Nome do Segurado");
-					compararvalor(resultSetSegurado.getString("CPFSegurado"), (String) returnData.get("Cpf__c"), "CPF do Segurado");
-					compararvalor(resultSetSegurado.getString("DataNascimentoSegurado"), (String) returnData.get("PersonBirthdate"), "Data Nascimento Segurado");
-					compararvalor(resultSetSegurado.getString("SexoSegurado"), (String) returnData.get("Sexo__c"), "Sexo Segurado");
-					compararvalor(resultSetSegurado.getString("EstadoCivilSegurado"), (String) returnData.get("EstadoCivil__c"), "Estado Civil Segurado");
+					compararvalor(resultSetSegurado.getString("NomeSegurado").trim(), (String) returnData.get("Name"), "Nome do Segurado");
+					compararvalor(resultSetSegurado.getString("CPFSegurado").substring(3), 
+							((String) returnData.get("Cpf__c")).replaceAll("([-])|([.])", ""), "CPF do Segurado");
+					compararvalor(dateFormat.format(nascto), (String) returnData.get("PersonBirthdate"), "Data Nascimento Segurado");
+					String sexoAccount = resultSetSegurado.getString("SexoSegurado").equals("F") ? "FEM" : "MAS";
+					compararvalor(sexoAccount, (String) returnData.get("Sexo__c"), "Sexo Segurado");
+					String estadoCivil= "";
+					
+					switch (resultSetSegurado.getString("EstadoCivilSegurado")) {
+					case "1":
+						estadoCivil = "Solteiro (a)";
+						break;
+					case "2":
+						estadoCivil = "Casado (a)";
+						break;
+					case "4":
+						estadoCivil = "Desquitado (a)";
+						break;
+					case "5":
+						estadoCivil = "Divorciado (a)";
+						break;
+					case "6":
+						estadoCivil = "Separado (a)";
+						break;
+					case "7":
+						estadoCivil = "Viuvo (a)";
+						break;
+					case "8":
+						estadoCivil = "Ignorado (a)";
+						break;
+					default:
+						estadoCivil = "";
+						break;
+					}
+					
+					
+					
+					
+					String phone = "55 (%s) %s-%s";
+					
+					
+					String homePhone = null;
+					String mobilePhone = null;
+					String workPhone = null;
+					
+					
+					compararvalor(estadoCivil, (String) returnData.get("EstadoCivil__c"), "Estado Civil Segurado");
 					compararvalor(resultSetSegurado.getString("NumeroFone1"), (String) returnData.get("PersonMobilePhone"), "Numero Fone1");
 					compararvalor(resultSetSegurado.getString("NumeroFone2"), (String) returnData.get("PersonHomePhone"), "Numero Fone2");
-					compararvalor(resultSetSegurado.getString("Email"), (String) returnData.get("PersonEmail"), "Email");
+					compararvalor(resultSetSegurado.getString("Email").trim(), (String) returnData.get("PersonEmail"), "Email");
 					compararvalor(resultSetSegurado.getString("CodigoProfissao"), (String) returnData.get("Profissao__c"), "Codigo Profissao");
-					compararvalor(resultSetSegurado.getString("ValorRendaMensal"), String.valueOf((Double) returnData.get("Renda__c")), "Valor Renda Mensal");
-					compararvalor(resultSetSegurado.getString("EnderecoSegurado"), (String) returnData.get("BillingStreet"), "Endereco Segurado");
-					compararvalor(resultSetSegurado.getString("CEP"), (String) returnData.get("BillingPostalCode"), "CEP");
-					compararvalor(resultSetSegurado.getString("Cidade"), (String) returnData.get("BillingCity"), "Cidade");
-					compararvalor(resultSetSegurado.getString("Estado"), (String) returnData.get("BillingState"), "Estado");	
+					compararvalor(Double.parseDouble( resultSetSegurado.getString("ValorRendaMensal")), 
+													(Double) returnData.get("Renda__c"), "Valor Renda Mensal");
+					
+					String endereco = resultSetSegurado.getString("EnderecoSegurado").trim() + ", " + 
+										 String.valueOf(Integer.parseInt(resultSetSegurado.getString("NumeroEndereco")));
+					
+					compararvalor(endereco, (String) returnData.get("BillingStreet"), "Endereco Segurado");
+					String cep = resultSetSegurado.getString("CEP") + resultSetSegurado.getString("CEPComplemento");
+					compararvalor(cep, (String) returnData.get("BillingPostalCode"), "CEP");
+					compararvalor(resultSetSegurado.getString("Cidade").trim(), (String) returnData.get("BillingCity"), "Cidade");
+					compararvalor(resultSetSegurado.getString("Estado").trim(), (String) returnData.get("BillingState"), "Estado");	
 					
 				} catch (Exception e) {
 					logger.error(e);
@@ -118,16 +173,24 @@ public class TestAdesaoWS {
 					JSONObject returnData = null;
 					String numeroContrato = null;
 					try{
+						
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+						SimpleDateFormat dateFile = new SimpleDateFormat("dd/MM/yyyy");
+						Date inicio = dateFile.parse(resultSetProposta.getString("DataInícioVigênciaSeguro"));
+						Date fim = dateFile.parse(resultSetProposta.getString("DataFinalVigênciaSeguro"));
+						
 						returnData = (JSONObject) parser.parse(quote);
 						numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
 						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
 						compararvalor(resultSetProposta.getString("ORIGEMPROPOSTA"), (String) returnData.get("Origem__c"), "Origem da Proposta");
 						compararvalor(resultSetProposta.getString("NUMEROPROPOSTAPORTO"), (String) returnData.get("NumeroProposta__c"), "Numero da Proposta");
 						compararvalor(resultSetProposta.getString("QtdeTotalParcelas"), (String) returnData.get("QuantidadeParcelas__c"), "Qtde Parcelas");
-						compararvalor(resultSetProposta.getString("IdentSeguradoParceiro"), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
+						compararvalor(resultSetProposta.getString("IdentSeguradoParceiro").trim(), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
 						compararvalor(resultSetProposta.getString("Filial"), (String) returnData.get("EntradaNegocio__c"), "Entrada Negócio");
-						compararvalor(resultSetProposta.getString("DataInícioVigênciaSeguro"), (String) returnData.get("VigenciaInicial__c"), "Data Ini. Vigência");
-						compararvalor(resultSetProposta.getString("DataFinalVigênciaSeguro"), (String) returnData.get("VigenciaFinal__c"), "Data Final Vigência");	
+						compararvalor(dateFormat.format(inicio), 
+										(String) returnData.get("VigenciaInicial__c"), "Data Ini. Vigência");
+						compararvalor(dateFormat.format(fim),
+										(String) returnData.get("VigenciaFinal__c"), "Data Final Vigência");	
 					
 					} catch (Exception e) {
 						logger.error(e);
@@ -178,7 +241,7 @@ public class TestAdesaoWS {
 	
 	}
 	
-	private void compararvalor(Object esperado , Object retornado, String descricao) {
+	private boolean compararvalor(Object esperado , Object retornado, String descricao) {
 		
 		if ( retornado == null) {
 			retornado ="";
@@ -186,8 +249,9 @@ public class TestAdesaoWS {
 		
 		if(!esperado.equals(retornado) ) {
 			mensagemCritica = mensagemCritica + descricao + ";";
+			return false;
 		}
-
+		return true;
 		
 		
 	}
@@ -216,7 +280,18 @@ public class TestAdesaoWS {
 		
 		
 		String currentPath = new java.io.File( "." ).getCanonicalPath();
-		importacaoArquivo(currentPath+"\\prodata\\Adesao.pro");
+		//importacaoArquivo(currentPath+"\\prodata\\RENNER_PORTO_EP_ADS_00553645_VG01.pro");
+		List<String> arquivos =  new ArrayList<>();
+		//arquivos.add(currentPath+"\\prodata\\RENNER_PORTO_EP_ADS_00553645_VG01.pro");
+		File folder = new File(currentPath+"\\prodata");
+		File[] listOfFiles = folder.listFiles();
+		for (File file : listOfFiles) {
+			if (Files.getFileExtension(file.getAbsolutePath()).toLowerCase().equals("pro") ){
+				arquivos.add(file.getAbsolutePath());
+			}
+		}
+		importacaoArquivo(arquivos);
+		Reporter.log("Arquivo Utilizado:" + currentPath+"\\prodata\\RENNER_PORTO_EP_ADS_00553645_VG01.pro");
 		
 		String     sqlQuery = "SELECT CAST(ORIGEMPROPOSTA as CHAR(2)) as OrigemProposta , NumeroPropostaPorto";
 		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
@@ -237,7 +312,7 @@ public class TestAdesaoWS {
 
 	}
 	
-	private void importacaoArquivo(String arquivoGerado) {
+	private void importacaoArquivo(List<String> arquivoGerado) {
 		logger.info("Dados sendo importados");
 
 		List<String> createTables = new ArrayList<String>();
@@ -245,9 +320,21 @@ public class TestAdesaoWS {
 		createTables.add("DROP VIEW IF EXISTS V_Segurado");
 		createTables.add("DROP TABLE IF EXISTS ADESAO");
 		createTables.add("DROP TABLE IF EXISTS ADESAOPARCELAS");
-		createTables.add("CREATE TABLE ADESAO (DATA VARCHAR(450)) AS " + 
-						 "SELECT * FROM CSVREAD ('" + arquivoGerado  +
+		boolean primeiroCriado = false;
+		for (String arquivo : arquivoGerado) {
+			if (primeiroCriado){
+				createTables.add("INSERT INTO ADESAO (DATA ) " + 
+						 "SELECT * FROM CSVREAD ('" + arquivo  +
 						 "', 'DATA', 'charset=UTF-8 fieldSeparator=|')");
+			}else {
+				createTables.add("CREATE TABLE ADESAO (DATA VARCHAR(450)) AS " + 
+						 "SELECT * FROM CSVREAD ('" + arquivo  +
+						 "', 'DATA', 'charset=UTF-8 fieldSeparator=|')");	
+				primeiroCriado = true;
+			}
+			
+		}
+
 		
 		for (String table : createTables) {
 			H2sql.executeStatement(table);

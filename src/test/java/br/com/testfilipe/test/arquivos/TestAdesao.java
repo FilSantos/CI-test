@@ -14,10 +14,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import br.com.testfilipe.core.database.H2sql;
 import br.com.testfilipe.core.log.LogConstants;
@@ -51,7 +47,7 @@ public class TestAdesao {
 
 	
 	
-	@Test(dataProvider="getData")
+	//@Test(dataProvider="getData")
 	public void validaDados(String NumeroPropostaPorto) throws Exception {
 		
 		ResultSet resultSetProposta = H2sql.returnResultSet
@@ -98,7 +94,6 @@ public class TestAdesao {
 		Assert.assertEquals(contaseguradoendereco.getState(), resultSetSegurado.getString("Estado"));
 	}
 	
-	@BeforeSuite
 	public static void initiate() throws Exception {
 		
 		PropertyConfigurator.configure(LogConstants.PROPERTIES);
@@ -122,12 +117,10 @@ public class TestAdesao {
 		
 	}
 	
-	@AfterSuite
 	public static void tearDown() {
 		webDriver.close();
 	}
 	
-	@DataProvider
 	public Object[][] getData() throws Exception {
 		
 		numeroLinha = 1;
@@ -251,6 +244,7 @@ public class TestAdesao {
 		logger.info("Dados Classificados");
 		
 	}
+	
 private String gerarArquivo() throws IOException {
 		
 		System.out.println("Gerando dados");
