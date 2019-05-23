@@ -83,6 +83,7 @@ public class TestAdesaoWS {
 		Thread account = new Thread("AccountId - " + accountId) {
 			public void run(){
 				// /services/data/v45.0/sobjects/Account/{ID}
+				logger.info("Validando");
 				Reporter.log("Validando Conta do Cliente");
 				String account = SalesForceUtil.getObject("Account/" + accountId);
 				JSONParser parser = new JSONParser();
@@ -97,7 +98,7 @@ public class TestAdesaoWS {
 					compararvalor(resultSetSegurado.getString("CPFSegurado").substring(3), 
 							((String) returnData.get("Cpf__c")).replaceAll("([-])|([.])", ""), "CPF do Segurado");
 					compararvalor(dateFormat.format(nascto), (String) returnData.get("PersonBirthdate"), "Data Nascimento Segurado");
-					String sexoAccount = resultSetSegurado.getString("SexoSegurado").equals("F") ? "FEM" : "MAS";
+					String sexoAccount = resultSetSegurado.getString("SexoSegurado").equals("F") ? "FEM" : "MASC";
 					compararvalor(sexoAccount, (String) returnData.get("Sexo__c"), "Sexo Segurado");
 					String estadoCivil= "";
 					
@@ -130,102 +131,102 @@ public class TestAdesaoWS {
 					
 					String phone = "55 (%s) %s-%s";
 					
-					String homePhone = null;
-					String mobilePhone = null;
-					String workPhone = null;
-					String faxPhone = null;
+					String homePhone = "";
+					String mobilePhone = "";
+					String workPhone = "";
+					String faxPhone = "";
 					
-					switch (resultSetSegurado.getString("TipoFone1")){
-						case "1":
-							homePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-									resultSetSegurado.getString("NumeroFone1").substring(1,4),
-									resultSetSegurado.getString("NumeroFone1").substring(5));
+						switch (resultSetSegurado.getString("TipoFone1")){
+						case "01":
+							homePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(2),
+									resultSetSegurado.getString("NumeroFone1").substring(0,4),
+									resultSetSegurado.getString("NumeroFone1").substring(4));
 							break;
-						case "2":
-							mobilePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-									resultSetSegurado.getString("NumeroFone1").substring(1,4),
-									resultSetSegurado.getString("NumeroFone1").substring(5));
+						case "02":
+							mobilePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(2),
+									resultSetSegurado.getString("NumeroFone1").substring(0,4),
+									resultSetSegurado.getString("NumeroFone1").substring(4));
 							break;
-						case "3":
-							workPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-									resultSetSegurado.getString("NumeroFone1").substring(1,4),
-									resultSetSegurado.getString("NumeroFone1").substring(5));
+						case "03":
+							workPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(2),
+									resultSetSegurado.getString("NumeroFone1").substring(0,4),
+									resultSetSegurado.getString("NumeroFone1").substring(4));
 							break;
-						case "4":
-							faxPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-									resultSetSegurado.getString("NumeroFone1").substring(1,4),
-									resultSetSegurado.getString("NumeroFone1").substring(5));
+						case "04":
+							faxPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(2),
+									resultSetSegurado.getString("NumeroFone1").substring(0,4),
+									resultSetSegurado.getString("NumeroFone1").substring(4));
 							break;
 					}
 					
 					
-					switch (resultSetSegurado.getString("TipoFone2")){
-						case "1":
-							homePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-									resultSetSegurado.getString("NumeroFone1").substring(1,4),
-									resultSetSegurado.getString("NumeroFone1").substring(5));
+						switch (resultSetSegurado.getString("TipoFone2")){
+						case "01":
+							homePhone = String.format(phone, resultSetSegurado.getString("DDDFone2").substring(2),
+									resultSetSegurado.getString("NumeroFone2").substring(0,4),
+									resultSetSegurado.getString("NumeroFone2").substring(4));
 							break;
-						case "2":
-							mobilePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-									resultSetSegurado.getString("NumeroFone1").substring(1,4),
-									resultSetSegurado.getString("NumeroFone1").substring(5));
+						case "02":
+							mobilePhone = String.format(phone, resultSetSegurado.getString("DDDFone2").substring(2),
+									resultSetSegurado.getString("NumeroFone2").substring(0,4),
+									resultSetSegurado.getString("NumeroFone2").substring(4));
 							break;
-						case "3":
-							workPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-									resultSetSegurado.getString("NumeroFone1").substring(1,4),
-									resultSetSegurado.getString("NumeroFone1").substring(5));
+						case "03":
+							workPhone = String.format(phone, resultSetSegurado.getString("DDDFone2").substring(2),
+									resultSetSegurado.getString("NumeroFone2").substring(0,4),
+									resultSetSegurado.getString("NumeroFone2").substring(4));
 							break;
-						case "4":
-							faxPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-									resultSetSegurado.getString("NumeroFone1").substring(1,4),
-									resultSetSegurado.getString("NumeroFone1").substring(5));
+						case "04":
+							faxPhone = String.format(phone, resultSetSegurado.getString("DDDFone2").substring(2),
+									resultSetSegurado.getString("NumeroFone2").substring(0,4),
+									resultSetSegurado.getString("NumeroFone2").substring(4));
 							break;
 					}
 					
-					switch (resultSetSegurado.getString("TipoFone3")){
-					case "1":
-						homePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-								resultSetSegurado.getString("NumeroFone1").substring(1,4),
-								resultSetSegurado.getString("NumeroFone1").substring(5));
-						break;
-					case "2":
-						mobilePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-								resultSetSegurado.getString("NumeroFone1").substring(1,4),
-								resultSetSegurado.getString("NumeroFone1").substring(5));
-						break;
-					case "3":
-						workPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-								resultSetSegurado.getString("NumeroFone1").substring(1,4),
-								resultSetSegurado.getString("NumeroFone1").substring(5));
-						break;
-					case "4":
-						faxPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-								resultSetSegurado.getString("NumeroFone1").substring(1,4),
-								resultSetSegurado.getString("NumeroFone1").substring(5));
-						break;
-					}
-					
-					switch (resultSetSegurado.getString("TipoFone4")){
-					case "1":
-						homePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-								resultSetSegurado.getString("NumeroFone1").substring(1,4),
-								resultSetSegurado.getString("NumeroFone1").substring(5));
-						break;
-					case "2":
-						mobilePhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-								resultSetSegurado.getString("NumeroFone1").substring(1,4),
-								resultSetSegurado.getString("NumeroFone1").substring(5));
-						break;
-					case "3":
-						workPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-								resultSetSegurado.getString("NumeroFone1").substring(1,4),
-								resultSetSegurado.getString("NumeroFone1").substring(5));
-						break;
-					case "4":
-						faxPhone = String.format(phone, resultSetSegurado.getString("DDDFone1").substring(3),
-								resultSetSegurado.getString("NumeroFone1").substring(1,4),
-								resultSetSegurado.getString("NumeroFone1").substring(5));
-						break;
+						switch (resultSetSegurado.getString("TipoFone3")){
+						case "01":
+							homePhone = String.format(phone, resultSetSegurado.getString("DDDFone3").substring(2),
+									resultSetSegurado.getString("NumeroFone3").substring(0,4),
+									resultSetSegurado.getString("NumeroFone3").substring(4));
+							break;
+						case "02":
+							mobilePhone = String.format(phone, resultSetSegurado.getString("DDDFone3").substring(2),
+									resultSetSegurado.getString("NumeroFone3").substring(0,4),
+									resultSetSegurado.getString("NumeroFone3").substring(4));
+							break;
+						case "03":
+							workPhone = String.format(phone, resultSetSegurado.getString("DDDFone3").substring(2),
+									resultSetSegurado.getString("NumeroFone3").substring(0,4),
+									resultSetSegurado.getString("NumeroFone3").substring(4));
+							break;
+						case "04":
+							faxPhone = String.format(phone, resultSetSegurado.getString("DDDFone3").substring(2),
+									resultSetSegurado.getString("NumeroFone3").substring(0,4),
+									resultSetSegurado.getString("NumeroFone3").substring(4));
+							break;
+						}
+						
+						switch (resultSetSegurado.getString("TipoFone4")){
+						case "01":
+							homePhone = String.format(phone, resultSetSegurado.getString("DDDFone4").substring(2),
+									resultSetSegurado.getString("NumeroFone4").substring(0,4),
+									resultSetSegurado.getString("NumeroFone4").substring(4));
+							break;
+						case "02":
+							mobilePhone = String.format(phone, resultSetSegurado.getString("DDDFone4").substring(2),
+									resultSetSegurado.getString("NumeroFone4").substring(0,4),
+									resultSetSegurado.getString("NumeroFone4").substring(4));
+							break;
+						case "03":
+							workPhone = String.format(phone, resultSetSegurado.getString("DDDFone4").substring(2),
+									resultSetSegurado.getString("NumeroFone4").substring(0,4),
+									resultSetSegurado.getString("NumeroFone4").substring(4));
+							break;
+						case "04":
+							faxPhone = String.format(phone, resultSetSegurado.getString("DDDFone4").substring(2),
+									resultSetSegurado.getString("NumeroFone4").substring(0,4),
+									resultSetSegurado.getString("NumeroFone4").substring(4));
+							break;
 					}
 					
 					compararvalor(estadoCivil, (String) returnData.get("EstadoCivil__c"), "Estado Civil Segurado");
@@ -233,8 +234,9 @@ public class TestAdesaoWS {
 					compararvalor(workPhone, (String) returnData.get("Phone"), "Telefone Comercial");
 					compararvalor(resultSetSegurado.getString("Email").trim(), (String) returnData.get("PersonEmail"), "Email");
 					compararvalor(resultSetSegurado.getString("CodigoProfissao"), (String) returnData.get("Profissao__c"), "Codigo Profissao");
-					compararvalor(Double.parseDouble( resultSetSegurado.getString("ValorRendaMensal")),
-													(Double) returnData.get("Renda__c"), "Valor Renda Mensal");
+					String valorRendaMensal = 	resultSetSegurado.getString("ValorRendaMensal").substring(0,16) + "." + 
+												resultSetSegurado.getString("ValorRendaMensal").substring(16);
+					compararvalor(Double.parseDouble(valorRendaMensal),	(Double) returnData.get("Renda__c"), "Valor Renda Mensal");
 					
 					String endereco = resultSetSegurado.getString("EnderecoSegurado").trim() + ", " + 
 										 String.valueOf(Integer.parseInt(resultSetSegurado.getString("NumeroEndereco")));
@@ -247,6 +249,7 @@ public class TestAdesaoWS {
 					
 				} catch (Exception e) {
 					logger.error(e);
+					mensagemCritica = mensagemCritica + e.getStackTrace() + ";";
 					Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
 				}
 				
@@ -256,7 +259,8 @@ public class TestAdesaoWS {
 		Thread quote = new Thread("Quote - " + quoteId) {
 			public void run() {
 			//	 /services/data/v45.0/sobjects/Quote/{ID}
-				Reporter.log("Validando Proposta");
+				Reporter.log("Quote - " + quoteId);
+				logger.info("Validando");
 					String quote = SalesForceUtil.getObject("Quote/" + quoteId);
 					JSONParser parser = new JSONParser();
 					JSONObject returnData = null;
@@ -273,7 +277,6 @@ public class TestAdesaoWS {
 						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
 						compararvalor(resultSetProposta.getString("ORIGEMPROPOSTA"), (String) returnData.get("Origem__c"), "Origem da Proposta");
 						compararvalor(resultSetProposta.getString("NUMEROPROPOSTAPORTO"), (String) returnData.get("NumeroProposta__c"), "Numero da Proposta");
-						compararvalor(resultSetProposta.getString("QtdeTotalParcelas"), (String) returnData.get("QuantidadeParcelas__c"), "Qtde Parcelas");
 						compararvalor(resultSetProposta.getString("IdentSeguradoParceiro").trim(), (String) returnData.get("IdContratoParceiro__c"), "Ident. Seg. Parceiro");
 						compararvalor(resultSetProposta.getString("Filial"), (String) returnData.get("EntradaNegocio__c"), "Entrada Negócio");
 						compararvalor(dateFormat.format(inicio), 
@@ -283,31 +286,43 @@ public class TestAdesaoWS {
 					
 					} catch (Exception e) {
 						logger.error(e);
-						mensagemCritica = mensagemCritica + e.getLocalizedMessage() + ";";
+						mensagemCritica = mensagemCritica + e.getStackTrace() + ";";
 						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
 					}
 			}
 		};
 		
-		Thread contract = new Thread("ContratanteContrato__c - " + contractId) {
+		Thread contract = new Thread("Contract - " + contractId) {
 			public void run(){
+				try{
+					logger.info("Validando");
 			//	/services/data/v45.0/sobjects/ContratanteContrato__c/{ID}
+				String queryUri = "SELECT Id FROM ContratanteContrato__c WHERE Contrato__c = '%s'";
+				String retorno = SalesForceUtil.getQuery(String.format(queryUri, contractId));
+				JSONParser parser = new JSONParser();
+				JSONObject searchContract = (JSONObject) parser.parse(retorno);
+				
+				JSONArray searchArray = (JSONArray) searchContract.get("records"); 
+				JSONObject search = (JSONObject) searchArray.get(0);
+				String ContratocId = (String) search.get("Id");
+				JSONObject returnData = null;
+
 				Reporter.log("Validando Contrato");
-					String contract = SalesForceUtil.getObject("Contract/" + contractId);
-					JSONParser parser = new JSONParser();
-					JSONObject returnData = null;
-					String numeroContrato = null;
-					try{
-						returnData = (JSONObject) parser.parse(contract);
-						numeroContrato = resultSetProposta.getString("OrigemProposta") + "-" + resultSetProposta.getString("NumeroPropostaPorto");
-//						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
-//						compararvalor(resultSetProposta.getString("NUMEROCONTRATO"), (String) returnData.get("ContractNumber"), "Número do Contrato");
-										
-					} catch (Exception e) {
-						logger.error(e);
-						mensagemCritica = mensagemCritica + e.getLocalizedMessage() + ";";
-						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
-					}
+				String contract = SalesForceUtil.getObject("ContratanteContrato__c/" + ContratocId);
+				parser = new JSONParser();
+				
+				returnData = (JSONObject) parser.parse(contract);
+				
+				compararvalor(Double.parseDouble( resultSetProposta.getString("QtdeTotalParcelas")),
+						(Double) returnData.get("QuantidadeParcelas__c"), "Quantidade total de parcelas");
+				
+//				compararvalor(resultSetProposta.getString("QtdeTotalParcelas"), (double) returnData.get("QuantidadeParcelas__c"), "Quantidade total de parcelas");
+									
+				} catch (Exception e) {
+					logger.error(e);
+					mensagemCritica = mensagemCritica +  e.getStackTrace() + ";";
+					Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
+				}
 			}
 		};
 		
@@ -363,13 +378,8 @@ public class TestAdesaoWS {
 	
 	@DataProvider
 	public Object[][] getData() throws Exception {
-
-		
-		
-		
 		
 		String currentPath = new java.io.File( "." ).getCanonicalPath();
-		//importacaoArquivo(currentPath+"\\prodata\\RENNER_PORTO_EP_ADS_00553645_VG01.pro");
 		List<String> arquivos =  new ArrayList<>();
 		//arquivos.add(currentPath+"\\prodata\\RENNER_PORTO_EP_ADS_00553645_VG01.pro");
 		File folder = new File(currentPath+"\\prodata");
