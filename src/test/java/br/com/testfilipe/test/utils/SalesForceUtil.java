@@ -20,7 +20,6 @@ public class SalesForceUtil {
 
 		if (oAuth== null) {
 			HashMap<String, String> param = new HashMap<String, String>();
-			 
 			 param.put("grant_type", "password"); 
 			 param.put("client_id", "3MVG9srSPoex34FW_KPVdBKg5IaEtGHUJ0aii2.YXFfhSROg29UcyJC7MMLMalm.Y..KfmbXfCx_z5M8.xaVm"); 
 			 param.put("client_secret", "D362E4E89183EDA44AE7EF796D6119F03D6E804CD3CAF95814BAD79CDD866303"); 
@@ -33,11 +32,13 @@ public class SalesForceUtil {
 			given.formParams(param);
 			RequestSpecification httpRequest = given;
 			Response response = httpRequest.post("/token");
-			Assert.assertEquals(200, response.getStatusCode(), "Resposta do oAuth - Sales Force");
+			if (response.getStatusCode() == 200){
+				JsonPath jsonPath = response.body().jsonPath();
+				oAuth = "Bearer " + jsonPath.get("access_token");
+				instanceURL = jsonPath.get("instance_url");	
+			}
 			
-			JsonPath jsonPath = response.body().jsonPath();
-			oAuth = "Bearer " + jsonPath.get("access_token");
-			instanceURL = jsonPath.get("instance_url");	
+
 		}
 	}
 	
