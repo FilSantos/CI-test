@@ -241,6 +241,7 @@ public class TestAdesaoWS {
 					compararvalor(estadoCivil, (String) returnData.get("EstadoCivil__c"), "Estado Civil Segurado");
 					compararvalor(homePhone, (String) returnData.get("PersonHomePhone"), "Telefone Residencial");
 					compararvalor(workPhone, (String) returnData.get("Phone"), "Telefone Comercial");
+					compararvalor(mobilePhone, (String) returnData.get("PersonMobilePhone"), "Celular");
 					compararvalor(resultSetSegurado.getString("Email").trim(), (String) returnData.get("PersonEmail"), "Email");
 					compararvalor(resultSetSegurado.getString("CodigoProfissao"), (String) returnData.get("Profissao__c"), "Codigo Profissao");
 					String valorRendaMensal = 	resultSetSegurado.getString("ValorRendaMensal").substring(0,16) + "." + 
