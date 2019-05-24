@@ -131,7 +131,7 @@ public class HerokuUtil {
 		given.header("Authorization", oAuth);
 		
 		RequestSpecification httpRequest = given;
-		Response response = httpRequest.post(String.format("api/parcelascontrato?%s_%s", iDContract, iDContratoContratante));
+		Response response = httpRequest.get(String.format("/parcelascontrato?%s_%s", iDContract, iDContratoContratante));
 		return response.body().asString();
 	}
 	

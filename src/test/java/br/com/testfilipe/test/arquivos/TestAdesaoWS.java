@@ -31,6 +31,7 @@ import br.com.testfilipe.core.database.H2sql;
 import br.com.testfilipe.core.log.LogConstants;
 import br.com.testfilipe.core.utils.BrazilianDocuments;
 import br.com.testfilipe.test.utils.FileGenerator;
+import br.com.testfilipe.test.utils.HerokuUtil;
 import br.com.testfilipe.test.utils.SalesForceUtil;
 
 public class TestAdesaoWS {
@@ -326,8 +327,19 @@ public class TestAdesaoWS {
 				compararvalor(Double.parseDouble( resultSetProposta.getString("QtdeTotalParcelas")),
 						(Double) returnData.get("QuantidadeParcelas__c"), "Quantidade total de parcelas");
 				
-//				compararvalor(resultSetProposta.getString("QtdeTotalParcelas"), (double) returnData.get("QuantidadeParcelas__c"), "Quantidade total de parcelas");
-									
+				Reporter.log("Validando Parcelas");
+				String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
+				
+				compararvalor(resultSetParcela.getString("NumeroParcela"), (String) returnData.get("NumerodaParcela"), "Numero da Parcela");
+				
+				
+				
+				
+				
+		
+				
+						
+				
 				} catch (Exception e) {
 					logger.error(e);
 					mensagemCritica = mensagemCritica +  e.getStackTrace() + ";";
