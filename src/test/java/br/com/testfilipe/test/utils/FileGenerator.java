@@ -37,14 +37,14 @@ public class FileGenerator {
 
 
 	public String geraParcelas(int tamanhoLinha, DateTimeFormatter dtf, int numeroLinha, int origemProposta,
-								int numeroProposta, int NumeroContrato, int j, LocalDateTime venctoData) {
+								int numeroProposta, long numeroContrato, int j, LocalDateTime venctoData) {
 	
 		String detail = StringUtils.repeat(" ", tamanhoLinha);
 		detail = StringFormat.substituiTextoPosicao(detail, 30, 1, 2); //Tipo de Registro
 		detail = StringFormat.substituiTextoPosicao(detail,numeroLinha, 3, 7); //Número sequencial de Registro
 		detail = StringFormat.substituiTextoPosicao(detail, origemProposta, 10, 2); //Origem da Proposta
 		detail = StringFormat.substituiTextoPosicao(detail, numeroProposta, 12, 8); //número da proposta Porto
-		detail = StringFormat.substituiTextoPosicao(detail, NumeroContrato, 20, 14); //número do contrato  
+		detail = StringFormat.substituiTextoPosicao(detail, numeroContrato, 20, 14); //número do contrato  
 		detail = StringFormat.substituiTextoPosicao(detail,j, 34, 2); //Número Parcela
 		detail = StringFormat.substituiTextoPosicao(detail, dtf.format(venctoData), 36, 10); //Dt vencto parcela
 		detail = StringFormat.substituiTextoPosicao(detail, 22.15, 46, 15); //Vl parcela
@@ -53,14 +53,14 @@ public class FileGenerator {
 	}
 
 	public String geraProposta(int tamanhoLinha, int parcelasQuantidade, DateTimeFormatter dtf, LocalDateTime localDate,
-								int numeroLinha, int origemProposta, int numeroProposta, int NumeroContrato) {
+								int numeroLinha, int origemProposta, int numeroProposta, long numeroContrato) {
 	
 		String detail = StringUtils.repeat(" ", tamanhoLinha);
 		detail = StringFormat.substituiTextoPosicao(detail, 10, 1, 2); //Tipo Registro
 		detail = StringFormat.substituiTextoPosicao(detail, numeroLinha, 3, 7); //Numero Sequencial
 		detail = StringFormat.substituiTextoPosicao(detail, origemProposta, 10, 2); //Origem Proposta
 		detail = StringFormat.substituiTextoPosicao(detail, numeroProposta, 12, 8); //NumeroProposta
-		detail = StringFormat.substituiTextoPosicao(detail, NumeroContrato, 20, 14); //NumeroContrato
+		detail = StringFormat.substituiTextoPosicao(detail, numeroContrato, 20, 14); //NumeroContrato
 		detail = StringFormat.substituiTextoPosicao(detail, "", 34, 20); //Identificacao Segurado Parceiro
 		detail = StringFormat.substituiTextoPosicao(detail, "", 54, 8); //Estipulante
 		detail = StringFormat.substituiTextoPosicao(detail, "", 62, 5); //Filial
@@ -76,14 +76,14 @@ public class FileGenerator {
 	}
 
 	public String geraSegurado(int tamanhoLinha, int numeroLinha, int origemProposta, int numeroProposta,
-								int NumeroContrato, String cpfSegurado) {
+								long numeroContrato, String cpfSegurado) {
 	
 		String detail = StringUtils.repeat(" ", tamanhoLinha);
 		detail = StringFormat.substituiTextoPosicao(detail, 20, 1, 2); //Tipo de Registro
 		detail = StringFormat.substituiTextoPosicao(detail,numeroLinha, 3, 7); //Número sequencial de Registro
 		detail = StringFormat.substituiTextoPosicao(detail, origemProposta, 10, 2); //Origem da Proposta
 		detail = StringFormat.substituiTextoPosicao(detail, numeroProposta, 12, 8); //número da proposta Porto
-		detail = StringFormat.substituiTextoPosicao(detail, NumeroContrato, 20, 14); //número do contrato                                
+		detail = StringFormat.substituiTextoPosicao(detail, numeroContrato, 20, 14); //número do contrato                                
 		detail = StringFormat.substituiTextoPosicao(detail, cpfSegurado, 34, 14); //CPF do segurado                                       
 		detail = StringFormat.substituiTextoPosicao(detail, "TESTE AUTOMATIZADO" + cpfSegurado, 48, 50); //nome do segurado                                      
 		detail = StringFormat.substituiTextoPosicao(detail, "15/11/1984", 98, 10); //data de nascimento do segurado

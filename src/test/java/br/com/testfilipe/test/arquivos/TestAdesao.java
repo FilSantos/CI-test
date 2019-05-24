@@ -245,7 +245,7 @@ public class TestAdesao {
 		
 	}
 	
-private String gerarArquivo() throws IOException {
+private String gerarArquivo() throws Exception {
 		
 		System.out.println("Gerando dados");
 		

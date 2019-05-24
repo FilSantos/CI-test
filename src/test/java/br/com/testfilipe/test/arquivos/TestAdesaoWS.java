@@ -1,12 +1,18 @@
 package br.com.testfilipe.test.arquivos;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.json.simple.JSONArray;
@@ -23,12 +29,15 @@ import com.google.common.io.Files;
 
 import br.com.testfilipe.core.database.H2sql;
 import br.com.testfilipe.core.log.LogConstants;
+import br.com.testfilipe.core.utils.BrazilianDocuments;
+import br.com.testfilipe.test.utils.FileGenerator;
 import br.com.testfilipe.test.utils.SalesForceUtil;
 
 public class TestAdesaoWS {
 
 	final static Logger logger = Logger.getLogger(TestAdesaoWS.class);
 	private static String mensagemCritica = "";
+	private int numeroLinha;
 	
 	@Test(dataProvider="getData")
 	public void adesao_Proposta(String OrigemProposta, String NumeroPropostaPorto) throws Exception {
@@ -347,17 +356,14 @@ public class TestAdesaoWS {
 	
 	private boolean compararvalor(Object esperado , Object retornado, String descricao) {
 		
-		if ( retornado == null) {
-			retornado ="";
-		}
+		if ( retornado == null) { retornado =""; }
 		
 		if(!esperado.equals(retornado) ) {
 			mensagemCritica = mensagemCritica + descricao + ";";
 			return false;
 		}
 		return true;
-		
-		
+
 	}
 	
 	
@@ -381,7 +387,7 @@ public class TestAdesaoWS {
 		
 		String currentPath = new java.io.File( "." ).getCanonicalPath();
 		List<String> arquivos =  new ArrayList<>();
-		//arquivos.add(currentPath+"\\prodata\\RENNER_PORTO_EP_ADS_00553645_VG01.pro");
+		//arquivos.add(gerarArquivo());
 		File folder = new File(currentPath+"\\prodata");
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) {
@@ -390,7 +396,6 @@ public class TestAdesaoWS {
 			}
 		}
 		importacaoArquivo(arquivos);
-		Reporter.log("Arquivo Utilizado:" + currentPath+"\\prodata\\RENNER_PORTO_EP_ADS_00553645_VG01.pro");
 		
 		String     sqlQuery = "SELECT CAST(ORIGEMPROPOSTA as CHAR(2)) as OrigemProposta , NumeroPropostaPorto";
 		sqlQuery = sqlQuery + " FROM ADESAO WHERE TipoRegistro = 10";
@@ -515,6 +520,104 @@ public class TestAdesaoWS {
 			H2sql.executeStatement(table);
 		}
 		logger.info("Dados Classificados");
+	}
+	
+	private String gerarArquivo() throws Exception {
+			
+			System.out.println("Gerando dados");
+			numeroLinha = 1;
+			
+			FileGenerator file= new FileGenerator();
+			
+			
+			LocalDateTime localDate = LocalDateTime.now();
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			DateTimeFormatter fileFormat = DateTimeFormatter.ofPattern("ddMMyyyyHHmm");
+			
+			String fileName = Paths.get(".").toAbsolutePath().normalize().toString() + 
+							  "/" + "data/ 000010_" + fileFormat.format(localDate) + "_VG01_V0003064.PRO";
+			
+			
+			
+			FileWriter fw = new FileWriter(fileName);
+			
+			int tamanhoLinha = 450;
+			int versao = (int )(Math.random() * 999 + 1);
+			
+			//Header do arquivo
+			String header = file.preencheHeader(dtf.format(localDate), tamanhoLinha, versao, 1, 
+							"REALIZE CFI - CREDITO, FINANCIAMENTO E INVESTIMENTO S.A.", "27929879000126", "EP");
+			fw.write(header + "\r\n");
+			
+			//Detail do arquivo
+			gerarDetalhe(localDate, fw, tamanhoLinha, 1, 4, file);
+			//gerarDetalhe(localDate, fw, tamanhoLinha, 3000, 5);
+			//gerarDetalhe(localDate, fw, tamanhoLinha, 10000, 7);
+			//gerarDetalhe(localDate, fw, tamanhoLinha, 10000, 11);
+			
+			//Footer do arquivo
+			fw.write(file.footer(tamanhoLinha, numeroLinha));
+			fw.close();
+			System.out.println("Dados gerados");
+			return fileName;
+		}
+	
+	private void gerarDetalhe(LocalDateTime localDate, FileWriter fw, int tamanhoLinha, int contratosQuantidade,
+			int parcelasQuantidade, FileGenerator file) throws Exception {
 		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		//String arq = HerokuUtil.getLote();
+		
+		//String sqlImport = "INSERT INTO estoque SELECT ORIGEMPROPOSTA , NUMEROSERIE, NUMEROSORTE, STATUS, NUMEROPROPOSTA FROM CSVREAD ('" + arq  +
+		//				   "',null, 'charset=UTF-8 fieldSeparator=|')";
+		//H2sql.executeStatement(sqlImport);
+		
+		
+		String sqlResult = "SELECT OrigemProposta,NumeroProposta FROM ESTOQUE WHERE Status NOT IN ('Processado', 'AUTOMACAO')";
+		List<HashMap<String, Object>> list = H2sql.returnResultSetList(sqlResult);
+		int iterador = 0;
+		
+		if ( contratosQuantidade > list.size() ){
+			throw new Exception(" Quantidade de Estoque não é suficiente para a automação gerar contratos. Teste interrompido!");
+		}
+		
+		for (HashMap<String, Object> hashMap : list) {
+			SimpleDateFormat format = new SimpleDateFormat("yyMMddhhmmssS");
+			
+			int numeroProposta = Integer.parseInt( (String) hashMap.get("NUMEROPROPOSTA"));
+			long NumeroContrato = Long.parseLong(format.format( new Date()));
+			int origemProposta = Integer.parseInt( (String) hashMap.get("ORIGEMPROPOSTA"));
+			
+			String cpfSegurado = BrazilianDocuments.person(false);
+			String detail = file.geraProposta(tamanhoLinha, parcelasQuantidade, dtf, localDate, numeroLinha, origemProposta, numeroProposta, NumeroContrato);
+			
+			fw.write(detail + "\r\n");
+			numeroLinha ++;
+			
+			//Segurado
+			String segurado = StringUtils.repeat(" ", tamanhoLinha);
+			segurado = file.geraSegurado(tamanhoLinha, numeroLinha, origemProposta, numeroProposta, NumeroContrato,
+					cpfSegurado);
+			fw.write(segurado + "\r\n");
+			numeroLinha ++;
+			
+			// Parcelas
+			for (int j = 0; j < parcelasQuantidade; j++) {
+				LocalDateTime venctoData = localDate.plusMonths(j);
+				String parcela = StringUtils.repeat(" ", tamanhoLinha);
+				parcela = file.geraParcelas(tamanhoLinha, dtf, numeroLinha, origemProposta, numeroProposta, NumeroContrato, j, venctoData);
+				
+				fw.write(parcela + "\r\n");
+				numeroLinha ++;
+			}
+			sqlResult = "UPDATE Estoque SET Status = 'EM AUTOMACAO' WHERE  OrigemProposta = '%s' AND NumeroProposta = '%s'";
+			H2sql.executeStatement(String.format(sqlResult,(String) hashMap.get("ORIGEMPROPOSTA"), (String) hashMap.get("NUMEROPROPOSTA") ));
+			iterador ++;
+			if (iterador == contratosQuantidade ){ break; }
+		}
+		sqlResult = "UPDATE Estoque SET Status = 'AUTOMACAO' WHERE Status = 'EM AUTOMACAO'";
+		H2sql.executeStatement(sqlResult);
 	}
 }

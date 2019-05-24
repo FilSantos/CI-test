@@ -49,12 +49,14 @@ public class HerokuUtil {
 
 	}	
 	
-	public static void getLote(){
-
+	public static String getLote(){
+		
+		String path = null;
+		
 		HashMap<String, String> criterio = new HashMap<String, String>();
 		criterio.put("campo", "idlote");
 		criterio.put("operador", "=");
-		criterio.put("valor", "300");
+		criterio.put("valor", "2909");
 		
 		List<HashMap<String, String>> listCriterio = new ArrayList<HashMap<String, String>>();
 		listCriterio.add(criterio);
@@ -83,7 +85,7 @@ public class HerokuUtil {
 			if(((String)jsonPath.get("meta.mensagem")).equals("OK")){
 				byte[] data = DatatypeConverter.parseBase64Binary(jsonPath.get("data"));
 				
-				String path = null;
+				
 				try {
 					path = new java.io.File( "." ).getCanonicalPath() + "/prodata/loteHeroku.tar.gz";
 				} catch (IOException e1) {
@@ -96,7 +98,7 @@ public class HerokuUtil {
 		            outputStream.close();
 		            
 		            File archive = new File(path);
-		            File destination = new File(new java.io.File( "." ).getCanonicalPath() + "/prodata/lote");
+		            File destination = new File(new java.io.File( "." ).getCanonicalPath() + "/prodata/lote/");
 
 		            byte[] buffer = new byte[1024];
 
@@ -111,14 +113,14 @@ public class HerokuUtil {
 		        
 		               gzis.close();
 		           	out.close();
-
+		           	path = new java.io.File( "." ).getCanonicalPath() + "/prodata/lote";
 		        } catch (Exception e) {
 		            e.printStackTrace();
 		        }
-				
 			}
 		}
-
+		
+		return path;
 	}
 	
 	public static String getParcelas(String iDContract, String iDContratoContratante){
