@@ -10,7 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -308,37 +310,55 @@ public class TestAdesaoWS {
 				try{
 					logger.info("Validando");
 			//	/services/data/v45.0/sobjects/ContratanteContrato__c/{ID}
-				String queryUri = "SELECT Id FROM ContratanteContrato__c WHERE Contrato__c = '%s'";
-				String retorno = SalesForceUtil.getQuery(String.format(queryUri, contractId));
-				JSONParser parser = new JSONParser();
-				JSONObject searchContract = (JSONObject) parser.parse(retorno);
-				
-				JSONArray searchArray = (JSONArray) searchContract.get("records"); 
-				JSONObject search = (JSONObject) searchArray.get(0);
-				String ContratocId = (String) search.get("Id");
-				JSONObject returnData = null;
-
-				Reporter.log("Validando Contrato");
-				String contract = SalesForceUtil.getObject("ContratanteContrato__c/" + ContratocId);
-				parser = new JSONParser();
-				
-				returnData = (JSONObject) parser.parse(contract);
-				
-				compararvalor(Double.parseDouble( resultSetProposta.getString("QtdeTotalParcelas")),
-						(Double) returnData.get("QuantidadeParcelas__c"), "Quantidade total de parcelas");
-				
-				Reporter.log("Validando Parcelas");
-				String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
-				
-				compararvalor(resultSetParcela.getString("NumeroParcela"), (String) returnData.get("NumerodaParcela"), "Numero da Parcela");
-				
-				
-				
-				
-				
-		
-				
+					String queryUri = "SELECT Id FROM ContratanteContrato__c WHERE Contrato__c = '%s'";
+					String retorno = SalesForceUtil.getQuery(String.format(queryUri, contractId));
+					JSONParser parser = new JSONParser();
+					JSONObject searchContract = (JSONObject) parser.parse(retorno);
+					
+					JSONArray searchArray = (JSONArray) searchContract.get("records"); 
+					JSONObject search = (JSONObject) searchArray.get(0);
+					String ContratocId = (String) search.get("Id");
+					JSONObject returnData = null;
+	
+					Reporter.log("Validando Contrato");
+					String contract = SalesForceUtil.getObject("ContratanteContrato__c/" + ContratocId);
+					parser = new JSONParser();
+					
+					returnData = (JSONObject) parser.parse(contract);
+					
+					compararvalor(Double.parseDouble( resultSetProposta.getString("QtdeTotalParcelas")),
+							(Double) returnData.get("QuantidadeParcelas__c"), "Quantidade total de parcelas");
+					
+					Reporter.log("Validando Parcelas");
+					String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
+					returnData = (JSONObject) parser.parse(parcelas);
+					searchArray = (JSONArray) returnData.get("data"); 
+					for (Object object : searchArray) {
+						JSONObject jsonParcela = (JSONObject) object;
+						// ajuste o formato deste cara(dateFormat) para suportar o valor 2019-04-05T00:00:00.000Z
 						
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
+						SimpleDateFormat dateFile = new SimpleDateFormat("dd/MM/yyyy");
+						Date venctoParcelaArquivo = dateFile.parse((String) resultSetParcela.getString("DataVencimentoParcela"));
+						Date venctoParcelaWS = dateFormat.parse((String) jsonParcela.get("datavencimento"));
+
+						//exemplo para validar valor.... precisa ajustar de acordo com o que vamos fazer nesta validação
+						//compararvalor(Double.parseDouble(valorRendaMensal),	(Double) returnData.get("Renda__c"), "Valor Renda Mensal");
+						
+						
+						compararvalor(resultSetParcela.getInt("NumeroParcela"), (int) jsonParcela.get("numeroparcela"), "Numero da Parcela");
+						compararvalor(dateFile.format(venctoParcelaArquivo), dateFormat.format(venctoParcelaWS), "Data de Vencto"); // CONVERTER
+						String valordaParcela = resultSetParcela.getString("ValordaParcela").substring(0,14) + "." + 
+												resultSetParcela.getString("ValordaParcela").substring(14);
+						compararvalor(Double.parseDouble("valordaParcela"), (Double) jsonParcela.get("valorliquido"), "Valor da parcela");
+//						compararvalor(resultSetParcela.getString("ValorParcela"), (String) jsonParcela.get("valorliquido"), "Numero da Parcela"); // CONVERTER
+						String valorPremioParcela = resultSetParcela.getString("ValorPremioParcela").substring(0,14) + "." + 
+													resultSetParcela.getString("ValorPremioParcela").substring(14);
+						compararvalor(Double.parseDouble("ValorPremioParcela"), (Double) jsonParcela.get("valorparcela"), "Valor Premio da parcela");
+//						compararvalor(resultSetParcela.getString("ValorPremioParcela"), (String) jsonParcela.get("valorparcela"), "Numero da Parcela"); //CONVERTER
+						
+						
+					}
 				
 				} catch (Exception e) {
 					logger.error(e);
@@ -519,15 +539,14 @@ public class TestAdesaoWS {
 						 "NUMEROCONTRATO = cast(SUBSTRING(DATA, 20, 14) as int), " +
 						 "TipoRegistro = cast(SUBSTRING(DATA, 1, 2) as int)");
 		createTables.add("CREATE TABLE ADESAOPARCELAS AS SELECT * FROM ADESAO where TipoRegistro = 30");
-		createTables.add("ALTER TABLE ADESAOPARCELAS add NumeroParcela int;");
-		createTables.add("ALTER TABLE ADESAOPARCELAS add DataVencimentoParcela DATE;");
-		createTables.add("ALTER TABLE ADESAOPARCELAS add ValorParcela DECIMAL;");
-		createTables.add("ALTER TABLE ADESAOPARCELAS add ValorPrêmioParcela DECIMAL;");
-		//createTables.add("update ADESAOPARCELAS set NumeroParcela = CAST(SUBSTRING(DATA, 34, 2 ) AS INT), " +
-		//		 "DataVencimentoParcela  = CAST(SUBSTRING(DATA, 36, 10 ) AS DECIMAL), " + 
-		//		 "ValorParcela = CAST(SUBSTRING(DATA, 46, 15,02 )AS DECIMAL), " +
-		//		 "ValorPrêmioParcela = CAST(SUBSTRING(DATA, 61,02, 15 ) AS DECIMAL)");
 		createTables.add("DELETE FROM ADESAO where TipoRegistro = 30");
+		createTables.add("ALTER TABLE ADESAOPARCELAS add NumeroParcela int;");
+		createTables.add("ALTER TABLE ADESAOPARCELAS add DataVencimentoParcela char(10);");
+		createTables.add("ALTER TABLE ADESAOPARCELAS add ValorParcela char(15);");
+		createTables.add("ALTER TABLE ADESAOPARCELAS add ValorPremioParcela char(15);");
+		createTables.add("UPDATE ADESAOPARCELAS SET NumeroParcela = CAST(SUBSTRING(DATA, 34, 2 ) AS INT), " +
+						 "DataVencimentoParcela  = SUBSTRING(DATA, 36, 10 ), ValorParcela = SUBSTRING(DATA, 46, 15 ), " +
+						 "ValorPrêmioParcela = SUBSTRING(DATA, 61, 15 )");
 		
 		for (String table : createTables) {
 			H2sql.executeStatement(table);
