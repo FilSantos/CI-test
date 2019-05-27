@@ -41,14 +41,14 @@ public class TestAdesaoWS {
 	private int numeroLinha;
 	
 	@Test(dataProvider="getData")
-	public void adesao_Proposta(String OrigemProposta, String NumeroPropostaPorto) throws Exception {
+	public void adesaoProposta(String OrigemProposta, String numeroPropostaPorto) throws Exception {
 		
 		ResultSet resultSetProposta = H2sql.returnResultSet
-				("Select * from V_Proposta WHERE numeropropostaporto = "+ NumeroPropostaPorto);
+				("Select * from V_Proposta WHERE numeropropostaporto = "+ numeroPropostaPorto);
 		ResultSet resultSetSegurado = H2sql.returnResultSet
-				("Select * from V_Segurado WHERE numeropropostaporto = "+ NumeroPropostaPorto);
+				("Select * from V_Segurado WHERE numeropropostaporto = "+ numeroPropostaPorto);
 		ResultSet resultSetParcela = H2sql.returnResultSet
-				("Select * from AdesaoParcelas WHERE numeropropostaporto = "+ NumeroPropostaPorto);
+				("Select * from AdesaoParcelas WHERE numeropropostaporto = "+ numeroPropostaPorto);
 		
 		resultSetProposta.first();
 		resultSetSegurado.first();
@@ -334,7 +334,6 @@ public class TestAdesaoWS {
 					int iterador = 1;
 					for (Object object : searchArray) {
 						JSONObject jsonParcela = (JSONObject) object;
-						// ajuste o formato deste cara(dateFormat) para suportar o valor 2019-04-05T00:00:00.000Z
 						
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 						SimpleDateFormat dateFile = new SimpleDateFormat("dd/MM/yyyy");
