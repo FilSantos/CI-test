@@ -333,37 +333,38 @@ public class TestAdesaoWS {
 					String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
 					returnData = (JSONObject) parser.parse(parcelas);
 					searchArray = (JSONArray) returnData.get("data"); 
+					int iterador = 1;
 					for (Object object : searchArray) {
 						JSONObject jsonParcela = (JSONObject) object;
 						// ajuste o formato deste cara(dateFormat) para suportar o valor 2019-04-05T00:00:00.000Z
 						
-						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 						SimpleDateFormat dateFile = new SimpleDateFormat("dd/MM/yyyy");
-						Date venctoParcelaArquivo = dateFile.parse((String) resultSetParcela.getString("DataVencimentoParcela"));
-						Date venctoParcelaWS = dateFormat.parse((String) jsonParcela.get("datavencimento"));
-
-						//exemplo para validar valor.... precisa ajustar de acordo com o que vamos fazer nesta validação
-						//compararvalor(Double.parseDouble(valorRendaMensal),	(Double) returnData.get("Renda__c"), "Valor Renda Mensal");
+						Date venctoParcelaArquivo = null;
+						Date venctoParcelaWS = null;
+						if ((String) resultSetParcela.getString("DataVencimentoParcela") != null){
+							venctoParcelaArquivo = dateFile.parse((String) resultSetParcela.getString("DataVencimentoParcela"));
+						}
+						if ((String) jsonParcela.get("datavencimento") != null){
+							venctoParcelaWS = dateFormat.parse((String) jsonParcela.get("datavencimento"));
+						}
 						
-						
-						compararvalor(resultSetParcela.getInt("NumeroParcela"), (int) jsonParcela.get("numeroparcela"), "Numero da Parcela");
-						compararvalor(dateFile.format(venctoParcelaArquivo), dateFormat.format(venctoParcelaWS), "Data de Vencto"); // CONVERTER
-						String valordaParcela = resultSetParcela.getString("ValordaParcela").substring(0,14) + "." + 
-												resultSetParcela.getString("ValordaParcela").substring(14);
-						compararvalor(Double.parseDouble("valordaParcela"), (Double) jsonParcela.get("valorliquido"), "Valor da parcela");
-//						compararvalor(resultSetParcela.getString("ValorParcela"), (String) jsonParcela.get("valorliquido"), "Numero da Parcela"); // CONVERTER
-						String valorPremioParcela = resultSetParcela.getString("ValorPremioParcela").substring(0,14) + "." + 
-													resultSetParcela.getString("ValorPremioParcela").substring(14);
-						compararvalor(Double.parseDouble("ValorPremioParcela"), (Double) jsonParcela.get("valorparcela"), "Valor Premio da parcela");
-//						compararvalor(resultSetParcela.getString("ValorPremioParcela"), (String) jsonParcela.get("valorparcela"), "Numero da Parcela"); //CONVERTER
-						
-						
+						compararvalor((long)resultSetParcela.getInt("NumeroParcela"), (long) jsonParcela.get("numeroparcela"), "Numero da Parcela - " + iterador);
+						compararvalor(dateFile.format(venctoParcelaArquivo), dateFile.format(venctoParcelaWS), "Data de Vencto"  + iterador);
+						String valordaParcela = resultSetParcela.getString("ValorParcela").substring(0,13) + "." + 
+												resultSetParcela.getString("ValorParcela").substring(13);
+						compararvalor(String.valueOf(Double.parseDouble(valordaParcela)), (String) jsonParcela.get("valorliquido"), "Valor da parcela - " + iterador);
+						String valorPremioParcela = resultSetParcela.getString("ValorPremioParcela").substring(0,13) + "." + 
+													resultSetParcela.getString("ValorPremioParcela").substring(13);
+						compararvalor(String.valueOf(Double.parseDouble(valorPremioParcela)), (String) jsonParcela.get("valorparcela"), "Valor Premio da parcela - " + iterador);
+						iterador++;
+						resultSetParcela.next();
 					}
 				
 				} catch (Exception e) {
 					logger.error(e);
 					mensagemCritica = mensagemCritica +  e.getStackTrace() + ";";
-					Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
+
 				}
 			}
 		};
@@ -546,7 +547,7 @@ public class TestAdesaoWS {
 		createTables.add("ALTER TABLE ADESAOPARCELAS add ValorPremioParcela char(15);");
 		createTables.add("UPDATE ADESAOPARCELAS SET NumeroParcela = CAST(SUBSTRING(DATA, 34, 2 ) AS INT), " +
 						 "DataVencimentoParcela  = SUBSTRING(DATA, 36, 10 ), ValorParcela = SUBSTRING(DATA, 46, 15 ), " +
-						 "ValorPrêmioParcela = SUBSTRING(DATA, 61, 15 )");
+						 "ValorPremioParcela = SUBSTRING(DATA, 61, 15 )");
 		
 		for (String table : createTables) {
 			H2sql.executeStatement(table);
