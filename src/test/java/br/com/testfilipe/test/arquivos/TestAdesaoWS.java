@@ -10,9 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -425,9 +423,11 @@ public class TestAdesaoWS {
 		File folder = new File(currentPath+"\\prodata");
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) {
-			if (Files.getFileExtension(file.getAbsolutePath()).toLowerCase().equals("pro") ){
+			if (Files.getFileExtension(file.getAbsolutePath()).toLowerCase().equals("pro") & 
+					Files.getNameWithoutExtension(file.getAbsolutePath()).toUpperCase().startsWith("VG01", 20) ){
 				arquivos.add(file.getAbsolutePath());
 			}
+
 		}
 		importacaoArquivo(arquivos);
 		
