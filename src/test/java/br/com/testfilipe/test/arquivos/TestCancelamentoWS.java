@@ -1,9 +1,12 @@
 package br.com.testfilipe.test.arquivos;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -103,40 +106,46 @@ public class TestCancelamentoWS {
 		Thread contract = new Thread("Contract - " + contractId) {
 			public void run(){
 				try{
+		
 					logger.info("Validando");
-			//	/services/data/v45.0/sobjects/ContratanteContrato__c/{ID}
+			//	/services/data/v45.0/sobjects/Contract/{ID}
+					Reporter.log("Validando Contrato");
+					String contract = SalesForceUtil.getObject("Contract/" + contractId);
+					JSONParser parser = new JSONParser();
+					JSONObject returnData = (JSONObject) parser.parse(contract);
+						
+					Assert.assertEquals((String) returnData.get("Status"), "Emitido");
+					
+////				/services/data/v45.0/sobjects/ContratanteContrato__c/{ID}
 					String queryUri = "SELECT Id FROM ContratanteContrato__c WHERE Contrato__c = '%s'";
 					String retorno = SalesForceUtil.getQuery(String.format(queryUri, contractId));
-					JSONParser parser = new JSONParser();
 					JSONObject searchContract = (JSONObject) parser.parse(retorno);
-					
+				
+				
 					JSONArray searchArray = (JSONArray) searchContract.get("records"); 
 					JSONObject search = (JSONObject) searchArray.get(0);
 					String ContratocId = (String) search.get("Id");
-					JSONObject returnData = null;
-	
-				Reporter.log("Validando Contrato");
-					String contract = SalesForceUtil.getObject("Contract/" + ContratocId);
-					parser = new JSONParser();
-					returnData = (JSONObject) parser.parse(contract);
-						
-						Assert.assertEquals((String) returnData.get("Status"), "Emitido");
-					
-				Reporter.log("Validando Parcelas");
-					String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
-					returnData = (JSONObject) parser.parse(parcelas);
-					searchArray = (JSONArray) returnData.get("data"); 
-					for (Object object : searchArray) {
-					JSONObject jsonParcela = (JSONObject) object;
-						
-						Assert.assertEquals((String) jsonParcela.get("status"), "CANCELADA");
-					}
-				
-				} catch (Exception e) {
-					logger.error(e);
-					mensagemCritica = mensagemCritica +  e.getStackTrace() + ";";
+					returnData = null;
 
+				Reporter.log("Validando Parcelas");
+				String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
+				returnData = (JSONObject) parser.parse(parcelas);
+				searchArray = (JSONArray) returnData.get("data"); 
+				for (Object object : searchArray) {
+					JSONObject jsonParcela = (JSONObject) object;
+					Date dataAtual = new Date();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+					SimpleDateFormat dateFile = new SimpleDateFormat("dd/MM/yyyy");
+					Date dataParcela = dateFormat.parse((String) jsonParcela.get("datavencimento"));
+					if( dataAtual.after(dataParcela)){
+						Assert.assertEquals((String) jsonParcela.get("status"), "CANCELADA");
+					} 
 				}
+			}catch (Exception e) {
+				logger.error(e);
+				mensagemCritica = mensagemCritica +  e.getStackTrace() + ";";
+
+			}
 			}
 		};
 		
