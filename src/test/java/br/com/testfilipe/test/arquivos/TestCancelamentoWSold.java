@@ -1,9 +1,12 @@
 package br.com.testfilipe.test.arquivos;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,9 +37,9 @@ import br.com.testfilipe.test.utils.FileGenerator;
 import br.com.testfilipe.test.utils.HerokuUtil;
 import br.com.testfilipe.test.utils.SalesForceUtil;
 
-public class TestCancelamentoWS {
+public class TestCancelamentoWSold {
 
-	final static Logger logger = Logger.getLogger(TestCancelamentoWS.class);
+	final static Logger logger = Logger.getLogger(TestCancelamentoWSold.class);
 	private static String mensagemCritica = "";
 	private int numeroLinha;
 	
@@ -45,7 +48,7 @@ public class TestCancelamentoWS {
 		
 
 		Reporter.log("Verificando dados no SalesForce - Objeto: Contrato");
-		String queryUri = "SELECT ContractId FROM Quote WHERE Name = '%s-%s'";
+		String queryUri = "SELECT AccountId,Id FROM Quote WHERE Name = '%s-%s'";
 		String retorno = SalesForceUtil.getQuery(String.format(queryUri, origemProposta,numeroPropostaPorto));
 		
 		JSONParser parser = new JSONParser();
@@ -59,114 +62,96 @@ public class TestCancelamentoWS {
 
 		JSONArray searchArray = (JSONArray) search.get("records"); 
 		search = (JSONObject) searchArray.get(0);
-		String contractId = (String) search.get("ContractId");
+		
+		String quoteId = (String) search.get("Id");
 
-		String contract = SalesForceUtil.getObject("Contract/" + contractId);
-		JSONObject returnData = (JSONObject) parser.parse(contract);
-	//A partir daqui verificar porque o contractIdCancelado está retornando NULL; 		
-		String contractIdCancelado = (String) returnData.get("Name");
-	
-		contractIdCancelado = contractIdCancelado.substring(0, contractIdCancelado.length() -1) + "1";
-		queryUri = "SELECT id FROM Contract WHERE Name = '%s'";
-		retorno = SalesForceUtil.getQuery(String.format(queryUri, contractIdCancelado));
+		queryUri = "SELECT Id FROM Contract WHERE Proposta__c = '%s'";
+		retorno = SalesForceUtil.getQuery(String.format(queryUri, quoteId));
+		parser = new JSONParser();
 		search = (JSONObject) parser.parse(retorno);
 		
 		if ((long) search.get("totalSize") ==  (long) 0 ) {
-			Assert.fail("Proposta não encontrada no salesforce (Quote)");
+			Assert.fail("Proposta não encontrada no salesforce (Contract)");
 		}else if ((long) search.get("totalSize") !=  (long) 1 ) {
-			Assert.fail("Existe mais de um registro com essa chave no Quote");
+			Assert.fail("Existe mais de um registro com essa chave no Contract");
 		}
-
 		searchArray = (JSONArray) search.get("records"); 
 		search = (JSONObject) searchArray.get(0);
-		contractIdCancelado = (String) search.get("id");
+		String contractId = (String) search.get("Id");
+
+		Thread quote = new Thread("Quote - " + quoteId) {
+			public void run() {
+			//	 /services/data/v45.0/sobjects/Quote/{ID}
+				Reporter.log("Quote - " + quoteId);
+				logger.info("Validando");
+					String quote = SalesForceUtil.getObject("Quote/" + quoteId);
+					JSONParser parser = new JSONParser();
+					JSONObject returnData = null;
+					String numeroContrato = null;
+					try{
+						returnData = (JSONObject) parser.parse(quote);
+						numeroContrato = origemProposta + "-" + numeroPropostaPorto;
+						compararvalor(numeroContrato, (String) returnData.get("Name"), "Origem da Proposta + Numero do Contrato");
+						compararvalor(origemProposta, (String) returnData.get("Origem__c"), "Origem da Proposta");
+						compararvalor(numeroPropostaPorto, (String) returnData.get("NumeroProposta__c"), "Numero da Proposta");
+					
+					} catch (Exception e) {
+						logger.error(e);
+						mensagemCritica = mensagemCritica + e.getStackTrace() + ";";
+						Assert.fail("Erro com o body de resposta e/ou no arquivo 'pro'");
+					}
+			}
+		};
 		
-		Thread originalContract = new Thread("Contract Orig - " + contractId) {
+		Thread contract = new Thread("Contract - " + contractId) {
 			public void run(){
 				try{
 		
 					logger.info("Validando");
-				//	/services/data/v45.0/sobjects/Contract/{ID}
-					Reporter.log("Validando Contrato Original");
+			//	/services/data/v45.0/sobjects/Contract/{ID}
+					Reporter.log("Validando Contrato");
 					String contract = SalesForceUtil.getObject("Contract/" + contractId);
 					JSONParser parser = new JSONParser();
 					JSONObject returnData = (JSONObject) parser.parse(contract);
 						
-					Assert.assertEquals((String) returnData.get("Status"), "Cancelado");
-					Assert.assertEquals((String) returnData.get("Tipo__c"), "Novo");
-					Assert.assertEquals((String) returnData.get("Endosso__c"), "0");
-
+					Assert.assertEquals((String) returnData.get("Status"), "Emitido");
+					
 ////				/services/data/v45.0/sobjects/ContratanteContrato__c/{ID}
 					String queryUri = "SELECT Id FROM ContratanteContrato__c WHERE Contrato__c = '%s'";
 					String retorno = SalesForceUtil.getQuery(String.format(queryUri, contractId));
 					JSONObject searchContract = (JSONObject) parser.parse(retorno);
 				
-					JSONArray searchArray = (JSONArray) searchContract.get("records"); 
-					JSONObject search = (JSONObject) searchArray.get(0);
-					String ContratocId = (String) search.get("Id");
-					returnData = null;
-
-					Reporter.log("Validando Parcelas");
-					String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
-					returnData = (JSONObject) parser.parse(parcelas);
-					searchArray = (JSONArray) returnData.get("data"); 
-					for (Object object : searchArray) {
-						JSONObject jsonParcela = (JSONObject) object;
-						Date dataAtual = new Date();
-						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-						SimpleDateFormat dateFile = new SimpleDateFormat("dd/MM/yyyy");
-						Date dataParcela = dateFormat.parse((String) jsonParcela.get("datavencimento"));
-						if( dataAtual.after(dataParcela)){
-							Assert.assertEquals((String) jsonParcela.get("status"), "CANCELADA");
-						} 
-					}
-				}catch (Exception e) {
-					logger.error(e);
-					mensagemCritica = mensagemCritica +  e.getStackTrace() + ";";
-				}
-			}
-		};
-			
-		Thread cancelledContract = new Thread(contractIdCancelado) {
-			public void run(){
-				try {
-					
-					logger.info("Validando");
-					Reporter.log("Validando Contrato Cancelado");
-					String contractCancelado = SalesForceUtil.getObject("Contract/" + Thread.currentThread().getName());
-					JSONParser parser = new JSONParser();
-					JSONObject returnData = (JSONObject) parser.parse(contractCancelado);
-						
-					Assert.assertEquals((String) returnData.get("Status"), "Emitido");
-					Assert.assertEquals((String) returnData.get("Tipo__c"), "Cancelamento");
-					Assert.assertEquals((String) returnData.get("Endosso__c"), "1");
-					
-					String queryUri = "SELECT Id FROM ContratanteContrato__c WHERE Contrato__c = '%s'";
-					String retorno = SalesForceUtil.getQuery(String.format(queryUri, contractId));
-					JSONObject searchContract = (JSONObject) parser.parse(retorno);
 				
 					JSONArray searchArray = (JSONArray) searchContract.get("records"); 
 					JSONObject search = (JSONObject) searchArray.get(0);
 					String ContratocId = (String) search.get("Id");
 					returnData = null;
 
-					Reporter.log("Validando Parcelas");
-					String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
-					returnData = (JSONObject) parser.parse(parcelas);
-					searchArray = (JSONArray) returnData.get("data");
-					compararvalor(0, searchArray.size(), "Parcelas");
-					
-					
-				}catch (Exception e) {
-					logger.error(e);
-					mensagemCritica = mensagemCritica +  e.getStackTrace() + ";";
+				Reporter.log("Validando Parcelas");
+				String parcelas = HerokuUtil.getParcelas(contractId, ContratocId);
+				returnData = (JSONObject) parser.parse(parcelas);
+				searchArray = (JSONArray) returnData.get("data"); 
+				for (Object object : searchArray) {
+					JSONObject jsonParcela = (JSONObject) object;
+					Date dataAtual = new Date();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+					SimpleDateFormat dateFile = new SimpleDateFormat("dd/MM/yyyy");
+					Date dataParcela = dateFormat.parse((String) jsonParcela.get("datavencimento"));
+					if( dataAtual.after(dataParcela)){
+						Assert.assertEquals((String) jsonParcela.get("status"), "CANCELADA");
+					} 
 				}
+			}catch (Exception e) {
+				logger.error(e);
+				mensagemCritica = mensagemCritica +  e.getStackTrace() + ";";
+
+			}
 			}
 		};
 		
 		Thread validacaoThread[] = new Thread[2];
-		validacaoThread[0] = originalContract;
-		validacaoThread[1] = cancelledContract;
+		validacaoThread[0] = contract;
+		validacaoThread[1] = quote;
 		
 		for (int j = 0; j < validacaoThread.length; j++) {
 			validacaoThread[j].start();
@@ -301,6 +286,8 @@ public class TestCancelamentoWS {
 			
 			String fileName = Paths.get(".").toAbsolutePath().normalize().toString() + 
 							  "/" + "data/ 000010_" + fileFormat.format(localDate) + "_VG01_V0003064.PRO";
+			
+			
 			
 			FileWriter fw = new FileWriter(fileName);
 			
