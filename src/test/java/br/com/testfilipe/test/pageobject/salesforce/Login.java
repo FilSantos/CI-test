@@ -6,6 +6,13 @@ import org.openqa.selenium.WebElement;
 
 import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
 
+
+
+/**
+ * Page Object da pagina de Login
+ * @author Bruno Silva(Cognizant)
+ *
+ */
 public class Login  extends BaseWebPage{
 
 	private static By LOGIN_FORM = By.id("theloginform"); 
@@ -26,62 +33,108 @@ public class Login  extends BaseWebPage{
 	public boolean isDisplayed() {
 		return searchElement.existsNoLog(LOGIN_FORM, "Página de acesso", 30) ? true : false;
 	}	
-	public void tapLembrarUsuario() throws Exception {
-		WebElement lembrarme = searchElement.findElementBy(REMEMBERME_CHECKBOX, "Lembrar do usuario");
-		command.click(lembrarme);
-	}
-	
-	public void tapEsqueciSenha() throws Exception {
-		WebElement esqueciSenha = searchElement.findElementBy(FORGOT_PASSWORD_HYPERLINK, "Esqueci minha senha");
-		command.click(esqueciSenha);
-	}
-	
-	public void tapAcessar() throws Exception {
-		WebElement acessar = searchElement.findElementBy(LOGIN_BUTTON, "Acessar");
-		command.click(acessar);
-	}
-	
-	public void setUsuario(String email) throws Exception {
-		
-		boolean noLogin = true;
-		if (searchElement.existsNoLog(USERNAME_SAVED_TEXTBOX, "Login autal", 5)) {
-			WebElement usernameLogged = searchElement.findElementBy(USERNAME_SAVED_TEXTBOX, "Usuario logado");
-			noLogin = usernameLogged.getText().trim().equals(email.trim()) ? false : true;
-			if (noLogin) {
-				try {
-					WebElement clearUsername = searchElement.findElementBy(USERNAME_SAVED_CLEAR_BUTTON, "Limpar Usuário");
-					command.clear(clearUsername);
-				} finally {
-					
-				}
 
-			}
-		}
+	/**
+	 * Campo de texto - Usuario
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	public WebElement user() throws Exception {
 		
-		if (noLogin) {
-			WebElement username = searchElement.findElementBy(USERNAME_TEXTBOX, "Nome do Usuario");
-			command.send(username, email);
-		}
-
+		return searchElement.findElementBy(USERNAME_TEXTBOX, "Nome de usuário");
 	}
 	
-	public void setSenha(String pwd) throws Exception {
+	/**
+	 * Campo de senha - Senha
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */	
+	
+	public WebElement password() throws Exception{
 		
-		boolean noLogin = true;
-		noLogin = searchElement.existsNoLog(USERNAME_SAVED_TEXTBOX, "Login autal", 5) ? false : true;
-		
-		if (noLogin) {
-			WebElement password = searchElement.findElementBy(PASSWORD_TEXTBOX, "Senha");
-			command.send(password, pwd);
-		}
-		
-
+		return searchElement.findElementBy(PASSWORD_TEXTBOX, "Senha");
 	}
 	
-	public void setcredentials(String username, String pwd) throws Exception {
-		setUsuario(username);
-		setSenha(pwd);
-		tapAcessar();
+	/**
+	 * Efetuar login - Login de Usuario
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public WebElement logarSF() throws Exception{
+		
+		return searchElement.findElementBy(LOGIN_BUTTON, "Efetuar login");
+		
+	}	
+	
+	/**
+	 * Campo de Usuário salvo - Usuario salvo
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	public WebElement savedUsername() throws Exception{
+		
+		return searchElement.findElementBy(USERNAME_SAVED_TEXTBOX, "Usuário salvo");
+		
 	}
 	
+	/**
+	 * Campo de apagar usuário salvo - Apagar Usuario salvo
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public boolean existsClearButton () throws Exception{
+		
+		return searchElement.existsNoLog(USERNAME_SAVED_CLEAR_BUTTON, "Clear button", 5000);
+	}
+	
+	/**
+	 * Validar botão de limpar usuário salvo 
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public WebElement btnClear () throws Exception{
+		
+		return searchElement.findElementBy(USERNAME_SAVED_CLEAR_BUTTON, "Botão Limpar Usuário logado");
+		
+		
+	}
+	
+	/**
+	 * Validar botão de lembrar o usuário logado 
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public WebElement rememberMe() throws Exception{
+		
+		return searchElement.findElementBy(REMEMBERME_CHECKBOX, "Lembrar Usuário");
+		
+	}
+	
+	/**
+	 * Validar botão de lembrar a senha 
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public WebElement esqueciSenha() throws Exception{
+		
+		return searchElement.findElementBy(FORGOT_PASSWORD_HYPERLINK, "ESqueci a senha");
+		
+	}
+	
+	
+	
+		
 }
