@@ -2,6 +2,7 @@ package br.com.testfilipe.test.Iteracao;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+
 import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
 import br.com.testfilipe.test.pageobject.salesforce.Login;
 import br.com.testfilipe.test.utils.PropertiesUtil;
@@ -29,7 +30,7 @@ public class LoginSalesForce extends BaseWebPage {
 		 */
 		public void iniciaAutenticação (){
 			
-			webDriver.navigate().to("web.url");
+			webDriver.navigate().to(PropertiesUtil.getProp("web.url"));
 		}
 		
 		/**

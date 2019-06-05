@@ -33,24 +33,32 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 	@Override
 	public WebDriver getLocalWebDriver() {
 		logger.info("Starting Local WebDriver");
+		System.setProperty("webdriver.chrome.driver", GETBINARYPATH);
+		ChromeOptions chromeOptions = new ChromeOptions(); 
 		
+/*		String currentPath = null;
+		try {
+			currentPath = new java.io.File( "." ).getCanonicalPath();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		String userhome = System.getProperty("user.home");
 		if (OS.contains("windows")) {
-			userhome = userhome + "/AppData/Local/Google/Chrome/User Data/Default";
+			userhome = userhome + "\\AppData\\Local\\Google\\Chrome\\User Data";
 		}else {
 			userhome = userhome + "/.config/google-chrome";
 		}
 		
-		ChromeOptions chromeOptions = new ChromeOptions(); 
-		chromeOptions.addArguments("--user-data-dir", userhome);
-		//chromeOptions.addArguments("--headless"); 
-		chromeOptions.addArguments("start-maximized");
-		System.setProperty("webdriver.chrome.driver", GETBINARYPATH);
+		
+		currentPath = currentPath + "/profile";
+		chromeOptions.addArguments("user-data-dir="+userhome);*/
+		chromeOptions.setHeadless(false);
 		WebDriver webDriver = new ChromeDriver(chromeOptions);
-
+		webDriver.manage().window().maximize();
+		
 		return webDriver;
-				//return super.getLocalWebDriver();
 	}
 	
 	@Override
