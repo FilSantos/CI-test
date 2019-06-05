@@ -1,5 +1,8 @@
 package br.com.testfilipe.core.selenium.command;
 
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
@@ -8,6 +11,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -67,11 +71,12 @@ public abstract class CommandAction{
 	 */
 	public void send(WebElement webElement, String value) throws Exception {
 		
-		//webDriverWait.until(ExpectedConditions.elementToBeClickable(webElement));
+		webDriverWait.until(ExpectedConditions.elementToBeClickable(webElement));
 		try {
 			webElement.sendKeys(value);
-			logger.debug("Object: '" + webElement.toString() + "' filled: '" + value + "'");
-			Reporter.log(" and input: '" + value + "'.\r\n");
+			value = webElement.getAttribute("type").equals("password") ? "*******" : value;
+			logger.info("Objeto: '" + webElement.toString() + "' preenchido: '" + value + "'");
+			Reporter.log(" e inserido: '" + value + "'.");
 
 		} catch (TimeoutException e) {
 			msgError = " TimeOut exception after " + TIME_OUT + " seconds, object: '" + webElement.toString()
@@ -97,8 +102,8 @@ public abstract class CommandAction{
 		try {
 			Select dropdown= new Select(webElement);
 			dropdown.selectByVisibleText(value);
-			logger.debug("Object: '" + webElement.toString() + "' selected: '" + value + "'");
-			Reporter.log(" and selected: '" + value + "'.\r\n");
+			logger.info("Objeto: '" + webElement.toString() + "' selecionado: '" + value + "'");
+			Reporter.log(" e selecionado: '" + value + "'.");
 		} catch (TimeoutException e) {
 			msgError = " TimeOut exception after " + TIME_OUT + " seconds, object: '" + webElement.toString()
 					+ "' not filled with '" + value + "'";
@@ -158,8 +163,7 @@ public abstract class CommandAction{
 				webElement.sendKeys(key);
 			}
 			
-			Reporter.log( (webElement != null ? "Object: '" + webElement.toString() + "' " :  
-						   "pressed key'" + keyPress  + "'") + "\r\n");	
+			Reporter.log( "Pressionado'" + keyPress  + "'");	
 		} catch (Exception e) {
 			logger.error( webElement != null ? "Object: '" + webElement.toString() + "' " : "" 
 						  + "not pressed key'" + keyPress  + "'",e);	
@@ -178,8 +182,8 @@ public abstract class CommandAction{
 			webDriverWait.until(ExpectedConditions.elementToBeClickable(webElement));
 			webElement.click();
 			//webDriver.switchTo().window(webDriver.getWindowHandle());
-			logger.debug("Object: '" + webElement.toString() + "' click action");
-			Reporter.log(" and clicked .\r\n");
+			logger.info("Objeto: '" + webElement.toString() + "' realizado click");
+			Reporter.log(" e recebeu click");
 		} catch (Exception e) {
 			msgError = "Object: '" + webElement.toString() + "' cannot click action";
 			logger.fatal(msgError, e);
@@ -215,10 +219,19 @@ public abstract class CommandAction{
 	}
 
 	public byte[] screenshot() throws Exception {
-		byte[] pictureData = null ;
 		screenshotReady();
-		pictureData = ((TakesScreenshot)webDriver).getScreenshotAs(OutputType.BYTES);
-		//setup.getScenario().embed(pictureData, "image/png");
+		if (!(webDriver instanceof HtmlUnitDriver)){
+			TakesScreenshot ts=(TakesScreenshot)webDriver;
+            File source=ts.getScreenshotAs(OutputType.FILE);
+            String screenshotName = source.getName();
+            String folder = new java.io.File( "." ).getCanonicalPath() + "/test-output/screenshot/" ;
+            FileUtils.copyFile(source, new File(folder+screenshotName));
+            logger.info("Screenshot");
+            String path = ("<img src=\"file://" + folder+screenshotName + "\" alt=\"\"/></img>");
+            Reporter.log("<br>");
+            Reporter.log(path);
+            Reporter.log("<br>");
+		}
 		return null;
 	}
 	public boolean isAlertPresent() { 
@@ -242,7 +255,7 @@ public abstract class CommandAction{
 	public String getAlertText() {
 		if (isAlertPresent()) {
 			String text = webDriver.switchTo().alert().getText();
-			Reporter.log("Alert - "+ text);
+			Reporter.log("Alerta - "+ text);
 			return text;
 		} else {
 			return null;

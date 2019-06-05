@@ -1,5 +1,7 @@
 package br.com.testfilipe.core.selenium.searchelements;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -18,12 +20,14 @@ public class SearchElementForWEB extends SearchElement{
 	
 	@Override
 	public void waitToBeReady() throws Exception{
-
-		//Wait for document be loaded
-		new WebDriverWait(webDriver, 30).until((ExpectedCondition<Boolean>) wd ->
-        ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
-		
-		   
+		try{
+			//Wait for document be loaded
+			new WebDriverWait(webDriver, 30).until((ExpectedCondition<Boolean>) wd ->
+	        ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
+		} catch (Exception e) {
+			webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		}
+	
 	}
 
 	

@@ -1,12 +1,9 @@
 package br.com.testfilipe.test.arquivos;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

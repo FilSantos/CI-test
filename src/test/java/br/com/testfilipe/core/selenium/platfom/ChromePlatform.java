@@ -1,5 +1,7 @@
 package br.com.testfilipe.core.selenium.platfom;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,27 +35,19 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 	@Override
 	public WebDriver getLocalWebDriver() {
 		logger.info("Starting Local WebDriver");
-		System.setProperty("webdriver.chrome.driver", GETBINARYPATH);
-		ChromeOptions chromeOptions = new ChromeOptions(); 
-		
-/*		String currentPath = null;
+		String currentPath = "";
 		try {
-			currentPath = new java.io.File( "." ).getCanonicalPath();
+			currentPath = new java.io.File( "." ).getCanonicalPath() + "/downloads";
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		String userhome = System.getProperty("user.home");
-		if (OS.contains("windows")) {
-			userhome = userhome + "\\AppData\\Local\\Google\\Chrome\\User Data";
-		}else {
-			userhome = userhome + "/.config/google-chrome";
-		}
-		
-		
-		currentPath = currentPath + "/profile";
-		chromeOptions.addArguments("user-data-dir="+userhome);*/
+		System.setProperty("webdriver.chrome.driver", GETBINARYPATH);
+		ChromeOptions chromeOptions = new ChromeOptions(); 
+		chromeOptions.setAcceptInsecureCerts(true);
+		chromeOptions.addArguments("download.default_directory="+currentPath);
+		chromeOptions.addArguments("profile.default_content_settings.popups=0");
 		chromeOptions.setHeadless(false);
 		WebDriver webDriver = new ChromeDriver(chromeOptions);
 		webDriver.manage().window().maximize();

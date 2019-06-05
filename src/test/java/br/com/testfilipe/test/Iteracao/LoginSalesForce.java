@@ -67,8 +67,9 @@ public class LoginSalesForce extends BaseWebPage {
 		
 		public void tapAcessar() throws Exception {
 			WebElement acessar = login.logarSF();
-			command.click(acessar);
 			command.screenshot();
+			command.click(acessar);
+			
 		}
 		
 		/**

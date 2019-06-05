@@ -20,7 +20,6 @@ public class PropertiesUtil {
 	}
 	
 	public static String getProp(String propertie){	
-		    System.out.println(prop.getProperty(propertie));
 		    return prop.getProperty(propertie);
 	}
 }

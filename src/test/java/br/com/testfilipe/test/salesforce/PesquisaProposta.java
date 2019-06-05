@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import br.com.testfilipe.core.database.H2sql;
 import br.com.testfilipe.core.log.LogConstants;
-import br.com.testfilipe.core.selenium.platfom.ChromePlatform;
+import br.com.testfilipe.core.selenium.platfom.PhantomJSPlatform;
 import br.com.testfilipe.core.selenium.platfom.Platform;
 import br.com.testfilipe.test.Iteracao.LoginSalesForce;
 
@@ -21,31 +21,33 @@ public class PesquisaProposta {
 	
 	@BeforeSuite
 	public static void iniciate() throws Exception {
+	   		
 		PropertyConfigurator.configure(LogConstants.PROPERTIES);	
-		Platform platformWebDriver = ChromePlatform.StartWebDriver();
+		Platform platformWebDriver = PhantomJSPlatform.StartWebDriver();
 		webDriver = platformWebDriver.getLocalWebDriver();			
 		H2sql.openConnection();		
-		login = new LoginSalesForce(webDriver);
-		login.iniciaAutenticação();
-		login.preencheLoginSF();
-		login.tapAcessar();	
+
 		
 				
 	}
 	
 	@Test
 	
-	public void test (){
+	public void test () throws Exception{
 		
-		
+		login = new LoginSalesForce(webDriver);
+		login.iniciaAutenticação();
+		login.preencheLoginSF();
+		login.tapAcessar();	
 		
 	}
 	
 	
 	@AfterSuite
 	public static void teardown() {
-		webDriver.quit();
 		webDriver.close();
+		webDriver.quit();
+		
 		
 				
 	}

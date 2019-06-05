@@ -49,12 +49,10 @@ public abstract class SearchElement {
 			WebElement webElement = webDriver.findElement(by);
 			WebElement temp = webElement;
 			if (reportName != null && !reportName.trim().isEmpty()) {
-				try {
-					Reporter.log("-Found object " + reportName.trim());
-				} finally {
-					logger.info(String.format(" Object %s found",  reportName.trim()) );
+				if (Reporter.getOutput().size() != 0){
+					Reporter.log("<br>");
 				}
-				
+				Reporter.log("- Localizado " + reportName.trim());
 			}
 			return temp;
 		} catch (Exception e) {
@@ -79,8 +77,7 @@ public abstract class SearchElement {
 			webDriverWait.until(ExpectedConditions.presenceOfElementLocated(by));
 			List<WebElement> webElements = webDriver.findElements(by);
 			if (reportName != null && !reportName.trim().isEmpty()) {
-				Reporter.log("-Found object list " + reportName.trim());
-				logger.info(String.format("Object list %s found with %s ",  reportName.trim() ,   by.toString()) );
+				Reporter.log("-Localizado os itens " + reportName.trim());
 			}
 			
 			return webElements;
@@ -106,8 +103,7 @@ public abstract class SearchElement {
 			webDriverWait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(parent, by));
 			WebElement webElement = parent.findElement(by);
 			if (reportName != null && !reportName.trim().isEmpty()) {
-				Reporter.log("-Found object " + reportName.trim());
-				logger.info(String.format(" Object %s found with %s ",  reportName.trim() ,   by.toString()) );
+				Reporter.log("-Localizados os objetos " + reportName.trim());
 			}
 			return webElement;
 		} catch (Exception e) {
@@ -132,8 +128,7 @@ public abstract class SearchElement {
 			webDriverWait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(parent, by));			
 			List<WebElement> webElements = parent.findElements(by);
 			if (reportName != null && !reportName.trim().isEmpty()) {
-				Reporter.log("-Found object list " + reportName.trim());
-				logger.info(String.format("Object list %s found ",  reportName.trim()) );
+				Reporter.log("-Localizados os objetos " + reportName.trim());
 			}
 			
 			return webElements;
