@@ -3,7 +3,6 @@ package br.com.testfilipe.test.pageobject.salesforce;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import br.com.testfilipe.core.selenium.pageobject.BaseWebPage;
 
 
