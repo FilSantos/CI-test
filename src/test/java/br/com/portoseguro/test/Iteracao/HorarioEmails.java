@@ -1,11 +1,11 @@
 package br.com.portoseguro.test.Iteracao;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
+import org.testng.Assert;
 import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
 import br.com.portoseguro.pageobject.gmail.GmailInbox;
 
@@ -29,14 +29,53 @@ public class HorarioEmails  extends BaseWebPage {
 			
 			List<WebElement> emailLista = gmailInbox.emailLista();
 			
+			
+			boolean encontrou = false;
+			
 			for (WebElement emailDetalhe : emailLista) {
 				
 				WebElement emailHorario = gmailInbox.emailDetalheHorario(emailDetalhe);
-			
-				command.getText(emailHorario);
-								
+				WebElement emailRemetente = gmailInbox.emailName(emailDetalhe);
+				WebElement emailAssunto = gmailInbox.emailContent(emailDetalhe);
+				
+				String horarioEmail = command.getText(emailHorario);
+				String remetenteEmail = command.getText(emailRemetente);
+				String assuntoEmail = command.getText(emailAssunto);
+				 
+				
+				SimpleDateFormat formato = new SimpleDateFormat("HH:mm a");
+				SimpleDateFormat formato2 = new SimpleDateFormat("MMM dd");				
+				Date dataEmail;
+				
+				try {
+					dataEmail = formato.parse(horarioEmail);
+					
+				} catch (Exception e) {
+					dataEmail = formato2.parse(horarioEmail);
+				}
+				
+				if(remetente.equals(remetenteEmail) | assunto.equals(assuntoEmail)){
+					//fazer logica da validacao de horario
+					long diffminutes = (horario.getTime() - dataEmail.getTime())/ (60 * 1000);
+					if(diffminutes <= 1){
+						command.click(emailDetalhe);
+						encontrou=true;
+						break;						
+					}					
+				}								
 			}
+			
+			Assert.assertEquals(encontrou, true,"Encontrou email de Autenticação?");
+			
+		
+			if (!encontrou){
+				Assert.fail("Não encontrou o email de autenticacao");
+			}			
+			
 		}
+		
+		
+		
 
 		@Override
 		public boolean isDisplayed() {

@@ -14,8 +14,10 @@ import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
  *
  */
 public class GmailInbox extends BaseWebPage{
-	private static By emailList = By.xpath("//div[@class='AO']//tbody/tr");
-	private static By emailDetail = By.xpath("//td[contains(@class,'xW xY')]");
+	private static By emailList = By.xpath("//div[@class='AO']//tbody/tr[contains(@class,'zA')]");				
+	private static By emailDateTime = By.xpath("//td[9]/span[1]/span[1]");
+	private static By emailName = By.xpath("//td[5]/div[2]/span[1]/span[1]");
+	private static By emailContent = By.xpath("//div/div/span/span[not(@class='Zt')]");
 	
 	public GmailInbox(WebDriver webDriver) {
 		super(webDriver);
@@ -27,7 +29,7 @@ public class GmailInbox extends BaseWebPage{
 	}
 	
 	/**
-	 * Campo de user name Porto
+	 * Lista de e-mail porto
 	 * @author Bruno Silva(Cognizant)
 	 * @return
 	 * @throws Exception
@@ -38,14 +40,40 @@ public class GmailInbox extends BaseWebPage{
 		return searchElement.findElementsBy(emailList, "Lista de e-mail");
 	}
 	
+	/**
+	 * Lista de e-mail porto com detalhes de data e horário
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
 	public WebElement emailDetalheHorario(WebElement emailItem) throws Exception{
 		
-		return searchElement.findChildElementBy(emailItem, emailDetail, "Horário do e-mail");
+		return searchElement.findChildElementBy(emailItem, emailDateTime, "Horário do e-mail");
 	}
 	
-	public WebElement emailDetalheRemetente(WebElement emailItem) throws Exception{
+	/**
+	 * Nome do remetente do e-mail
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public WebElement emailName(WebElement emailItem) throws Exception{
 		
-		return searchElement.findChildElementBy(emailItem, emailDetail, "remetente do e-mail");
+		return searchElement.findChildElementBy(emailItem, emailName, "Nome do remetente do e-mail");
+	}
+	
+	/**
+	 * Conteúdo do e-mail no título
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public WebElement emailContent(WebElement emailItem) throws Exception{
+		
+		return searchElement.findChildElementBy(emailItem, emailContent, "Conteúdo do e-mail no título");
 	}
 	
 	
