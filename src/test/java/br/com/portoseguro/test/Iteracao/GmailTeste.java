@@ -36,9 +36,9 @@ public class GmailTeste {
 	@Test
 	
 	public void test () throws Exception{
-		String remetente = "Google"; //coloque um email valido que tenha no gmail
-		String assunto = "Google";  // coloque um assunto que exista no gmail
-		String data = " 1 jun";  // coloque a data correta no gmail
+		String remetente = "no-reply@accounts.google.com"; //coloque um email valido que tenha no gmail
+		String assunto = "Conta do Google";  // coloque um assunto que exista no gmail
+		String data = " 12 abr";  // coloque a data correta no gmail
 		
 		SimpleDateFormat formato = new SimpleDateFormat("dd MMM");
 		Date horario = formato.parse(data);
