@@ -15,7 +15,7 @@ public class LoginGmail extends BaseWebPage{
 	
 	
 	private static By Gmail_Email = By.id("identifierId");
-	private static By Next_Button = By.className("gmail.usuario");
+	private static By Next_Button = By.xpath("//span[contains(text(),'Próxima')]");
 
 	public LoginGmail(WebDriver webDriver) {
 		super(webDriver);

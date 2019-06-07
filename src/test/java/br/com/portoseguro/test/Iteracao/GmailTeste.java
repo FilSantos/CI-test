@@ -1,4 +1,4 @@
-package br.com.portoseguro.test.salesforce;
+package br.com.portoseguro.test.Iteracao;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -6,18 +6,19 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
-
 import br.com.portoseguro.core.database.H2sql;
 import br.com.portoseguro.core.log.LogConstants;
 import br.com.portoseguro.core.selenium.platfom.PhantomJSPlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;
 import br.com.portoseguro.test.Iteracao.LoginSalesForce;
 
-public class PesquisaProposta {
+public class GmailTeste {
 	
-	final static Logger logger = Logger.getLogger(PesquisaProposta.class);
+	final static Logger logger = Logger.getLogger(GmailTeste.class);
 	private static WebDriver webDriver; 
-	private static LoginSalesForce login; 
+	private static LoginContaGmail loginGmail; 
+	private static LoginAutenticacaoPorto loginAutenticacao;
+	private static HorarioEmails emails;
 	
 	@BeforeSuite
 	public static void iniciate() throws Exception {
@@ -33,10 +34,18 @@ public class PesquisaProposta {
 	
 	public void test () throws Exception{
 		
-		login = new LoginSalesForce(webDriver);
-		login.iniciaAutenticação();
-		login.preencheLoginSF();
-		login.tapAcessar();	
+		loginGmail = new LoginContaGmail(webDriver);
+		loginAutenticacao = new LoginAutenticacaoPorto(webDriver);
+		emails = new HorarioEmails(webDriver);
+		
+		loginGmail.iniciaAutenticação();
+		loginGmail.preencheLoginGmail();
+		loginGmail.nextButton();
+		loginAutenticacao.preencheUserPasswordPorto();
+		loginAutenticacao.signIn();
+		
+		
+		
 		
 	}
 	
@@ -44,12 +53,7 @@ public class PesquisaProposta {
 	@AfterSuite
 	public static void teardown() {
 		webDriver.close();
-		webDriver.quit();
-		
-		
+		webDriver.quit();		
 				
 	}
-	
-	
-
 }

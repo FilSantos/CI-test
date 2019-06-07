@@ -72,10 +72,7 @@ public class HorarioEmails  extends BaseWebPage {
 				Assert.fail("Não encontrou o email de autenticacao");
 			}			
 			
-		}
-		
-		
-		
+		}		
 
 		@Override
 		public boolean isDisplayed() {

@@ -41,7 +41,8 @@ public class LoginContaGmail extends BaseWebPage {
 		public void preencheLoginGmail() throws Exception {
 					
 			WebElement email = gmail.email();
-			command.send(email, PropertiesUtil.getProp("gmail.email"));							
+			command.send(email, PropertiesUtil.getProp("gmail.email"));	
+			command.screenshot();
 		}
 		
 		

@@ -35,6 +35,7 @@ public class LoginAutenticacaoPorto extends BaseWebPage {
 			command.send(userPorto, PropertiesUtil.getProp("gmail.usuario"));
 			WebElement passwordPorto = porto.PasswordPorto();
 			command.send(passwordPorto, PropertiesUtil.getProp("gmail.senha"));
+			command.screenshot();
 		}
 		
 		
