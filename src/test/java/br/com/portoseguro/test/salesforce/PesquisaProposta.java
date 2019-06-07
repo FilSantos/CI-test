@@ -45,8 +45,6 @@ public class PesquisaProposta {
 	public static void teardown() {
 		webDriver.close();
 		webDriver.quit();
-		
-		
 				
 	}
 	

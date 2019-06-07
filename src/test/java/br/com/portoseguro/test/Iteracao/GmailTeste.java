@@ -1,22 +1,19 @@
 package br.com.portoseguro.test.Iteracao;
 
-import org.testng.annotations.Test;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
+
 import br.com.portoseguro.core.database.H2sql;
 import br.com.portoseguro.core.log.LogConstants;
 import br.com.portoseguro.core.selenium.platfom.ChromePlatform;
-import br.com.portoseguro.core.selenium.platfom.PhantomJSPlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;
-import br.com.portoseguro.test.Iteracao.LoginSalesForce;
 
 public class GmailTeste {
 	
@@ -39,9 +36,12 @@ public class GmailTeste {
 	@Test
 	
 	public void test () throws Exception{
-		String remetente = "Google";
-		String assunto = "Google"; 
-		Date horario = " 1 jun";
+		String remetente = "Google"; //coloque um email valido que tenha no gmail
+		String assunto = "Google";  // coloque um assunto que exista no gmail
+		String data = " 1 jun";  // coloque a data correta no gmail
+		
+		SimpleDateFormat formato = new SimpleDateFormat("dd MMM");
+		Date horario = formato.parse(data);
 		
 		loginGmail = new LoginContaGmail(webDriver);
 		loginAutenticacao = new LoginAutenticacaoPorto(webDriver);
@@ -55,11 +55,6 @@ public class GmailTeste {
 		//loginAutenticacao.preencheUserPasswordPorto();
 		//loginAutenticacao.signIn();
 		emails.Selecionaemail(remetente, assunto ,horario);
-		
-		
-		
-		
-		
 		
 	}
 	

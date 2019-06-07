@@ -26,11 +26,14 @@ public class HorarioEmails  extends BaseWebPage {
 		 * @throws Exception 
 		 */
 		public void Selecionaemail(String remetente, String assunto, Date horario) throws Exception{
+
+			SimpleDateFormat formato = new SimpleDateFormat("HH:mm a");
+			SimpleDateFormat formato2 = new SimpleDateFormat("dd MMM");
+			Date dataEmail;
+
+			boolean encontrou = false;
 			
 			List<WebElement> emailLista = gmailInbox.emailLista();
-			
-			
-			boolean encontrou = false;
 			
 			for (WebElement emailDetalhe : emailLista) {
 				
@@ -41,25 +44,15 @@ public class HorarioEmails  extends BaseWebPage {
 				String horarioEmail = command.getText(emailHorario);
 				String remetenteEmail = command.getText(emailRemetente);
 				String assuntoEmail = command.getText(emailAssunto);
-				String sDate1 = "1 jun";
-				 
-				
-				SimpleDateFormat formato = new SimpleDateFormat("HH:mm a");
-				SimpleDateFormat formato2 = new SimpleDateFormat("dd MMM");
-				Date dataEmail;
-				
-				
-				
 				
 				try {
 					dataEmail = formato.parse(horarioEmail);
 					
 				} catch (Exception e) {
-					dataEmail = formato2.parse(sDate1);
+					dataEmail = formato2.parse(horarioEmail);
 				}
 				
 				if(remetente.equals(remetenteEmail) | assunto.equals(assuntoEmail)){
-					//fazer logica da validacao de horario
 					long diffminutes = (horario.getTime() - dataEmail.getTime())/ (60 * 1000);
 					if(diffminutes <= 1){
 						command.click(emailDetalhe);
