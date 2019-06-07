@@ -1,13 +1,19 @@
 package br.com.portoseguro.test.Iteracao;
 
+import org.testng.annotations.Test;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import br.com.portoseguro.core.database.H2sql;
 import br.com.portoseguro.core.log.LogConstants;
+import br.com.portoseguro.core.selenium.platfom.ChromePlatform;
 import br.com.portoseguro.core.selenium.platfom.PhantomJSPlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;
 import br.com.portoseguro.test.Iteracao.LoginSalesForce;
@@ -24,7 +30,7 @@ public class GmailTeste {
 	public static void iniciate() throws Exception {
 	   		
 		PropertyConfigurator.configure(LogConstants.PROPERTIES);	
-		Platform platformWebDriver = PhantomJSPlatform.StartWebDriver();
+		Platform platformWebDriver = ChromePlatform.StartWebDriver();
 		webDriver = platformWebDriver.getLocalWebDriver();			
 		H2sql.openConnection();			
 				
@@ -33,6 +39,9 @@ public class GmailTeste {
 	@Test
 	
 	public void test () throws Exception{
+		String remetente = "Google";
+		String assunto = "Google"; 
+		Date horario = " 1 jun";
 		
 		loginGmail = new LoginContaGmail(webDriver);
 		loginAutenticacao = new LoginAutenticacaoPorto(webDriver);
@@ -41,8 +50,13 @@ public class GmailTeste {
 		loginGmail.iniciaAutenticação();
 		loginGmail.preencheLoginGmail();
 		loginGmail.nextButton();
-		loginAutenticacao.preencheUserPasswordPorto();
-		loginAutenticacao.signIn();
+		loginGmail.preencheLoginSenha();
+		loginGmail.nextButton();
+		//loginAutenticacao.preencheUserPasswordPorto();
+		//loginAutenticacao.signIn();
+		emails.Selecionaemail(remetente, assunto ,horario);
+		
+		
 		
 		
 		

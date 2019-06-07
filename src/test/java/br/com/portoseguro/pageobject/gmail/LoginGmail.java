@@ -16,6 +16,7 @@ public class LoginGmail extends BaseWebPage{
 	
 	private static By Gmail_Email = By.id("identifierId");
 	private static By Next_Button = By.xpath("//span[contains(text(),'Próxima')]");
+	private static By gmail_senha = By.xpath("//input[@name='password']");
 
 	public LoginGmail(WebDriver webDriver) {
 		super(webDriver);
@@ -38,8 +39,21 @@ public class LoginGmail extends BaseWebPage{
 		return searchElement.findElementBy(Gmail_Email, "Endereço de e-mail");
 	}
 	
+	
 	/**
-	 * Campo de e-mail gmail
+	 * Campo de senha do gmail
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public WebElement senha() throws Exception {
+		
+		return searchElement.findElementBy(gmail_senha, "Senha de e-mail");
+	}
+	
+	/**
+	 * Campo de botão próximo
 	 * @author Bruno Silva(Cognizant)
 	 * @return
 	 * @throws Exception

@@ -40,8 +40,20 @@ public class LoginContaGmail extends BaseWebPage {
 		 */
 		public void preencheLoginGmail() throws Exception {
 					
-			WebElement email = gmail.email();
+			WebElement email = gmail.email();			
 			command.send(email, PropertiesUtil.getProp("gmail.email"));	
+			command.screenshot();
+		}
+		
+		/**
+		 * Validar login no gmail com senha
+		 * @author 634111 - Bruno Silva
+		 * @throws Exception
+		 */
+		public void preencheLoginSenha() throws Exception {
+					
+			WebElement senha = gmail.senha();
+			command.send(senha, PropertiesUtil.getProp("gmail.password"));
 			command.screenshot();
 		}
 		

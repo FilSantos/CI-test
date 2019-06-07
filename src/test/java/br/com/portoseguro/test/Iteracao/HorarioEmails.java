@@ -41,17 +41,21 @@ public class HorarioEmails  extends BaseWebPage {
 				String horarioEmail = command.getText(emailHorario);
 				String remetenteEmail = command.getText(emailRemetente);
 				String assuntoEmail = command.getText(emailAssunto);
+				String sDate1 = "1 jun";
 				 
 				
 				SimpleDateFormat formato = new SimpleDateFormat("HH:mm a");
-				SimpleDateFormat formato2 = new SimpleDateFormat("MMM dd");				
+				SimpleDateFormat formato2 = new SimpleDateFormat("dd MMM");
 				Date dataEmail;
+				
+				
+				
 				
 				try {
 					dataEmail = formato.parse(horarioEmail);
 					
 				} catch (Exception e) {
-					dataEmail = formato2.parse(horarioEmail);
+					dataEmail = formato2.parse(sDate1);
 				}
 				
 				if(remetente.equals(remetenteEmail) | assunto.equals(assuntoEmail)){
