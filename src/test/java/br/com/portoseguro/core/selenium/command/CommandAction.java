@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -75,7 +76,13 @@ public abstract class CommandAction{
 		try {
 			webElement.sendKeys(value);
 			value = webElement.getAttribute("type").equals("password") ? "*******" : value;
-			logger.info("Objeto: '" + webElement.toString() + "' preenchido: '" + value + "'");
+			
+			if (webDriver instanceof PhantomJSDriver) {
+				logger.info("Objeto: 'By." + webElement.toString().substring(0, webElement.toString().length() -1) .split( "> ")[1] + "' preenchido: '" + value + "'");
+			} else {
+				logger.info("Objeto: '" + webElement.toString() + "' preenchido: '" + value + "'");	
+			}
+			
 			Reporter.log(" e inserido: '" + value + "'.");
 
 		} catch (TimeoutException e) {
