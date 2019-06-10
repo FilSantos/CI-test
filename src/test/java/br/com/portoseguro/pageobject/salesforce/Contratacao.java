@@ -19,8 +19,11 @@ public class Contratacao  extends BaseWebPage{
 		// TODO Auto-generated constructor stub
 	}
 
-	private static By Channel_Choose = By.xpath("//input[@class='select-dropdown dropdown-trigger']");
-	private static By Channel_Choosed = By.xpath("//li/span[contains(text(),'Corretor')]");
+	private static By Channel_Choose = By.id("canalEntrada");
+	private static By Channel_Choosed_Corretor = By.xpath("//li/span[contains(text(),'Corretor')]");
+	private static By Channel_Choosed_Clientes = By.xpath("//li/span[contains(text(),'Clientes')]");
+	private static By Campo_Susep = By.id("susep");
+	private static By Campo_Cpf = By.id("cpf");
 	private static By Identification = By.id("nome");
 	private static By portoButton = By.xpath("//input[@value = 'Entrar']");
 	private static By contractType = By.xpath("//section[@id='etapa1']//input");
@@ -47,19 +50,56 @@ public class Contratacao  extends BaseWebPage{
 	}
 	
 	/**
-	 * Campo de canal selecionado
+	 * Campo de canal selecionado - corretor
 	 * @author Bruno Silva(Cognizant)
 	 * @return
 	 * @throws Exception
 	 */	
 	
-	public WebElement canalSelecionado() throws Exception{
+	public WebElement canalSelecionadoCorretor() throws Exception{
 		
-		return searchElement.findElementBy(Channel_Choosed, "Canal selecionado");
+		return searchElement.findElementBy(Channel_Choosed_Corretor, "Canal selecionado - Corretor");
 	}
 	
 	/**
-	 * Campo de identificação
+	 * Campo de canal selecionado - clientes
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */	
+	
+	public WebElement canalSelecionadoClientes() throws Exception{
+		
+		return searchElement.findElementBy(Channel_Choosed_Clientes, "Canal selecionado - Clientes");
+	}
+	
+	
+	/**
+	 * Campo de identificação SUSEP - Corretor
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */	
+	
+	public WebElement campoSusep() throws Exception{
+		
+		return searchElement.findElementBy(Campo_Susep, "Identificação Susep informada");
+	}
+	
+	/**
+	 * Campo de identificação CPF - Cliente
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */	
+	
+	public WebElement campoCpf() throws Exception{
+		
+		return searchElement.findElementBy(Campo_Cpf, "Identificação CPF informado");
+	}
+	
+	/**
+	 * Botão entrar
 	 * @author Bruno Silva(Cognizant)
 	 * @return
 	 * @throws Exception
