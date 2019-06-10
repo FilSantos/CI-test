@@ -1,21 +1,22 @@
-package br.com.portoseguro.test.Iteracao;
+package br.com.portoseguro.test.GmailTeste;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
-
 import br.com.portoseguro.core.database.H2sql;
 import br.com.portoseguro.core.log.LogConstants;
 import br.com.portoseguro.core.selenium.platfom.PhantomJSPlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;
+import br.com.portoseguro.test.Iteracao.HorarioEmails;
+import br.com.portoseguro.test.Iteracao.LoginAutenticacaoPorto;
+import br.com.portoseguro.test.Iteracao.LoginContaGmail;
 
 public class GmailTeste {
 	
@@ -25,6 +26,8 @@ public class GmailTeste {
 	private static LoginAutenticacaoPorto loginAutenticacao;
 	private static HorarioEmails emails;
 	
+	
+
 	@BeforeSuite
 	public static void iniciate() throws Exception {
 	   		
