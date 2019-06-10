@@ -1,6 +1,7 @@
 package br.com.portoseguro.core.selenium.platfom;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
@@ -35,11 +36,12 @@ public class PhantomJSPlatform extends AbstractBrowserPlatform {
 
 		System.setProperty("phantomjs.binary.path", GETBINARYPATH);
 		DesiredCapabilities caps = new DesiredCapabilities();
-		caps.setJavascriptEnabled(true);                
+		caps.setJavascriptEnabled(true);     
 		caps.setCapability("takesScreenshot", true); 
 		String[] phantomArgs = new  String[] {"--webdriver-loglevel=NONE"};
 		caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, phantomArgs);
 		WebDriver webDriver = new PhantomJSDriver(caps);
+		webDriver.manage().window().setSize(new Dimension(1366, 768));
 		return webDriver;
 	}
 	

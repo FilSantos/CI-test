@@ -2,6 +2,8 @@ package br.com.portoseguro.test.Iteracao;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -12,7 +14,7 @@ import org.testng.annotations.Test;
 
 import br.com.portoseguro.core.database.H2sql;
 import br.com.portoseguro.core.log.LogConstants;
-import br.com.portoseguro.core.selenium.platfom.ChromePlatform;
+import br.com.portoseguro.core.selenium.platfom.PhantomJSPlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;
 
 public class GmailTeste {
@@ -27,21 +29,31 @@ public class GmailTeste {
 	public static void iniciate() throws Exception {
 	   		
 		PropertyConfigurator.configure(LogConstants.PROPERTIES);	
-		Platform platformWebDriver = ChromePlatform.StartWebDriver();
+		Platform platformWebDriver = PhantomJSPlatform.StartWebDriver();
 		webDriver = platformWebDriver.getLocalWebDriver();			
 		H2sql.openConnection();			
 				
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	
 	public void test () throws Exception{
-		String remetente = "no-reply@accounts.google.com"; //coloque um email valido que tenha no gmail
-		String assunto = "Conta do Google";  // coloque um assunto que exista no gmail
-		String data = " 12 abr";  // coloque a data correta no gmail
+		String remetente = "Filipe Santos";
+		String assunto = "Fwd: Sandbox: Verifique sua identidade no Salesforce";
+		String data = "13:32";
 		
 		SimpleDateFormat formato = new SimpleDateFormat("dd MMM");
-		Date horario = formato.parse(data);
+		SimpleDateFormat formato2 = new SimpleDateFormat("HH:mm");
+		Date horario;
+		try {
+			horario = formato.parse(data);
+		} catch (Exception e) {
+			horario = formato2.parse(data);
+			horario.setDate(new Date().getDate());
+			horario.setMonth(new Date().getMonth());
+			horario.setYear(new Date().getYear());
+		}
 		
 		loginGmail = new LoginContaGmail(webDriver);
 		loginAutenticacao = new LoginAutenticacaoPorto(webDriver);
@@ -54,7 +66,12 @@ public class GmailTeste {
 		loginGmail.nextButton();
 		//loginAutenticacao.preencheUserPasswordPorto();
 		//loginAutenticacao.signIn();
-		emails.Selecionaemail(remetente, assunto ,horario);
+		emails.selecionaEmail(remetente, assunto ,horario);
+		Pattern p = Pattern.compile("\\d+");
+		Matcher m = p.matcher(emails.recuperaTextoEmail());
+		while(m.find()) {
+            System.out.println(m.group());
+        }
 		
 	}
 	

@@ -3,79 +3,92 @@ package br.com.portoseguro.test.Iteracao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.testng.Assert;
 import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
 import br.com.portoseguro.pageobject.gmail.GmailInbox;
 
-public class HorarioEmails  extends BaseWebPage {
+public class HorarioEmails extends BaseWebPage {
 
 	private GmailInbox gmailInbox;
-	
+
 	public HorarioEmails(WebDriver webDriver) {
 		super(webDriver);
 		gmailInbox = new GmailInbox(webDriver);
 	}
-			
-		/** Quando encontrar por algum dos parametros, clicar no item
+
+	/** Quando encontrar por algum dos parametros, clicar no item
 		 * @author 786472 - Filipe Santos
 		 * @param remetente
 		 * @param assunto
 		 * @param horario
 		 * @throws Exception 
 		 */
-		public void Selecionaemail(String remetente, String assunto, Date horario) throws Exception{
+		@SuppressWarnings("deprecation")
+		public void selecionaEmail(String remetente, String assunto, Date horario) throws Exception{
 
-			SimpleDateFormat formato = new SimpleDateFormat("HH:mm a");
-			SimpleDateFormat formato2 = new SimpleDateFormat("dd MMM");
-			Date dataEmail;
+			SimpleDateFormat formato = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat formato2 = new SimpleDateFormat("MMM dd");
+			Date dataEmail = null;
 
 			boolean encontrou = false;
+			List<WebElement> emailLista;
 			
-			List<WebElement> emailLista = gmailInbox.emailLista();
 			
+			int iteradorPhantom = 1;
+			emailLista = gmailInbox.emailLista();
+		
 			for (WebElement emailDetalhe : emailLista) {
-				
-				WebElement emailHorario = gmailInbox.emailDetalheHorario(emailDetalhe);
-				WebElement emailRemetente = gmailInbox.emailName(emailDetalhe);
-				WebElement emailAssunto = gmailInbox.emailContent(emailDetalhe);
-				
-				String horarioEmail = command.getText(emailHorario);
-				String remetenteEmail = command.getText(emailRemetente);
-				String assuntoEmail = command.getText(emailAssunto);
-				
-				try {
-					dataEmail = formato.parse(horarioEmail);
+			
+				String [] email = emailDetalhe.getText().split("\n");
+
+				if(remetente.contains(email[0]) | assunto.equals(email[1])){
 					
-				} catch (Exception e) {
-					dataEmail = formato2.parse(horarioEmail);
-				}
+					int colunaHorario = email.length -1;
+					try {
+						dataEmail = formato.parse(email[colunaHorario]);
+						dataEmail.setDate(new Date().getDate());
+						dataEmail.setMonth(new Date().getMonth());
+						dataEmail.setYear(new Date().getYear());
+						
+						
+					} catch (Exception e) {
+						dataEmail = formato2.parse(email[colunaHorario].trim());
+						
+					}
 				
-				if(remetente.equals(remetenteEmail) | assunto.equals(assuntoEmail)){
-					long diffminutes = (horario.getTime() - dataEmail.getTime())/ (60 * 1000);
+					long diffminutes = (dataEmail.getTime() - horario.getTime())/ (60 * 1000);
 					if(diffminutes <= 1){
-						command.click(emailDetalhe);
+						if (webDriver instanceof PhantomJSDriver) {
+							emailDetalhe = webDriver.findElement(By.xpath("//table[@class='th']//tbody/tr["+iteradorPhantom+"]//td[3]/..//a"));							
+							webDriver.navigate().to(emailDetalhe.getAttribute("href"));
+						} else {
+							command.click(emailDetalhe);
+						}
+						
 						encontrou=true;
 						break;						
 					}					
-				}								
+				}
+				iteradorPhantom++;
 			}
 			
-			Assert.assertEquals(encontrou, true,"Encontrou email de Autenticação?");
+			Assert.assertEquals(encontrou, true,"Encontrou email de Autenticação?");			
 			
-		
-			if (!encontrou){
-				Assert.fail("Não encontrou o email de autenticacao");
-			}			
-			
-		}		
-
-		@Override
-		public boolean isDisplayed() {
-			// TODO Auto-generated method stub
-			return false;
 		}
-	
-	
+
+	@Override
+	public boolean isDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public String recuperaTextoEmail() throws Exception {
+		return gmailInbox.getEmailContent().getText();
+	}
+
 }

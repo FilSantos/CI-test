@@ -11,6 +11,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -77,7 +78,7 @@ public abstract class CommandAction{
 			webElement.sendKeys(value);
 			value = webElement.getAttribute("type").equals("password") ? "*******" : value;
 			
-			if (webDriver instanceof PhantomJSDriver) {
+			if (webDriver instanceof PhantomJSDriver | webDriver instanceof ChromeDriver ) {
 				logger.info("Objeto: 'By." + webElement.toString().substring(0, webElement.toString().length() -1) .split( "> ")[1] + "' preenchido: '" + value + "'");
 			} else {
 				logger.info("Objeto: '" + webElement.toString() + "' preenchido: '" + value + "'");	
@@ -189,7 +190,11 @@ public abstract class CommandAction{
 			webDriverWait.until(ExpectedConditions.elementToBeClickable(webElement));
 			webElement.click();
 			//webDriver.switchTo().window(webDriver.getWindowHandle());
-			logger.info("Objeto: '" + webElement.toString() + "' realizado click");
+			if (webDriver instanceof PhantomJSDriver | webDriver instanceof ChromeDriver ) {
+				logger.info("Objeto: 'By." + webElement.toString().substring(0, webElement.toString().length() -1) .split( "> ")[1] + "' realizado click");
+			} else {
+				logger.info("Objeto: '" + webElement.toString() + "' realizado click");	
+			}
 			Reporter.log(" e recebeu click");
 		} catch (Exception e) {
 			msgError = "Object: '" + webElement.toString() + "' cannot click action";

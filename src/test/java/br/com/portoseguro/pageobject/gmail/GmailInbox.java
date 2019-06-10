@@ -14,10 +14,8 @@ import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
  *
  */
 public class GmailInbox extends BaseWebPage{
-	private static By emailList = By.xpath("//div[@class='AO']//tbody/tr[contains(@class,'zA')]");				
-	private static By emailDateTime = By.xpath("//td[9]/span[1]/span[1]");
-	private static By emailName = By.xpath("//td[5]/div[2]/span[1]/span[1]");
-	private static By emailContent = By.xpath("//div/div/span/span[not(@class='Zt')]");
+	private static By emailList = By.xpath("//div[@class='Cp']//tbody/tr | //table[@class='th']//tbody/tr");	
+	private static By emailContent = By.xpath(".//*[@class='ii gt' and not(@style)] | //div[@class='msg']");
 	
 	public GmailInbox(WebDriver webDriver) {
 		super(webDriver);
@@ -36,48 +34,13 @@ public class GmailInbox extends BaseWebPage{
 	 */
 	
 	public List<WebElement> emailLista() throws Exception{
-		
 		return searchElement.findElementsBy(emailList, "Lista de e-mail");
-	}
-	
-	/**
-	 * Lista de e-mail porto com detalhes de data e horário
-	 * @author Bruno Silva(Cognizant)
-	 * @return
-	 * @throws Exception
-	 */
-	
-	public WebElement emailDetalheHorario(WebElement emailItem) throws Exception{
 		
-		return searchElement.findChildElementBy(emailItem, emailDateTime, "Horário do e-mail");
 	}
-	
-	/**
-	 * Nome do remetente do e-mail
-	 * @author Bruno Silva(Cognizant)
-	 * @return
-	 * @throws Exception
-	 */
-	
-	public WebElement emailName(WebElement emailItem) throws Exception{
-		
-		return searchElement.findChildElementBy(emailItem, emailName, "Nome do remetente do e-mail");
+
+	public WebElement getEmailContent() throws Exception {
+		return searchElement.findElementBy(emailContent, "Conteúdo email");		
 	}
-	
-	/**
-	 * Conteúdo do e-mail no título
-	 * @author Bruno Silva(Cognizant)
-	 * @return
-	 * @throws Exception
-	 */
-	
-	public WebElement emailContent(WebElement emailItem) throws Exception{
-		
-		return searchElement.findChildElementBy(emailItem, emailContent, "Conteúdo do e-mail no título");
-	}
-	
-	
-	
 	
 	
 	
