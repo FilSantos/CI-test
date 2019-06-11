@@ -41,7 +41,7 @@ public class GmailInbox extends BaseWebPage {
 			boolean encontrou = false;
 			List<WebElement> emailLista;
 			
-			
+			command.screenshot();
 			int iteradorPhantom = 1;
 			emailLista = gmail.emailLista();
 		
@@ -99,7 +99,7 @@ public class GmailInbox extends BaseWebPage {
 	 * @throws Exception 
 	 */
 	public String recuperaToken() throws Exception{
-		Pattern p = Pattern.compile("\\d+");
+		Pattern p = Pattern.compile("\\d{5}");
 		String texto = recuperaTextoEmail();
 		Matcher m = p.matcher(texto);
 		while(m.find()) {

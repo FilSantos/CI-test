@@ -1,6 +1,7 @@
 package br.com.portoseguro.test.Iteracao;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
 import br.com.portoseguro.pageobject.gmail.LoginGmail;
@@ -79,9 +80,12 @@ public class GmailLogin extends BaseWebPage {
 		 */
 		
 		public void btnContinuar()throws Exception{
-			
-			WebElement botaoContinuar = confirmacao.btnContinuar();
-			command.click(botaoContinuar);
+			if (!(webDriver instanceof PhantomJSDriver) ) {
+				WebElement botaoContinuar = confirmacao.btnContinuar();
+				command.click(botaoContinuar);
+				
+			}
+
 		}
 		
 		

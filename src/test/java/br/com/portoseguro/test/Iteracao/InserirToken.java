@@ -2,10 +2,9 @@ package br.com.portoseguro.test.Iteracao;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
 import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
-import br.com.portoseguro.pageobject.gmail.AutenticacaoPorto;
 import br.com.portoseguro.pageobject.salesforce.Autenticacao2Fatores;
-import br.com.portoseguro.test.utils.PropertiesUtil;
 
 public class InserirToken extends BaseWebPage {
 
@@ -34,9 +33,8 @@ public class InserirToken extends BaseWebPage {
 		public void tokenPorto(String tokenPort) throws Exception {
 					
 			WebElement tokenPorto = token.inserirToken();
-			command.click(tokenPorto);
+			command.send(tokenPorto, tokenPort);
 			WebElement btnVerificar = token.btnVerificar();
 			command.click(btnVerificar);
-			command.screenshot();
 		}
 }
