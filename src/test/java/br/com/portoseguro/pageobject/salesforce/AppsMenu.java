@@ -12,7 +12,7 @@ public class AppsMenu extends BaseWebPage{
 		super(webDriver);
 		// TODO Auto-generated constructor stub
 	}
-	private static By Menu = By.className("bare slds-icon-waffle_container slds-context-bar__button slds-button uiButton forceHeaderButton salesforceIdentityAppLauncherHeader");
+	private static By Menu = By.xpath("//div[@class='slds-icon-waffle']");
 
 	
 	

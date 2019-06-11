@@ -15,10 +15,8 @@ public class LoginIntegradoSFGmail extends BaseWebPage {
 	private static PortoLogin loginAutenticacao;
 	private static GmailInbox emails;
 	private static SalesForceLogin loginSF;
-	private static InserirToken token;
-	
-	private static WebDriver webDriverGmail;
-	
+	private static InserirToken token;	
+	private static WebDriver webDriverGmail;	
 	private static String erroThread = "";
 
 	public LoginIntegradoSFGmail(WebDriver webDriver) {

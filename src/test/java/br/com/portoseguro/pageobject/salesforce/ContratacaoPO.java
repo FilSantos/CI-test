@@ -12,9 +12,9 @@ import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
  * @author Bruno Silva(Cognizant)
  *
  */
-public class Contratacao extends BaseWebPage{
+public class ContratacaoPO extends BaseWebPage{
 
-	public Contratacao(WebDriver webDriver) {
+	public ContratacaoPO(WebDriver webDriver) {
 		super(webDriver);
 		// TODO Auto-generated constructor stub
 	}
@@ -34,27 +34,27 @@ public class Contratacao extends BaseWebPage{
 	private static By Complet_Name = By.id("NOMECOMPLETO");
 	private static By Nascimento = By.id("NASCIMENTO");
 	private static By Profissao = By.id("PROFISSAO");
-	private static By Sexo = By.id("");
-	private static By Masculino = By.id("");
-	private static By Feminino = By.id("");
-	private static By FumanteSim = By.id("");
+	private static By Sexo = By.id("SEXO");
+	private static By Masculino = By.id("MASC");
+	private static By Feminino = By.id("FEM");
+	private static By FumanteSim = By.id("FUMANTE");
 	private static By FumanteNao = By.id("");
-	private static By EstadoCivil = By.id("");
-	private static By EstadoSolteiro = By.id("");
-	private static By EstadoCasado = By.id("");
-	private static By EstadoDivorciado = By.id("");
-	private static By EstadoViuvo = By.id("");
+	private static By EstadoCivil = By.id("ESTADOCIVIL");
+	private static By EstadoSolteiro = By.id("SOL");
+	private static By EstadoCasado = By.id("CAS");
+	private static By EstadoDivorciado = By.id("DIV");
+	private static By EstadoViuvo = By.id("VIU");
 	private static By btnVoltar = By.id("");
-	private static By RendaMensal = By.id("");
-	private static By Renda4000 = By.id("");
-	private static By Renda4001 = By.id("");
-	private static By Renda8001 = By.id("");
-	private static By Renda12001 = By.id("");
-	private static By RendaAcima16000 = By.id("");
+	private static By RendaMensal = By.id("RENDAMENSAL");
+	private static By Renda4000 = By.id("0-4000");
+	private static By Renda4001 = By.id("4001-8000");
+	private static By Renda8001 = By.id("8001-12000");
+	private static By Renda12001 = By.id("12001-16000");
+	private static By RendaAcima16000 = By.id("16001-infinito");
 	private static By BtnEnviar = By.id("");
-	private static By PlanoInferior = By.id("");
-	private static By PlanoMedio = By.id("");
-	private static By PlanoSuperior = By.id("");
+	private static By PlanoInferior = By.id("oferta1");
+	private static By PlanoMedio = By.id("oferta2");
+	private static By PlanoSuperior = By.id("oferta3");
 	private static By BtnConfirmar = By.id("");
 	private static By PersonalizePlanoInferior = By.id("");
 	private static By PersonalizePlanoMedio = By.id("");
