@@ -181,7 +181,7 @@ public abstract class SearchElement {
 	public boolean existsNoLog(By by, String reportName, int timeWait) {
 		try {
 			waitToBeReady();
-			WebDriverWait waitExists = new WebDriverWait(this.webDriver, timeWait);
+			WebDriverWait waitExists = new WebDriverWait(this.webDriver, timeWait );
 			waitExists.until(ExpectedConditions.presenceOfElementLocated(by));
 		} catch(Exception e) {
 			String errorMsg = String.format(" Object %s not found with %s ", reportName.trim(), by.toString());

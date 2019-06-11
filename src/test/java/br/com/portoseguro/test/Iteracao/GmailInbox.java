@@ -3,21 +3,25 @@ package br.com.portoseguro.test.Iteracao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.testng.Assert;
 import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
-import br.com.portoseguro.pageobject.gmail.GmailInbox;
+import br.com.portoseguro.pageobject.gmail.GmailMailbox;
 
-public class HorarioEmails extends BaseWebPage {
 
-	private GmailInbox gmailInbox;
+public class GmailInbox extends BaseWebPage {
 
-	public HorarioEmails(WebDriver webDriver) {
+	private GmailMailbox gmail;
+
+	public GmailInbox(WebDriver webDriver) {
 		super(webDriver);
-		gmailInbox = new GmailInbox(webDriver);
+		gmail = new GmailMailbox (webDriver);
 	}
 
 	/** Quando encontrar por algum dos parametros, clicar no item
@@ -39,13 +43,13 @@ public class HorarioEmails extends BaseWebPage {
 			
 			
 			int iteradorPhantom = 1;
-			emailLista = gmailInbox.emailLista();
+			emailLista = gmail.emailLista();
 		
 			for (WebElement emailDetalhe : emailLista) {
 			
 				String [] email = emailDetalhe.getText().split("\n");
 
-				if(remetente.contains(email[0]) | assunto.equals(email[1])){
+				if(email[0].contains(remetente) | assunto.equals(email[1])){
 					
 					int colunaHorario = email.length -1;
 					try {
@@ -53,7 +57,6 @@ public class HorarioEmails extends BaseWebPage {
 						dataEmail.setDate(new Date().getDate());
 						dataEmail.setMonth(new Date().getMonth());
 						dataEmail.setYear(new Date().getYear());
-						
 						
 					} catch (Exception e) {
 						dataEmail = formato2.parse(email[colunaHorario].trim());
@@ -87,7 +90,37 @@ public class HorarioEmails extends BaseWebPage {
 	}
 
 	public String recuperaTextoEmail() throws Exception {
-		return gmailInbox.getEmailContent().getText();
+		return gmail.getEmailContent().getText();
 	}
-
+	
+	/**Recupera o token no email da SalesForce utilizado para autenticacao
+	 * @author Filipe Santos (Cognizant)
+	 * @return
+	 * @throws Exception 
+	 */
+	public String recuperaToken() throws Exception{
+		Pattern p = Pattern.compile("\\d+");
+		String texto = recuperaTextoEmail();
+		Matcher m = p.matcher(texto);
+		while(m.find()) {
+            return(m.group());
+        }
+		return null;
+	}
+	
+	/**
+	 * Realizar exclusao de email ja utilizado no gmail
+	 * @author 634111 - Bruno Silva
+	 * @throws Exception
+	 */
+	public void excluirEmailGmail() throws Exception {
+		List<WebElement> emails = gmail.getExluirEmail();
+						
+		for (WebElement emailsExcluir : emails) {
+			if ( emailsExcluir.isDisplayed()) {
+				command.click(emailsExcluir);
+			}
+			
+		}
+	}
 }

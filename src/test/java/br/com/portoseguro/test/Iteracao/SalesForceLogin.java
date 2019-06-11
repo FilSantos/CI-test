@@ -7,12 +7,12 @@ import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
 import br.com.portoseguro.pageobject.salesforce.Login;
 import br.com.portoseguro.test.utils.PropertiesUtil;
 
-public class LoginSalesForce extends BaseWebPage {
+public class SalesForceLogin extends BaseWebPage {
 
 	private Login login;
 
 		
-		public LoginSalesForce(WebDriver webDriver) {
+		public SalesForceLogin(WebDriver webDriver) {
 		super(webDriver);
 		login = new Login (webDriver);
 		
@@ -71,6 +71,23 @@ public class LoginSalesForce extends BaseWebPage {
 			command.click(acessar);
 			
 		}
+		
+		
+		/**
+		 * Valida se foi exibido mensagem de erro de autenticacao
+		 * @author 634111 - Bruno Silva
+		 * @throws Exception
+		 */
+		
+		public void erroMessage() throws Exception {
+
+			if ( login.existerroLogin()) {
+				command.screenshot();
+				Assert.fail("Erro ao logar no SalesForce");
+			} 
+		
+		}
+			
 		
 		/**
 		 * Validar botão limpar usuário indisponível 

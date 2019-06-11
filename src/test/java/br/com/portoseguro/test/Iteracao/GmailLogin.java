@@ -4,18 +4,20 @@ import org.openqa.selenium.WebElement;
 
 import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
 import br.com.portoseguro.pageobject.gmail.LoginGmail;
+import br.com.portoseguro.pageobject.salesforce.ConfirmacaoGmail;
 import br.com.portoseguro.test.utils.PropertiesUtil;
 
-public class LoginContaGmail extends BaseWebPage {
+public class GmailLogin extends BaseWebPage {
 
 	
 	private LoginGmail gmail;
+	private ConfirmacaoGmail confirmacao; 
 
 		
-		public LoginContaGmail(WebDriver webDriver) {
+		public GmailLogin(WebDriver webDriver) {
 		super(webDriver);
 		gmail = new LoginGmail (webDriver);
-		
+		confirmacao = new ConfirmacaoGmail(webDriver);
 		}			
 		
 		@Override
@@ -58,10 +60,28 @@ public class LoginContaGmail extends BaseWebPage {
 		}
 		
 		
+		/**
+		 * Botao Next
+		 * @author 634111 - Bruno Silva
+		 * @throws Exception
+		 */
+		
 		public void nextButton()throws Exception{
 			
 			WebElement botaoNext = gmail.nextButton();
 			command.click(botaoNext);
+		}
+		
+		/**
+		 * Botao continuar
+		 * @author 634111 - Bruno Silva
+		 * @throws Exception
+		 */
+		
+		public void btnContinuar()throws Exception{
+			
+			WebElement botaoContinuar = confirmacao.btnContinuar();
+			command.click(botaoContinuar);
 		}
 		
 		

@@ -12,11 +12,12 @@ import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
  * @author Bruno Silva(Cognizant)
  *
  */
-public class GmailInbox extends BaseWebPage{
+public class GmailMailbox extends BaseWebPage{
 	private static By emailList = By.xpath("//div[@class='Cp']//tbody/tr | //table[@class='th']//tbody/tr");	
 	private static By emailContent = By.xpath(".//*[@class='ii gt' and not(@style)] | //div[@class='msg']");
+	private static By excluirEmail = By.xpath("//div[contains(@data-tooltip,'Excluir')]");
 	
-	public GmailInbox(WebDriver webDriver) {
+	public GmailMailbox(WebDriver webDriver) {
 		super(webDriver);
 	}
 
@@ -38,7 +39,12 @@ public class GmailInbox extends BaseWebPage{
 	}
 
 	public WebElement getEmailContent() throws Exception {
-		return searchElement.findElementBy(emailContent, "Conteúdo email");		
+		return searchElement.findElementBy(emailContent, "Conteudo email");
+	}
+	
+	
+	public List<WebElement> getExluirEmail() throws Exception {
+		return searchElement.findElementsBy(excluirEmail, "Exclusao de email");
 	}
 	
 	

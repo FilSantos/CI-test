@@ -6,13 +6,13 @@ import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
 import br.com.portoseguro.pageobject.gmail.AutenticacaoPorto;
 import br.com.portoseguro.test.utils.PropertiesUtil;
 
-public class LoginAutenticacaoPorto extends BaseWebPage {
+public class PortoLogin extends BaseWebPage {
 
 	
 	private AutenticacaoPorto porto;
 
 		
-		public LoginAutenticacaoPorto(WebDriver webDriver) {
+		public PortoLogin(WebDriver webDriver) {
 		super(webDriver);
 		porto = new AutenticacaoPorto (webDriver);
 		

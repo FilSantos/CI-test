@@ -11,13 +11,13 @@ import br.com.portoseguro.core.database.H2sql;
 import br.com.portoseguro.core.log.LogConstants;
 import br.com.portoseguro.core.selenium.platfom.PhantomJSPlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;
-import br.com.portoseguro.test.Iteracao.LoginSalesForce;
+import br.com.portoseguro.test.Iteracao.SalesForceLogin;
 
 public class PesquisaProposta {
 	
 	final static Logger logger = Logger.getLogger(PesquisaProposta.class);
 	private static WebDriver webDriver; 
-	private static LoginSalesForce login; 
+	private static SalesForceLogin login; 
 	
 	@BeforeSuite
 	public static void iniciate() throws Exception {
@@ -33,7 +33,7 @@ public class PesquisaProposta {
 	
 	public void test () throws Exception{
 		
-		login = new LoginSalesForce(webDriver);
+		login = new SalesForceLogin(webDriver);
 		login.iniciaAutenticação();
 		login.preencheLoginSF();
 		login.tapAcessar();	

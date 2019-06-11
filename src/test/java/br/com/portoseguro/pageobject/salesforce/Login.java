@@ -23,6 +23,7 @@ public class Login  extends BaseWebPage{
 	private static By USERNAME_SAVED_CLEAR_BUTTON = By.className("clearicon");
 	private static By REMEMBERME_CHECKBOX = By.name("rememberUn");
 	private static By FORGOT_PASSWORD_HYPERLINK = By.id("forgot_password_link");
+	private static By ERROR_MESSAGE = By.id("error");
 	
 	public Login(WebDriver webDriver) {
 		super(webDriver);
@@ -31,7 +32,7 @@ public class Login  extends BaseWebPage{
 	
 	@Override
 	public boolean isDisplayed() {
-		return searchElement.existsNoLog(LOGIN_FORM, "Página de acesso", 30) ? true : false;
+		return searchElement.existsNoLog(LOGIN_FORM, "Página de acesso", 1) ? true : false;
 	}	
 
 	/**
@@ -91,7 +92,7 @@ public class Login  extends BaseWebPage{
 	
 	public boolean existsClearButton () throws Exception{
 		
-		return searchElement.existsNoLog(USERNAME_SAVED_CLEAR_BUTTON, "Clear button", 5000);
+		return searchElement.existsNoLog(USERNAME_SAVED_CLEAR_BUTTON, "Clear button", 1);
 	}
 	
 	/**
@@ -130,7 +131,21 @@ public class Login  extends BaseWebPage{
 	
 	public WebElement esqueciSenha() throws Exception{
 		
-		return searchElement.findElementBy(FORGOT_PASSWORD_HYPERLINK, "ESqueci a senha");
+		return searchElement.findElementBy(FORGOT_PASSWORD_HYPERLINK, "Esqueci a senha");
+		
+	}
+	
+	
+	/**
+	 * Validar mensagem de erro no login
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public boolean existerroLogin() throws Exception{
+		
+		return searchElement.existsNoLog(ERROR_MESSAGE, "Exsite erro de autenticacao", 1);
 		
 	}
 	
