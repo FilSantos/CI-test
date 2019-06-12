@@ -24,6 +24,7 @@ public class Login  extends BaseWebPage{
 	private static By REMEMBERME_CHECKBOX = By.name("rememberUn");
 	private static By FORGOT_PASSWORD_HYPERLINK = By.id("forgot_password_link");
 	private static By ERROR_MESSAGE = By.id("error");
+	private static By FALHA_IDENTIDADE = By.xpath("//h2[text() = 'Problema ao verificar sua identidade']");
 	
 	public Login(WebDriver webDriver) {
 		super(webDriver);
@@ -146,6 +147,20 @@ public class Login  extends BaseWebPage{
 	public boolean existerroLogin() throws Exception{
 		
 		return searchElement.existsNoLog(ERROR_MESSAGE, "Exsite erro de autenticacao", 1);
+		
+	}
+	
+	
+	/**
+	 * Validar mensagem de erro na verificacao de identidade
+	 * @author Bruno Silva(Cognizant)
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public boolean existerroIdentidade() throws Exception{
+		
+		return searchElement.existsNoLog(FALHA_IDENTIDADE, "Exsite erro de identidade de verificacao", 1);
 		
 	}
 	

@@ -1,10 +1,11 @@
-package br.com.portoseguro.pageobject.salesforce;
+package br.com.portoseguro.test.iteracao;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
+import br.com.portoseguro.pageobject.salesforce.MainMenuItem;
 
 public class MainMenu extends BaseWebPage{
 
@@ -24,7 +25,8 @@ public class MainMenu extends BaseWebPage{
 	
 	public void navigateMenu(MainMenuItem menuItem) throws Exception {
 		WebElement menuNav = searchElement.findElementBy(menuItem.getLocator(), menuItem.getReportName());
-		webDriver.navigate().to(menuNav.getAttribute("href"));		
+		webDriver.navigate().to(menuNav.getAttribute("href"));
+		
 	}
 
 	/** Pesquisa e clica no item pesquisado

@@ -1,4 +1,4 @@
-package br.com.portoseguro.test.Iteracao;
+package br.com.portoseguro.test.iteracao;
 
 import java.util.Date;
 
@@ -33,16 +33,15 @@ public class LoginIntegradoSFGmail extends BaseWebPage {
 	
 	public void login() throws Exception{
 		
-		loginGmail = new GmailLogin(webDriverGmail);
-		loginAutenticacao = new PortoLogin(webDriverGmail);
-		emails = new GmailInbox(webDriverGmail);
-		
-		loginSF = new SalesForceLogin(webDriver);
-		token = new InserirToken(webDriver);
-		
 		Platform authPlat = PhantomJSPlatform.StartWebDriver();
 		webDriverGmail = authPlat.getLocalWebDriver();	
 		
+		loginGmail = new GmailLogin(webDriverGmail);
+		loginAutenticacao = new PortoLogin(webDriverGmail);
+		emails = new GmailInbox(webDriverGmail);		
+		loginSF = new SalesForceLogin(webDriver);
+		token = new InserirToken(webDriver);
+
 		Thread authSF = new Thread("Aut SF") {
 			public void run(){
 				
@@ -50,6 +49,7 @@ public class LoginIntegradoSFGmail extends BaseWebPage {
 					loginSF.iniciaAutenticação();
 					loginSF.preencheLoginSF();
 					loginSF.tapAcessar();
+					loginSF.erroVerificacao();
 					loginSF.erroMessage();
 				} catch (Exception e) {
 					erroThread = erroThread + "Falha na autenticacao do Sales Force";

@@ -1,4 +1,4 @@
-package br.com.portoseguro.test.Iteracao;
+package br.com.portoseguro.test.iteracao;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -83,7 +83,21 @@ public class SalesForceLogin extends BaseWebPage {
 
 			if ( login.existerroLogin()) {
 				command.screenshot();
-				Assert.fail("Erro ao logar no SalesForce");
+				throw new Exception("Erro ao logar no SalesForce");
+			} 
+		
+		}		
+		
+		/**
+		 * Valida se foi exibido mensagem de erro de verificacao de identidade
+		 * @author 634111 - Bruno Silva
+		 * @throws Exception
+		 */
+		
+		public void erroVerificacao() throws Exception {
+
+			if ( login.existerroIdentidade()) {
+				throw new Exception("Erro ao efetuar verificao de identidade no SalesForce");
 			} 
 		
 		}

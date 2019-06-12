@@ -1,10 +1,11 @@
-package br.com.portoseguro.pageobject.salesforce;
+package br.com.portoseguro.test.iteracao;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import br.com.portoseguro.core.selenium.pageobject.BaseWebPage;
+import br.com.portoseguro.pageobject.salesforce.AppsMenuItem;
 
 public class AppsMenu extends BaseWebPage{
 
@@ -25,11 +26,12 @@ public class AppsMenu extends BaseWebPage{
 	
 	public void openMenu() throws Exception {
 		WebElement openMenu = searchElement.findElementBy(Menu, "Menu Apps");
+		command.click(openMenu);
 	}
 	
 	public void navigateMenuApp(AppsMenuItem menuItem) throws Exception {
 		WebElement menuApp = searchElement.findElementBy(menuItem.getLocator(), menuItem.getReportName());
-		webDriver.navigate().to(menuApp.getAttribute("href"));		
+		command.click(menuApp);	
 	}
 	
 	

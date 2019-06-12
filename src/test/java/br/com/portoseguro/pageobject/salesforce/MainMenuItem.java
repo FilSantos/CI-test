@@ -25,7 +25,7 @@ public enum MainMenuItem {
 	CRITICASDEINTEGRACOES_TAB("Críticas de integrações", By.xpath("//span[text()='Críticas de integrações']/..")),
 	TITULOSINTEGRACAO_TAB("Títulos Integração", By.xpath("//span[text()='Títulos Integração']/..")),
 	MAIS_TAB("Mais", By.xpath("//one-app-nav-bar-menu-button//span[text()='Mais']")),
-	CONTRTACAO_TAB("Aba de Contratacao", By.xpath("//span[text() = 'Contratação']"));
+	CONTRATACAO_TAB("Aba de Contratacao", By.xpath("//span[(text()= 'Contratação')]/.."));
 
 	/**
 	 * Name to use for identifying the tab batem in the report

@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 
 public enum AppsMenuItem {
 	
-	VIDA_APP("Vida", By.xpath("//a[text()='Vida']"));
+	VIDA_APP("Vida", By.xpath("//a[@class='appTileTitleNoDesc' and text()='Vida']"));
 	
 	
 	/**

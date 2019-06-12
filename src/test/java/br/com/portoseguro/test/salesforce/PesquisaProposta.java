@@ -11,7 +11,7 @@ import br.com.portoseguro.core.database.H2sql;
 import br.com.portoseguro.core.log.LogConstants;
 import br.com.portoseguro.core.selenium.platfom.PhantomJSPlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;
-import br.com.portoseguro.test.Iteracao.SalesForceLogin;
+import br.com.portoseguro.test.iteracao.SalesForceLogin;
 
 public class PesquisaProposta {
 	

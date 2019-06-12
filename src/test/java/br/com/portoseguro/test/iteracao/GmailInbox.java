@@ -1,4 +1,4 @@
-package br.com.portoseguro.test.Iteracao;
+package br.com.portoseguro.test.iteracao;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

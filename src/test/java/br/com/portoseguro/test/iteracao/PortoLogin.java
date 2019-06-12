@@ -1,4 +1,4 @@
-package br.com.portoseguro.test.Iteracao;
+package br.com.portoseguro.test.iteracao;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
