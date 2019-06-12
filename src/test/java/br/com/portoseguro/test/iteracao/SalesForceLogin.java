@@ -41,8 +41,12 @@ public class SalesForceLogin extends BaseWebPage {
 		public void preencheLoginSF() throws Exception {
 					
 			WebElement usuario = login.user();
+			usuario.sendKeys("qwe");			
+			command.clear(usuario);
 			command.send(usuario, PropertiesUtil.getProp("web.usuario"));
 			WebElement senha = login.password();
+			senha.sendKeys("qwe");
+			command.clear(senha);
 			command.send(senha, PropertiesUtil.getProp("web.senha"));
 			
 				
@@ -58,6 +62,7 @@ public class SalesForceLogin extends BaseWebPage {
 			command.click(esqueciSenha);
 			command.screenshot();
 		}
+		
 		
 		/**
 		 * Validar botão acessar 

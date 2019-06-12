@@ -22,12 +22,11 @@ public class Autenticacao2Fatores extends BaseWebPage{
 
 	private static By CODIGO_VERIFICADOR = By.id("emc");
 	private static By BOTAO_VERIFICAR = By.id("save");
-	
+	private static By TITULO_PAGINA = By.xpath("//h2[text()='Verifique sua identidade']");
 	
 	@Override
 	public boolean isDisplayed() {
-		// TODO Auto-generated method stub
-		return true;
+		return searchElement.existsNoLog(TITULO_PAGINA, "Página aberta", 1);
 	}
 	
 	/**

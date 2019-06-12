@@ -7,7 +7,6 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import br.com.portoseguro.core.log.LogConstants;
 import br.com.portoseguro.core.selenium.platfom.ChromePlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;

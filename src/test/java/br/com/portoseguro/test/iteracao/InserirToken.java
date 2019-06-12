@@ -20,7 +20,7 @@ public class InserirToken extends BaseWebPage {
 		
 		@Override
 		public boolean isDisplayed() {
-			return false;
+			return token.isDisplayed();
 		}
 		
 			

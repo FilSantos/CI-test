@@ -56,7 +56,7 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 		
 		chromeOptions.setHeadless(false);
 		WebDriver webDriver = new ChromeDriver(chromeOptions);
-		webDriver.manage().window().maximize();
+		//webDriver.manage().window().maximize();
 		
 		return webDriver;
 	}

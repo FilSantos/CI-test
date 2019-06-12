@@ -15,10 +15,13 @@ public class Contratacao extends BaseWebPage {
 	public Contratacao(WebDriver webDriver) {
 		super(webDriver);
 
-		// TODO Auto-generated constructor stub
+		contract = new ContratacaoPO(webDriver);
 	}
 
 	private ContratacaoPO contract;
+	
+	
+	
 
 	@Override
 	public boolean isDisplayed() {
