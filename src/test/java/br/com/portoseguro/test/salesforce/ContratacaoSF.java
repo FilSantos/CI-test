@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 
 import br.com.portoseguro.core.log.LogConstants;
 import br.com.portoseguro.core.selenium.platfom.ChromePlatform;
-import br.com.portoseguro.core.selenium.platfom.IEPlatform;
 import br.com.portoseguro.core.selenium.platfom.Platform;
 import br.com.portoseguro.pageobject.salesforce.AppsMenuItem;
 import br.com.portoseguro.pageobject.salesforce.MainMenuItem;

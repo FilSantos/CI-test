@@ -45,6 +45,15 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 		chromeOptions.setAcceptInsecureCerts(true);
 		chromeOptions.addArguments("download.default_directory="+currentPath);
 		chromeOptions.addArguments("profile.default_content_settings.popups=0");
+		String profileChrome;
+		if (OS.contains("windows")){
+			profileChrome = System.getProperty("user.home") + "\\AppData\\Local\\Google\\Chrome\\User Data";
+		} else {
+			profileChrome = System.getProperty("user.home");
+		}
+		chromeOptions.addArguments("user-data-dir="+profileChrome);
+		
+		
 		chromeOptions.setHeadless(false);
 		WebDriver webDriver = new ChromeDriver(chromeOptions);
 		webDriver.manage().window().maximize();
