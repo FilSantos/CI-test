@@ -12,13 +12,13 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class SearchElementForSalesForce extends SearchElement {
+public class SearchElementForCustom extends SearchElement {
 
 	/**
 	 * 
 	 * @param webDriver
 	 */
-	public SearchElementForSalesForce(WebDriver webDriver) {
+	public SearchElementForCustom(WebDriver webDriver) {
 		super(webDriver);
 	}
 
@@ -27,12 +27,9 @@ public class SearchElementForSalesForce extends SearchElement {
 		try {
 			
 			List<By> loaders = new ArrayList<By>();
-			//SalesForce
-			loaders.add(By.xpath("//div[@class='loader']"));
-			loaders.add( By.xpath("//div[contains(@class,'LoadingBox')]"));
-			loaders.add( By.xpath("//div[contains(@class,'slds-spinner')]"));
-			// Corretor online
-			loaders.add( By.xpath(".//*[contains(@class,'ps-ico-loading-modal')]"));
+			// Qualquer objeto com @class que contenha 'load'
+			loaders.add(By.xpath(".//*[contains(lower-case(@class),'load')]"));
+
 			
 			webDriver.switchTo().defaultContent();
 			

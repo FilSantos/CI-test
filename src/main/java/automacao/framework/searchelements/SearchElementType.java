@@ -10,10 +10,10 @@ public enum SearchElementType {
 			return new SearchElementForWEB(webDriver);
 		}},
 		
-	SALESFORCE {
+	CUSTOM {
 			@Override
 			public SearchElement getSearchElement(WebDriver webDriver) {
-				return new SearchElementForSalesForce(webDriver);
+				return new SearchElementForCustom(webDriver);
 			}
 	};
 
