@@ -1,19 +1,4 @@
-.idea/
+/.classpath
+/.project
+/.settings
 /target/
-.classpath
-.settings/
-*.iml
-.project
-First Run
-Local State
-data/
-Default/*
-Default/Preferences
-_windows/
-editor.xml
-debugger.xml
-/logs/*
-logs/
-logs/*
-/bin/
-test-output/
