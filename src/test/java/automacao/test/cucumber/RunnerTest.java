@@ -2,9 +2,9 @@ package automacao.test.cucumber;
 
 import org.junit.runner.RunWith;
 
-import automacao.framework.cucumber.BeforeSuite;
-import automacao.framework.cucumber.CustomCucumberRunner;
-import automacao.framework.cucumber.FeatureOverright;
+import automacao.framework.runner.cucumber.BeforeSuite;
+import automacao.framework.runner.cucumber.CustomCucumberRunner;
+import automacao.framework.runner.cucumber.FeatureOverright;
 import cucumber.api.CucumberOptions;
 
 

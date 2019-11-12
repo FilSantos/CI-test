@@ -1,4 +1,4 @@
-package automacao.framework.testng;
+package automacao.framework.runner.testng;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +9,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,17 +32,15 @@ import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.xml.XmlSuite;
 
-import automacao.framework.log.LogConstants;
-import automacao.framework.selenium.command.CommandAction;
-import automacao.framework.selenium.command.CommandType;
+import automacao.framework.browser.command.CommandAction;
+import automacao.framework.browser.command.CommandType;
+import automacao.framework.runner.LogConstants;
 
 public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
 
 	final static Logger logger = Logger.getLogger(ListenerTest.class);
 	private String suiteName = "AUTOMACAO";	
-	private File dir = new File("test-output");
 	final static String emailableReportTemplateFile = "src/test/resources/relatorio-template.html";
-	private Calendar date = Calendar.getInstance();
 	private static List<WebDriver> webDrivers = new ArrayList<WebDriver>();
 	
 	List<ITestResult> passedtests = new ArrayList<ITestResult>();
@@ -72,7 +69,7 @@ public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
 		try {
 			File targetFile = new File(new java.io.File( "." ).getCanonicalPath());
 
-			File sourceFile = new File("src/test/resources/logo.png");
+			File sourceFile = new File("src/main/resources/logo.png");
 			File destinationFile = new File(targetFile.toPath().toString() +"/test-output/logo.png");
 			FileUtils.copyFile(sourceFile, destinationFile);
 

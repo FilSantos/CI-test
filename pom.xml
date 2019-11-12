@@ -3,13 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>br.com.portoseguro.lotus</groupId>
-	<artifactId>vida</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lotus-massificado-arquivos</name>
-	<url>http://www.portoseguro.com.br</url>
 	<developers>
 		<developer>
 			<name>Cognizant Brasil</name>
@@ -217,4 +213,7 @@
 		</dependency>
 	</dependencies>
 	
+	<name>framework de testes</name>
+	<groupId>auto</groupId>
+	<artifactId>macao</artifactId>
 </project>

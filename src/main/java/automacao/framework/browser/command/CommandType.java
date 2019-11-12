@@ -1,4 +1,4 @@
-package automacao.framework.selenium.command;
+package automacao.framework.browser.command;
 
 import org.openqa.selenium.WebDriver;
 

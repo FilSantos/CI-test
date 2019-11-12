@@ -1,4 +1,4 @@
-package automacao.framework.log;
+package automacao.framework.runner;
 
 public class LogConstants {
 	// public static final String PROPERTIES = new

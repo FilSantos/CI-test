@@ -1,4 +1,4 @@
-package automacao.framework.selenium.platfom;
+package automacao.framework.browser.platfom;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;

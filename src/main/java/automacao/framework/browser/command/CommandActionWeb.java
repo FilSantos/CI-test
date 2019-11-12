@@ -1,12 +1,12 @@
-package automacao.framework.selenium.command;
+package automacao.framework.browser.command;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import automacao.framework.searchelements.SearchElement;
-import automacao.framework.searchelements.SearchElementType;
+import automacao.framework.browser.search.SearchElement;
+import automacao.framework.browser.search.SearchElementType;
 
 public class CommandActionWeb extends CommandAction {
 

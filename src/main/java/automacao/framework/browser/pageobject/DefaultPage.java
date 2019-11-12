@@ -1,16 +1,16 @@
-package automacao.framework.selenium.pageobject;
+package automacao.framework.browser.pageobject;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import automacao.framework.searchelements.SearchElement;
-import automacao.framework.selenium.command.CommandAction;
+import automacao.framework.browser.command.CommandAction;
+import automacao.framework.browser.search.SearchElement;
 
 
-public abstract class Page {
+public abstract class DefaultPage {
 
-	static final Logger logger = Logger.getLogger(Page.class);
+	static final Logger logger = Logger.getLogger(DefaultPage.class);
 
 	protected WebDriver webDriver;
 	protected CommandAction command;
@@ -24,7 +24,7 @@ public abstract class Page {
 	 * @param command
 	 * @param searchElement
 	 */
-	public Page(WebDriver webDriver, CommandAction command, SearchElement searchElement) {
+	public DefaultPage(WebDriver webDriver, CommandAction command, SearchElement searchElement) {
 		this.webDriver = webDriver;
 		this.webDriverWait = new WebDriverWait(webDriver, 30);
 		this.command = command;

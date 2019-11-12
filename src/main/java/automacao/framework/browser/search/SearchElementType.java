@@ -1,4 +1,4 @@
-package automacao.framework.searchelements;
+package automacao.framework.browser.search;
 
 import org.openqa.selenium.WebDriver;
 

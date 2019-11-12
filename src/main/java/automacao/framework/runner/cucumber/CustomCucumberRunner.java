@@ -1,4 +1,4 @@
-package automacao.framework.cucumber;
+package automacao.framework.runner.cucumber;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

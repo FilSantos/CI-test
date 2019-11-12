@@ -1,4 +1,4 @@
-package automacao.framework.selenium.platfom;
+package automacao.framework.browser.platfom;
 
 import java.net.MalformedURLException;
 

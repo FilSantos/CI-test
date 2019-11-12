@@ -1,10 +1,9 @@
-package automacao.framework.selenium.command;
+package automacao.framework.browser.command;
 
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -203,7 +202,7 @@ public abstract class CommandAction {
 			} catch (Exception e) {
 				Thread.sleep(3000);
 				logger.debug("tentando clique por javaScript - " + webElement.toString() );
-				JavascriptExecutor executor = (JavascriptExecutor)webDriver;
+				//JavascriptExecutor executor = (JavascriptExecutor)webDriver;
 
 			}
 			

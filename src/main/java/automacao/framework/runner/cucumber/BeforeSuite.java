@@ -1,4 +1,4 @@
-package automacao.framework.cucumber;
+package automacao.framework.runner.cucumber;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

@@ -1,6 +1,4 @@
-package automacao.framework.selenium.platfom;
-
-import java.io.IOException;
+package automacao.framework.browser.platfom;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -31,13 +29,6 @@ public class FirefoxPlatform extends AbstractBrowserPlatform {
 	@Override
 	public WebDriver getLocalWebDriver() {
 		logger.info("Starting Local WebDriver");
-		
-		String currentPath = "";
-		try {
-			currentPath = new java.io.File(".").getCanonicalPath() + "/downloads";
-		} catch (IOException e) {
-			logger.error("Erro ao acessar o diretorio de Download", e);
-		}
 
 		System.setProperty("webdriver.gecko.driver", GETBINARYPATH);
 		System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE,"true"); 
