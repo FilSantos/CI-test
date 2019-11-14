@@ -8,6 +8,8 @@ import automacao.framework.browser.pageobject.WebPage;
 
 public class MenuSuperiorPO extends WebPage{
 
+	private By MNUPROPOSTA =  By.xpath("//a[text()='Proposta']");
+	private By MNUCRIARPROPOSTA =  By.xpath("//a[text()='Criar Proposta']");
 	private By ICONPAGINAINCIAL = By.xpath(".//*[@class='icon-home icon-2x']");
 	private By ICONUSUARIO = By.xpath(".//*[@class='icon-user icon-2x']");
 	private By MNUSAIR = By.id("#logoff");
@@ -31,6 +33,14 @@ public class MenuSuperiorPO extends WebPage{
 	}
 	public WebElement sair() throws Exception{
 		return searchElement.findElementBy(MNUSAIR, "Item Sair");
+	}
+
+	public WebElement proposta() throws Exception {
+		return searchElement.findElementBy(MNUPROPOSTA, "Menu Proposta");
+	}
+	
+	public WebElement criarProposta() throws Exception {
+		return searchElement.findElementBy(MNUCRIARPROPOSTA, "Menu Criar Proposta");
 	}
 
 }

@@ -9,11 +9,12 @@ import automacao.pageobject.MenuSuperiorPO;
 public class MenuSuperior extends WebPage {
 
 	private MenuSuperiorPO menuSuperior;
-	
+	private Actions builder;
 	
 	public MenuSuperior(WebDriver webDriver) {
 		super(webDriver);
 		menuSuperior = new MenuSuperiorPO(webDriver);
+		builder = new Actions(webDriver);
 	}
 
 	@Override
@@ -29,6 +30,10 @@ public class MenuSuperior extends WebPage {
 		 builder.moveToElement(menuSuperior.usuario()).build().perform();
 	}
 	
+	private void menuProposta() throws Exception {
+		
+		 builder.moveToElement(menuSuperior.proposta()).build().perform();
+	}
 	public void sairSistema() throws Exception {
 		 command.click(menuSuperior.sair());
 		 
@@ -37,6 +42,13 @@ public class MenuSuperior extends WebPage {
 		usuario();
 		command.screenshot();
 		sairSistema();
+	}
+
+	public void criaProposta() throws Exception {
+		menuProposta();
+		command.click(menuSuperior.criarProposta());
+		//builder.moveToElement(menuSuperior.usuario()).click().build().perform();
+		
 	}
 	
 

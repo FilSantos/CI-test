@@ -13,6 +13,7 @@ import automacao.framework.browser.platfom.FirefoxPlatform;
 import automacao.framework.browser.platfom.Platform;
 import automacao.framework.runner.LogConstants;
 import automacao.framework.runner.testng.ListenerTestNG;
+import automacao.model.CriarProposta;
 import automacao.model.Login;
 import automacao.model.MenuSuperior;
 import automacao.util.PropertiesUtil;
@@ -46,13 +47,17 @@ public class TestPOC {
 
 	@Test
 	public void enviaProposta() throws Exception{
-		menuSuperior.takeScreenshot();
+		menuSuperior.criaProposta();
+		CriarProposta proposta = new CriarProposta(webDriver);
+		
+		proposta.simulacaoValorCompra("1000", null, null, "CDC", "476 - CARNÊ", "4x de R$ 322,58", "Filipe", "31841140821", "teste automatizado");
 	}
 	
 	@AfterSuite
 	public void tearDown() throws Exception{
 		menuSuperior.efetuarLogOff();
-		webDriver.quit();
 		webDriver.close();
+		webDriver.quit();
+		
 	}
 }

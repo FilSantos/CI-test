@@ -8,9 +8,9 @@ import automacao.framework.browser.pageobject.WebPage;
 
 public class LoginPO extends WebPage{
 
-	public By TXTUSUARIO = By.id("UserName");
-	public By TXTSENHA = By.id("Password");
-	public By BTNLOGIN = By.xpath("//button[text()='Entrar']");
+	private By TXTUSUARIO = By.id("UserName");
+	private By TXTSENHA = By.id("Password");
+	private By BTNLOGIN = By.xpath("//button[text()='Entrar']");
 	
 	public LoginPO(WebDriver webDriver) {
 		super(webDriver);
