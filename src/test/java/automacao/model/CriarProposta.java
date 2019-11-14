@@ -24,7 +24,7 @@ public class CriarProposta extends WebPage {
 	
 	public void simulacaoValorCompra(String valorVista, String valorEntrada, String dataParcela, String produto,
 			String tabelaComercial, String plano, String vendedor, String cpf, String observacao) throws Exception {
-		command.click(proposta.calculoValorCompra());
+		//command.click(proposta.calculoValorCompra());
 		command.send(proposta.valorVista(), valorVista);
 		if (valorEntrada != null){
 			command.send(proposta.valorEntrada(), valorEntrada);	
@@ -37,7 +37,9 @@ public class CriarProposta extends WebPage {
 		command.send(proposta.nomeVendedor(),vendedor);
 		command.send(proposta.observacao(), observacao);
 		command.selectOption(proposta.produto(), produto);
+		Thread.sleep(4000);
 		command.selectOption(proposta.tabelaComercial(), tabelaComercial);
+		Thread.sleep(4000);
 		command.selectOption(proposta.qtdeParcelas(), plano);
 		command.screenshot();
 		command.send(proposta.cpfCliente(), cpf);

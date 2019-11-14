@@ -41,22 +41,21 @@ public class TestPOC {
 	
 	@BeforeTest
 	public void configureTest() throws Exception{
-		menuSuperior.paginaPrincipal();
-		
+		//menuSuperior.paginaPrincipal();
+		menuSuperior.criaProposta();
 	}
 
 	@Test
 	public void enviaProposta() throws Exception{
-		menuSuperior.criaProposta();
+		
 		CriarProposta proposta = new CriarProposta(webDriver);
 		
-		proposta.simulacaoValorCompra("1000", null, null, "CDC", "476 - CARNÊ", "4x de R$ 322,58", "Filipe", "31841140821", "teste automatizado");
+		proposta.simulacaoValorCompra("100000", null, null, "CDC", "476 - CARNÊ", "4x de R$ 322,58", "Filipe", "31841140821", "teste automatizado");
 	}
 	
 	@AfterSuite
 	public void tearDown() throws Exception{
 		menuSuperior.efetuarLogOff();
-		webDriver.close();
 		webDriver.quit();
 		
 	}

@@ -16,7 +16,7 @@ public class CriarPropostaPO extends WebPage{
 	private By DATAPARCELA =  By.id("DataParcela");
 	private By CODIGOTIPOOPERACAO =  By.id("CodigoTipoOperacao");
 	private By TABELACOMERCIAL =  By.id("TabelaComerc_CodigoTabelaComercial");
-	private By QTDEPARCELAS =  By.id("QtdeparcelaS");
+	private By QTDEPARCELAS =  By.id("QtdparcelaS");
 	private By FORMAPAGAMENTO =  By.id("FormaPagamento");
 	private By NOMEVENDEDOR =  By.id("NomeVendedor");
 	private By VALORPARCELA =  By.id("ValorParcela");
@@ -25,7 +25,7 @@ public class CriarPropostaPO extends WebPage{
 	private By PESQUISARCLIENTE =  By.id("btnPesquisarCliente");
 	private By EDITACLIENTE =  By.id("btnEditCliente");
 	private By LIMPACLIENTE =  By.id("btnLimparCliente");
-	private By OBSERVACAO =  By.id("observacao");
+	private By OBSERVACAO =  By.id("Observacao");
 	private By SALVARPROPOSTA =  By.id("salvarProposta");
 	private By SIMULACAO = By.xpath("//span[text()='Simulação']");
 	public CriarPropostaPO(WebDriver webDriver) {
