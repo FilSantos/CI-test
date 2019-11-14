@@ -1,29 +1,29 @@
+# language: pt
 @login
-Feature: This is a sample feature file
+Funcionalidade: This is a sample feature file
 
-
-  Background: 
-    Given scenario data
+  Contexto: 
+    Dado scenario data
 
 @login1
-  Scenario Outline: This is a scenario to test datadriven test on Cucumber JVM.
-    Given scenario data
-    When executed from Runner Class.
-    Then UserName and Password shows on console from Examples "<UserName>" and "<Password>"
+  Esquema do Cenario: This is a scenario to test datadriven test on Cucumber JVM.
+    Dado scenario data
+    Quando executed from Runner Class.
+    Entao UserName and Password shows on console from Examples "<UserName>" and "<Password>"
 
-    Examples: 
+    Exemplos: 
       | UserName        | Password        |
       ##@externaldata@./src/test/resources/data/TestData.xlsx@Sheet1
 |teste99|pwd1|
 |teste100|pwd2|
 
 @login2
-  Scenario Outline: This is a scenario to test datadriven test on Cucumber JVM - diferente.
-    Given scenario data
-    When executed from Runner Class.
-    Then UserName and Password shows on console from Examples "<UserName>" and "<Password>"
+  Esquema do Cenario: This is a scenario to test datadriven test on Cucumber JVM - diferente.
+    Dado scenario data
+    Quando executed from Runner Class.
+    Entao UserName and Password shows on console from Examples "<UserName>" and "<Password>"
 
-    Examples: 
+    Exemplos: 
       | UserName        | Password        |
       ##@externaldata@./src/test/resources/data/TestData.xlsx@Sheet2
 |teste4|pwd4|

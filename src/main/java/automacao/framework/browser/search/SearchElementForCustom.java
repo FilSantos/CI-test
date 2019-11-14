@@ -28,7 +28,7 @@ public class SearchElementForCustom extends SearchElement {
 			
 			List<By> loaders = new ArrayList<By>();
 			// Qualquer objeto com @class que contenha 'load'
-			loaders.add(By.xpath(".//*[contains(lower-case(@class),'load')]"));
+			loaders.add(By.xpath(".//*[contains(lower-case(@id),'load')]"));
 
 			
 			webDriver.switchTo().defaultContent();

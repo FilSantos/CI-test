@@ -6,11 +6,12 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import automacao.framework.files.FilesAction;
+
 public class IEPlatform extends AbstractBrowserPlatform {
 
 	final static Logger logger = Logger.getLogger(IEPlatform.class);
 
-	private static String OS;
 	private static String GETBINARYPATH;
 
 	public static IEPlatform StartWebDriver() {
@@ -19,15 +20,18 @@ public class IEPlatform extends AbstractBrowserPlatform {
 	}
 
 	public IEPlatform() {
-		OS = System.getProperty("os.name").toLowerCase();
-		if (OS.contains("windows")) {
-			GETBINARYPATH = "src/test/resources/ieDriver/IEDriverServer.exe";
-		}
+		GETBINARYPATH = "ieDriver/IEDriverServer.exe";
 	}
 
 	@Override
 	public WebDriver getLocalWebDriver() {
 		logger.info("Starting IE Local WebDriver");
+		
+		FilesAction file = new FilesAction();
+		if (!file.extractFromMainResources(GETBINARYPATH)){
+			logger.error("Erro ao extrair o driver, nao é possivel continuar!");
+			System.exit(-1);
+		}
 
 		System.setProperty("webdriver.ie.driver", GETBINARYPATH);
 		System.setProperty("webdriver.ie.driver.silent", "true");

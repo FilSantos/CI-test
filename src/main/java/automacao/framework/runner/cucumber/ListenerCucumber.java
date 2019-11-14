@@ -2,17 +2,20 @@ package automacao.framework.runner.cucumber;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
+
+import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
-public class CustomCucumberRunner extends Runner {
+public class ListenerCucumber extends Runner {
 
     private Class<Cucumber> classValue;
     private Cucumber cucumber;
 
-    public CustomCucumberRunner(Class<Cucumber> classValue) throws Exception {
+    public ListenerCucumber(Class<Cucumber> classValue) throws Exception {
         this.classValue = classValue;
         cucumber = new Cucumber(classValue);
     }

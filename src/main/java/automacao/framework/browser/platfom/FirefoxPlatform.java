@@ -6,6 +6,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import automacao.framework.files.FilesAction;
+
 public class FirefoxPlatform extends AbstractBrowserPlatform {
 
 	final static Logger logger = Logger.getLogger(FirefoxPlatform.class);
@@ -20,15 +22,19 @@ public class FirefoxPlatform extends AbstractBrowserPlatform {
 
 	public FirefoxPlatform() {
 		OS = System.getProperty("os.name").toLowerCase();
-
-		GETBINARYPATH = "src/test/resources/firefoxDriver/";
-		GETBINARYPATH = GETBINARYPATH + (OS.contains("windows") ? "win_geckodriver.exe"
+		GETBINARYPATH = "firefoxDriver/" + (OS.contains("windows") ? "win_geckodriver.exe"
 				: OS.contains("mac") ? "mac_geckodriver" : "lin_geckodriver");
 	}
 
 	@Override
 	public WebDriver getLocalWebDriver() {
 		logger.info("Starting Local WebDriver");
+		
+		FilesAction file = new FilesAction();
+		if (!file.extractFromMainResources(GETBINARYPATH)){
+			logger.error("Erro ao extrair o driver, nao é possivel continuar!");
+			System.exit(-1);
+		}
 
 		System.setProperty("webdriver.gecko.driver", GETBINARYPATH);
 		System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE,"true"); 

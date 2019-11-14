@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,13 +33,13 @@ import org.testng.xml.XmlSuite;
 
 import automacao.framework.browser.command.CommandAction;
 import automacao.framework.browser.command.CommandType;
+import automacao.framework.files.FilesAction;
 import automacao.framework.runner.LogConstants;
 
-public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
+public class ListenerTestNG implements ITestListener, ISuiteListener,IReporter {
 
-	final static Logger logger = Logger.getLogger(ListenerTest.class);
+	final static Logger logger = Logger.getLogger(ListenerTestNG.class);
 	private String suiteName = "AUTOMACAO";	
-	final static String emailableReportTemplateFile = "src/test/resources/relatorio-template.html";
 	private static List<WebDriver> webDrivers = new ArrayList<WebDriver>();
 	
 	List<ITestResult> passedtests = new ArrayList<ITestResult>();
@@ -65,19 +64,8 @@ public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
 
 	@Override
 	public void onStart(ISuite suite) {
+		
 		Thread.currentThread().setName(suiteName);
-		try {
-			File targetFile = new File(new java.io.File( "." ).getCanonicalPath());
-
-			File sourceFile = new File("src/main/resources/logo.png");
-			File destinationFile = new File(targetFile.toPath().toString() +"/test-output/logo.png");
-			FileUtils.copyFile(sourceFile, destinationFile);
-
-		} catch (IOException e) {
-			logger.fatal("Erro ao criar o diretorio de evidencias",e);
-			
-			System.exit(-1);
-		}
 	}
 
 	@Override
@@ -209,9 +197,9 @@ public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
 	 */
 	public static void attachFile(File source) throws Exception {
 		String fileName = source.getName();
-		String folder = new java.io.File(".").getCanonicalPath() + "/test-output/files/";
+		String folder = new java.io.File(".").getCanonicalPath() + "/relatorio/arquivos/";
 		FileUtils.copyFile(source, new File(folder + fileName));
-		String path = ("Arquivo: <a href=./files/" + fileName + ">" + fileName + "</a>");
+		String path = ("Arquivo: <a href=./arquivos/" + fileName + ">" + fileName + "</a>");
 		Reporter.log("<br>");
 		Reporter.log(path);
 		Reporter.log("<br>");
@@ -221,7 +209,7 @@ public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
 	 * @author Filipe Santos
 	 */
 	@Override
-	public void generateReport(List<XmlSuite> xmlSuite, List<ISuite> suites, String arg2) {
+	public void generateReport(List<XmlSuite> xmlSuite, List<ISuite> suites, String outputDirectory) {
 
 		try{
 			logger.info("Gerando o relatorio...");
@@ -247,7 +235,7 @@ public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
 			customReportTemplateStr = customReportTemplateStr.replace("Test_Case_Detail", customTestMethodSummary);
 			
 			// Grava o arquivo
-			File targetFile = new File(new java.io.File( "." ).getCanonicalPath() + getCustomReportTitle("/test-output/Relatorio",true) + ".html");
+			File targetFile = new File(new java.io.File( "." ).getCanonicalPath() + getCustomReportTitle("/relatorio/execucao",true) + ".html");
 			FileWriter fw = new FileWriter(targetFile);
 			fw.write(customReportTemplateStr);
 			fw.flush();
@@ -263,16 +251,20 @@ public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
 	 * @author Filipe Santos
 	 * @return
 	 */
-	@SuppressWarnings("finally")
+
 	private String readEmailabelReportTemplate() {
 		StringBuffer retBuf = new StringBuffer();
 		
 		try {
+			
+			FilesAction fileAction = new FilesAction();
+			if (!fileAction.extractFromMainResources("relatorio/logo.png")){
+				logger.error("Erro ao extrair o logo do relatorio.");
+			}
 		
-			@SuppressWarnings("static-access")
-			File file = new File(this.emailableReportTemplateFile);
+			File file = new File(fileAction.getFromMainResources("/relatorio/relatorio-template.html").toURI());
 			FileReader fr = new FileReader(file);
-			@SuppressWarnings("resource")
+
 			BufferedReader br = new BufferedReader(fr);
 			
 			String line = br.readLine();
@@ -281,14 +273,13 @@ public class ListenerTest implements ITestListener, ISuiteListener,IReporter {
 				retBuf.append(line);
 				line = br.readLine();
 			}
-			
+			br.close();
+			return retBuf.toString();
 		} catch (Exception ex) {
 			logger.error(ex);
-			
-		}finally{
-			
-			return retBuf.toString();
+			return null;
 		}
+		
 	}
 	/**Converte no formato dia/hora
 	 * @author Filipe Santos

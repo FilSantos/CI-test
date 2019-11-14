@@ -6,17 +6,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<developers>
-		<developer>
-			<name>Cognizant Brasil</name>
-			<url>https://www.cognizant.com</url>
-			<id>QEA-BR</id>
-			<roles>
-				<role>Member</role>
-			</roles>
-		</developer>
-	</developers>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>

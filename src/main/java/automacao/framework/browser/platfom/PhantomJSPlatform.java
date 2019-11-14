@@ -7,6 +7,8 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import automacao.framework.files.FilesAction;
+
 public class PhantomJSPlatform extends AbstractBrowserPlatform {
 
 	final static Logger logger = Logger.getLogger(PhantomJSPlatform.class);
@@ -21,7 +23,7 @@ public class PhantomJSPlatform extends AbstractBrowserPlatform {
 	public PhantomJSPlatform() {
 
 		OS = System.getProperty("os.name").toLowerCase();
-		GETBINARYPATH = "src/test/resources/phantomJSDriver/" + (OS.contains("windows") ? "win_phantomjs.exe"
+		GETBINARYPATH = "phantomJSDriver/" + (OS.contains("windows") ? "win_phantomjs.exe"
 				: OS.contains("mac") ? "mac_phantomjs" : "lin_phantomjs");
 	}
 
@@ -29,6 +31,12 @@ public class PhantomJSPlatform extends AbstractBrowserPlatform {
 	public WebDriver getLocalWebDriver() {
 		logger.info("Starting PhantomJS Local WebDriver");
 
+		FilesAction file = new FilesAction();
+		if (!file.extractFromMainResources(GETBINARYPATH)){
+			logger.error("Erro ao extrair o driver, nao é possivel continuar!");
+			System.exit(-1);
+		}
+		
 		System.setProperty("phantomjs.binary.path", GETBINARYPATH);
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setJavascriptEnabled(true);

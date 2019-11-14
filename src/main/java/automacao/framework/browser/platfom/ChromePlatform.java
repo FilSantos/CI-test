@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import automacao.framework.files.FilesAction;
+
 public class ChromePlatform extends AbstractBrowserPlatform {
 
 	final static Logger logger = Logger.getLogger(ChromePlatform.class);
@@ -21,18 +23,22 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 
 	public ChromePlatform() {
 		OS = System.getProperty("os.name").toLowerCase();
-
-		GETBINARYPATH = "src/test/resources/chromeDriver/";
-		GETBINARYPATH = GETBINARYPATH + (OS.contains("windows") ? "win_chromedriver.exe"
+		GETBINARYPATH = "chromeDriver/" + (OS.contains("windows") ? "win_chromedriver.exe"
 				: OS.contains("mac") ? "mac_chromedriver" : "lin_chromedriver");
 	}
 
 	@Override
 	public WebDriver getLocalWebDriver() {
 		
+		FilesAction file = new FilesAction();
+		if (!file.extractFromMainResources(GETBINARYPATH)){
+			logger.error("Erro ao extrair o driver, nao é possivel continuar!");
+			System.exit(-1);
+		}
+		
 	    if(OS.toLowerCase().contains("windows")) {
 			try {
-				logger.info("Fechado instancias de Chrome abertas");
+				logger.info("Fechado instancias de Chrome abertas - Windows");
 				Process process = Runtime. getRuntime(). exec("taskkill /F /IM win_chromedriver.exe");
 				for (int i = 0; i < 10; i++) {
 					if (process.isAlive()) {

@@ -12,6 +12,8 @@ public abstract class AbstractPlatform implements Platform {
 
 	final static Logger logger = Logger.getLogger(AbstractPlatform.class);
 
+	final static String downloadDir = "./downloads";
+	
 	@Override
 	protected void finalize() throws Throwable {
 		cleanUpResources();
