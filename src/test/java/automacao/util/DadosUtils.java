@@ -12,6 +12,12 @@ import automacao.framework.database.H2sql;
 public class DadosUtils {
 	final static Logger LOGGER = Logger.getLogger(DadosUtils.class);
 
+	@DataProvider(name = "enviaProposta")
+	public static Object[][] enviaProposta() throws Exception {
+		String arquivo = "enviaProposta.csv";
+		importacaoArquivo(arquivo,null);
+		return loadData(arquivo);
+	}
 
 	@DataProvider(name = "testCSV1")
 	public static Object[][] load1() throws Exception {
@@ -26,6 +32,7 @@ public class DadosUtils {
 		importacaoArquivo(arquivo,null);
 		return loadData(arquivo);
 	}
+	
 	@DataProvider(name = "testCSV3")
 	public static Object[][] load3() throws Exception {
 		String arquivo = "testCSV2.csv";
@@ -73,7 +80,7 @@ public class DadosUtils {
 
 	private static void importacaoArquivo(String arquivoGerado, String fields) throws Exception {
 		LOGGER.info("Dados sendo importados");
-		String file = new java.io.File(".").getCanonicalPath()+ "/data/" + arquivoGerado;
+		String file = new java.io.File(".").getCanonicalPath()+ "/dados/" + arquivoGerado;
 		List<String> createTables = new ArrayList<String>();
 		createTables.add("DROP TABLE IF EXISTS " + arquivoGerado.split(".csv")[0]);
 		String createTable = "CREATE TABLE %s AS " + "SELECT * FROM CSVREAD ('%s', %s, 'charset=Windows-1252 fieldSeparator=;')";

@@ -114,11 +114,26 @@ public abstract class CommandAction {
 	 * @param value
 	 * @throws Exception
 	 */
-	public void selectOption(WebElement webElement, String value) throws Exception {
+	public void selectOptionText(WebElement webElement, String value) throws Exception {
 
 		try {
 			Select dropdown = new Select(webElement);
 			dropdown.selectByVisibleText(value);
+			logger.debug("Objeto: '" + webElement.toString() + "' selecionado: '" + value + "'");
+			Reporter.log(" e selecionado: '" + value + "'.");
+		} catch (TimeoutException e) {
+			msgError = " TimeOut apos " + TIME_OUT + " seg., objeto: '" + webElement.toString()
+					+ "' nao selecionado '" + value + "'";
+			logger.fatal(msgError, e);
+			throw new Exception(msgError);
+		}
+	}
+	
+	public void selectOptionIndex(WebElement webElement, Integer value) throws Exception {
+
+		try {
+			Select dropdown = new Select(webElement);
+			dropdown.selectByIndex(value);
 			logger.debug("Objeto: '" + webElement.toString() + "' selecionado: '" + value + "'");
 			Reporter.log(" e selecionado: '" + value + "'.");
 		} catch (TimeoutException e) {

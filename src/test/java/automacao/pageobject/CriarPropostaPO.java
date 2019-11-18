@@ -27,7 +27,10 @@ public class CriarPropostaPO extends WebPage{
 	private By LIMPACLIENTE =  By.id("btnLimparCliente");
 	private By OBSERVACAO =  By.id("Observacao");
 	private By SALVARPROPOSTA =  By.id("salvarProposta");
+	private By SALVARCLIENTE = By.id("btnSalvarFicha");
 	private By SIMULACAO = By.xpath("//span[text()='Simulação']");
+	private By ERRO = By.xpath("//div[contains(@class,'alert')]/p");
+	private By BTNOK = By.xpath("//button[@class='confirm']");
 	public CriarPropostaPO(WebDriver webDriver) {
 		super(webDriver);
 
@@ -94,13 +97,31 @@ public class CriarPropostaPO extends WebPage{
 	public WebElement valorSolicitado() throws Exception{
 		return searchElement.findElementBy(VALORSOLICITADO, "Valor solicitado");
 	}
+	
 	public WebElement valorEntrada() throws Exception{
 		return searchElement.findElementBy(VALORENTRADA, "Valor Entrada");
 	}
+	
 	public WebElement valorVista() throws Exception{
 		return searchElement.findElementBy(VALORAVISTA, "Valor a vista");
 	}
+	
 	public WebElement calculoValorCompra() throws Exception{
 		return searchElement.findElementBy(VALORCOMPRA, "Valor a vista");
+	}
+	
+	public WebElement erroTexto() throws Exception{
+		return searchElement.findElementBy(ERRO, "Mensagem de erro");
+	}
+	
+	public boolean erroTextoExiste() throws Exception{
+		return searchElement.exists(ERRO, "Mensagem de erro",5);
+	}
+
+	public WebElement btnOK() throws Exception {
+		return searchElement.findElementBy(BTNOK, "Botão OK");
+	}
+	public WebElement salvarCliente() throws Exception {
+		return searchElement.findElementBy(SALVARCLIENTE, "Botão Salvar cliente");
 	}
 }

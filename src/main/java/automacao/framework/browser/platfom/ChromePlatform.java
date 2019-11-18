@@ -1,6 +1,8 @@
 package automacao.framework.browser.platfom;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -39,26 +41,14 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 	    if(OS.toLowerCase().contains("windows")) {
 			try {
 				logger.info("Fechado instancias de Chrome abertas - Windows");
-				Process process = Runtime. getRuntime(). exec("taskkill /F /IM win_chromedriver.exe");
-				for (int i = 0; i < 10; i++) {
-					if (process.isAlive()) {
-						Thread.sleep(1000);
-					}
-				}
-				process.destroy();
-				
-				process = Runtime. getRuntime(). exec("taskkill /F /IM chrome.exe");
-				for (int t = 0; t < 10; t++) {
-					if (process.isAlive()) {
-						Thread.sleep(1000);
-					}
-					
-				}
+				List<Process> process = new ArrayList<Process>();
+				process.add(Runtime. getRuntime(). exec("taskkill /F /IM win_chromedriver.exe"));
+				//process.add(Runtime. getRuntime(). exec("taskkill /F /IM chrome.exe"));
+				waitProcess(process);
 				
 			} catch (Exception e) {
-				logger.fatal("Erro ao finalizar driver do chrome aberto");
-			}
-            
+				logger.fatal("Erro ao finalizar Chrome");
+			} 
 	    }
 		
 		
@@ -74,15 +64,10 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 		ChromeOptions chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments("download.default_directory=" + currentPath);
 
-		String profileChrome;
-		if (OS.contains("windows")) {
-			profileChrome = System.getProperty("user.home") + "\\AppData\\Local\\Google\\Chrome\\User Data";
-		} else {
-			profileChrome = System.getProperty("user.home");
-		}
+		String profileChrome =  System.getProperty("user.home") + (OS.contains("windows") ? "\\AppData\\Local\\Google\\Chrome\\User Data" :
+																	"");
 
-		chromeOptions.addArguments("--user-data-dir=" + profileChrome);
-//		chromeOptions.addArguments("--proxy-server=http://prxwg.portoseguro.brasil:3128");
+//		chromeOptions.addArguments("--user-data-dir=" + profileChrome);
 //		chromeOptions.addArguments("--disable-extensions");
 		chromeOptions.addArguments("--no-sandbox");
 //		chromeOptions.addArguments("--disable-gpu");
@@ -95,9 +80,21 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 		return webDriver;
 	}
 
+	private void waitProcess(List<Process> process) throws InterruptedException {
+		for (Process processItem : process) {
+			for (int i = 0; i < 10; i++) {
+				if (processItem.isAlive()) {
+					Thread.sleep(1000);
+				}
+			}
+			processItem.destroy();	
+		}
+		
+	}
+
 	@Override
 	public WebDriver getRemoteWebDriver(String host, int port) {
-		logger.info("Starting Chrome Remote WebDriver");
+		logger.info("Iniciando Chrome Remote WebDriver");
 
 		return super.getRemoteWebDriver(host, port);
 	}

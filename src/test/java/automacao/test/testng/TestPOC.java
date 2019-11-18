@@ -9,13 +9,15 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import automacao.framework.browser.platfom.FirefoxPlatform;
+import automacao.framework.browser.platfom.ChromePlatform;
 import automacao.framework.browser.platfom.Platform;
+import automacao.framework.database.H2sql;
 import automacao.framework.runner.LogConstants;
 import automacao.framework.runner.testng.ListenerTestNG;
 import automacao.model.CriarProposta;
 import automacao.model.Login;
 import automacao.model.MenuSuperior;
+import automacao.util.DadosUtils;
 import automacao.util.PropertiesUtil;
 
 
@@ -30,7 +32,8 @@ public class TestPOC {
 	public void setup() throws Exception{
 		
 		PropertyConfigurator.configure(LogConstants.PROPERTIES);
-		Platform platform = new FirefoxPlatform();
+		H2sql.openConnection();
+		Platform platform = new ChromePlatform();
 		webDriver =  platform.getLocalWebDriver();
 		webDriver.navigate().to(PropertiesUtil.getProp("web.url"));
 		ListenerTestNG.setWebdriver(webDriver);
@@ -41,16 +44,16 @@ public class TestPOC {
 	
 	@BeforeTest
 	public void configureTest() throws Exception{
-		//menuSuperior.paginaPrincipal();
+		menuSuperior.paginaPrincipal();
 		menuSuperior.criaProposta();
 	}
 
-	@Test
-	public void enviaProposta() throws Exception{
+	@Test(dataProvider = "enviaProposta", dataProviderClass = DadosUtils.class, priority = 1)
+	public void enviaProposta(String cpfCliente) throws Exception{
 		
 		CriarProposta proposta = new CriarProposta(webDriver);
 		
-		proposta.simulacaoValorCompra("100000", null, null, "CDC", "476 - CARNÊ", "4x de R$ 322,58", "Filipe", "31841140821", "teste automatizado");
+		proposta.simulacaoValorCompra("100000", "10000", null, "CDC", "476 - CARNÊ", 0, "Filipe", cpfCliente, "teste automatizado");
 	}
 	
 	@AfterSuite
