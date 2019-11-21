@@ -51,13 +51,16 @@ public class CriarProposta extends WebPage {
 		command.send(cpfCliente, cpf);
 		command.screenshot();
 		command.click(proposta.pesquisaCliente());
+		Thread.sleep(5000);
+		quebraCritica();
 		String nomeCliente = proposta.nomeCliente().getText();
-		quebraCritica();		
 		command.screenshot();
 		command.click(proposta.enviarProposta());
+		Thread.sleep(5000);
 		quebraCritica();
+		Thread.sleep(18000);
+		//quebraCritica();
 		command.screenshot();
-		
 	}
 
 	private void quebraCritica() throws Exception {
@@ -79,7 +82,7 @@ public class CriarProposta extends WebPage {
 				return;
 				
 			}else{
-				
+				command.click(proposta.btnOK());
 				Assert.fail(mensagemErro);
 			}
 		}

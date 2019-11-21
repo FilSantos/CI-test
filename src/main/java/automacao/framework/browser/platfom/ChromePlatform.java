@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -73,10 +74,11 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 //		chromeOptions.addArguments("--disable-gpu");
 		
 //		chromeOptions.setHeadless(!ListenerTest.modoDev());
-        
+		chromeOptions.setHeadless(true);
+		
 		WebDriver webDriver = new ChromeDriver(chromeOptions);
-		webDriver.manage().window().maximize();
-
+		//webDriver.manage().window().maximize();
+		webDriver.manage().window().setSize(new Dimension(1366,768));
 		return webDriver;
 	}
 

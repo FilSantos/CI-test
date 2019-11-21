@@ -271,7 +271,7 @@ public abstract class CommandAction {
 			TakesScreenshot ts = (TakesScreenshot) webDriver;
 			File source = ts.getScreenshotAs(OutputType.FILE);
 			String screenshotName = source.getName();
-			String folder = new java.io.File(".").getCanonicalPath() + "/test-output/screenshot/";
+			String folder = new java.io.File(".").getCanonicalPath() + "/relatorio/screenshot/";
 			FileUtils.copyFile(source, new File(folder + screenshotName));
 			logger.debug("Screenshot");
 			String path = ("<img src=\"./screenshot/" + screenshotName + "\" width=\"100%\"");

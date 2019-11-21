@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -42,7 +42,7 @@ public class TestPOC {
 		menuSuperior = new MenuSuperior(webDriver);
 	}
 	
-	@BeforeTest
+	@BeforeMethod
 	public void configureTest() throws Exception{
 		menuSuperior.paginaPrincipal();
 		menuSuperior.criaProposta();
