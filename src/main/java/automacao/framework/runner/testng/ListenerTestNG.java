@@ -308,11 +308,15 @@ public class ListenerTestNG implements ITestListener, ISuiteListener,IReporter {
 		StringBuffer retBuf = new StringBuffer();
 		
 		@SuppressWarnings("unused")
-		long milli = deltaTime;
+		
+		String tmpMili = String.valueOf(deltaTime);
+		String tempMili = tmpMili.length() > 3 ? tmpMili.substring(tmpMili.length()-3) : "0";
+		long milli = Long.valueOf(tempMili);
 		long seconds = deltaTime / 1000;		
 		long minutes = seconds / 60;		
 		long hours = minutes / 60;		
-		retBuf.append(hours + ":" + minutes + ":" + seconds);
+		retBuf.append(String.format("%02d", hours) + ":" +String.format("%02d", minutes)  + ":" + 
+				String.format("%02d", seconds) + "." + String.format("%03d", milli));
 		return retBuf.toString();
 	}
 	

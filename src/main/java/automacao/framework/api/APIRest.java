@@ -3,6 +3,7 @@ package automacao.framework.api;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.testng.Reporter;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -34,6 +35,25 @@ public class APIRest {
 		insereParam("username",username);
 		insereParam("password",password);
 
+		auth(path, contentType);
+		
+	}
+	
+	public APIRest (String uri, String path, String grantType, String clientId, String username, String password, APIContent contentType) throws Exception{
+		
+		this.uri = uri;
+		
+		param = new HashMap<String, String>();
+		
+		insereParam("username",username);
+		insereParam("password",password);
+		insereParam("grant_type",grantType);
+		insereParam("cpf_atendente",clientId);
+		auth(path, contentType);
+		
+	}
+
+	private void auth(String path, APIContent contentType) throws Exception {
 		logger.info(String.format("Autenticando no  %s", this.uri));
 
 		RequestSpecification given = RestAssured.given().baseUri(this.uri);
@@ -47,56 +67,59 @@ public class APIRest {
 		} else {
 			throw new Exception("Erro ao autenticar" + response.body().asString());
 		}
-		
 	}
 
-	public Response query(String query, String path, String uriTemp) {
+	public Response query(String query, String path, Object uriTemp) {
 		
 		RequestSpecification httpRequest = createHeader(uriTemp);
 		Response response = httpRequest.queryParam("q", query).get(path).then().extract().response();
 		return response;
 	}
 	
-	public Response get(String path, String uriTemp) {
+	public Response get(String path, Object uriTemp) {
 		
 		RequestSpecification httpRequest = createHeader(uriTemp);
 		Response response = httpRequest.get(path).then().extract().response();
 		return response;
 	}
 
-	public Response get(String request, String path, String uriTemp) {
+	public Response get(String request, String path, Object uriTemp) {
 		
 		RequestSpecification httpRequest = createHeader(uriTemp);
 		Response response = httpRequest.body(request).get(path).then().extract().response();
 		return response;
 	}
 	
-	public Response post(APIContent contentType, HashMap<Object, Object> param, String path, String uriTemp) {
-		
+	public Response post(APIContent contentType, HashMap<String, Object> param, String path, Object uriTemp) {
 		RequestSpecification httpRequest = createHeader(uriTemp);
 		Response response = httpRequest.body(param).contentType(contentType.getContent()).post(path);
+		Reporter.log("<BR>");
+		Reporter.log("POST - " + path + "<BR>");
+		Reporter.log("body - " + param.toString() + "<BR>");
 		return response;
 	}
 	
-	public Response patch(APIContent contentType, HashMap<Object, Object> param, String path, String uriTemp) {
+	public Response patch(APIContent contentType, HashMap<Object, Object> param, String path, Object uriTemp) {
 		
 		RequestSpecification httpRequest = createHeader(uriTemp);
 		Response response = httpRequest.body(param).contentType(contentType.getContent()).patch(path);
 		return response;
 	}
 	
-	public Response delete(APIContent contentType, HashMap<Object, Object> param, String path, String uriTemp) {
+	public Response delete(APIContent contentType, HashMap<Object, Object> param, String path, Object uriTemp) {
 		
 		RequestSpecification httpRequest = createHeader(uriTemp);
 		Response response = httpRequest.body(param).contentType(contentType.getContent()).delete(path);
 		return response;
 	}
 
-	private RequestSpecification createHeader(String uriTemp) {
+	private RequestSpecification createHeader(Object uriTemp) {
 
-		RequestSpecification given = RestAssured.given().baseUri(uriTemp != null ? uriTemp : uri);
+		RequestSpecification given = RestAssured.given().baseUri(uriTemp != null ? String.valueOf(uriTemp) : uri);
 		given.header("Authorization", oAuth);
 		RequestSpecification httpRequest = given;
 		return httpRequest;
 	}
+
+
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -33,26 +32,42 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 	@Override
 	public WebDriver getLocalWebDriver() {
 		
+		List<Process> process = new ArrayList<Process>();
+		try {
+			if(OS.toLowerCase().contains("windows")) {
+				
+					process.add(Runtime. getRuntime(). exec("taskkill /F /IM win_chromedriver.exe"));
+					//process.add(Runtime. getRuntime(). exec("taskkill /F /IM chrome.exe"));
+
+			} else {
+				//process.add(Runtime. getRuntime(). exec("pkill "+ System.getProperty("user.dir") + "/" + GETBINARYPATH));
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			logger.info("Fechado instancias de Chrome abertas");
+			waitProcess(process);
+			
+		} catch (Exception e) {
+			logger.fatal("Erro ao finalizar Chrome");
+		} 
 		FilesAction file = new FilesAction();
 		if (!file.extractFromMainResources(GETBINARYPATH)){
 			logger.error("Erro ao extrair o driver, nao é possivel continuar!");
 			System.exit(-1);
-		}
-		
-	    if(OS.toLowerCase().contains("windows")) {
+		} else {
 			try {
-				logger.info("Fechado instancias de Chrome abertas - Windows");
-				List<Process> process = new ArrayList<Process>();
-				process.add(Runtime. getRuntime(). exec("taskkill /F /IM win_chromedriver.exe"));
-				//process.add(Runtime. getRuntime(). exec("taskkill /F /IM chrome.exe"));
-				waitProcess(process);
-				
-			} catch (Exception e) {
-				logger.fatal("Erro ao finalizar Chrome");
-			} 
-	    }
-		
-		
+				Runtime. getRuntime(). exec("chmod +777" + System.getProperty("user.dir") + "/" + GETBINARYPATH);
+			} catch (IOException e) {
+				logger.error("Erro ao atribuir permissao ao driver");
+				System.exit(-1);
+			}
+			
+		}
+
 		logger.info("Inciando o Chrome local");
 		String currentPath = "";
 		try {
@@ -74,11 +89,11 @@ public class ChromePlatform extends AbstractBrowserPlatform {
 //		chromeOptions.addArguments("--disable-gpu");
 		
 //		chromeOptions.setHeadless(!ListenerTest.modoDev());
-		chromeOptions.setHeadless(true);
+	//	chromeOptions.setHeadless(true);
 		
 		WebDriver webDriver = new ChromeDriver(chromeOptions);
-		//webDriver.manage().window().maximize();
-		webDriver.manage().window().setSize(new Dimension(1366,768));
+		webDriver.manage().window().maximize();
+		//webDriver.manage().window().setSize(new Dimension(1366,768));
 		return webDriver;
 	}
 

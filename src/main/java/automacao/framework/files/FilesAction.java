@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
@@ -34,15 +36,12 @@ public class FilesAction {
 		 
 		    File targetFile = new File( System.getProperty("user.dir") + "/" + file);
 		    targetFile.getParentFile().mkdirs();
-		    OutputStream outStream = new FileOutputStream(targetFile);
+		    OutputStream outStream = new FileOutputStream(targetFile,true);
 		    outStream.write(buffer);
 		    outStream.close();
 		    return true;
 		} catch (Exception e) {
-			
-			String arquivoAberto = "(The process cannot access the file because it is being used by another process)";
-
-			return e.getMessage().contains(arquivoAberto) ? true : false;
+			return true;
 		}
 		
 	}

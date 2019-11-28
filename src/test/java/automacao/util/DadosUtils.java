@@ -18,6 +18,13 @@ public class DadosUtils {
 		importacaoArquivo(arquivo,null);
 		return loadData(arquivo);
 	}
+	
+	@DataProvider(name = "simulaProposta")
+	public static Object[][] simulaProposta() throws Exception {
+		String arquivo = "simulaProposta.csv";
+		importacaoArquivo(arquivo,null);
+		return loadData(arquivo);
+	}
 
 	@DataProvider(name = "testCSV1")
 	public static Object[][] load1() throws Exception {
