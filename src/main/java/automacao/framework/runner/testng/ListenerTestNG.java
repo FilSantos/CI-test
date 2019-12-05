@@ -31,9 +31,9 @@ import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.xml.XmlSuite;
 
-import automacao.framework.browser.command.CommandAction;
-import automacao.framework.browser.command.CommandType;
 import automacao.framework.files.FilesAction;
+import automacao.framework.iteraction.common.command.CommandAction;
+import automacao.framework.iteraction.common.command.CommandType;
 import automacao.framework.runner.LogConstants;
 
 public class ListenerTestNG implements ITestListener, ISuiteListener,IReporter {

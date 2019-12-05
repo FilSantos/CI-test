@@ -3,8 +3,8 @@ package automacao.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 
-import automacao.framework.browser.pageobject.WebPage;
-import automacao.pageobject.MenuSuperiorPO;
+import automacao.framework.iteraction.browser.pageobject.WebPage;
+import automacao.pageobject.testeWeb.MenuSuperiorPO;
 
 public class MenuSuperior extends WebPage {
 

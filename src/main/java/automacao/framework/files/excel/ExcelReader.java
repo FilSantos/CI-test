@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.NumberToTextConverter;
 
+@SuppressWarnings("deprecation")
 public class ExcelReader {
 
     public List<Map<String, String>> getData(String excelFilePath, String sheetName)
@@ -63,7 +64,8 @@ public class ExcelReader {
     }
 
 
-    private int getHeaderRowNumber(Sheet sheet) {
+
+	private int getHeaderRowNumber(Sheet sheet) {
         Row row;
         int totalRow = sheet.getLastRowNum();
         for (int currentRow = 0; currentRow <= totalRow + 1; currentRow++) {
@@ -94,7 +96,8 @@ public class ExcelReader {
         return sheet.getRow(rowNumber);
     }
 
-    private LinkedHashMap<String, String> getCellValue(Sheet sheet, Row row, int currentColumn) {
+    
+	private LinkedHashMap<String, String> getCellValue(Sheet sheet, Row row, int currentColumn) {
         LinkedHashMap<String, String> columnMapdata = new LinkedHashMap<String, String>();
         Cell cell;
         if (row == null) {

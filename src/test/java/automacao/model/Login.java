@@ -2,8 +2,8 @@ package automacao.model;
 
 import org.openqa.selenium.WebDriver;
 
-import automacao.framework.browser.pageobject.WebPage;
-import automacao.pageobject.LoginPO;
+import automacao.framework.iteraction.browser.pageobject.WebPage;
+import automacao.pageobject.testeWeb.LoginPO;
 
 public class Login extends WebPage {
 

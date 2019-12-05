@@ -4,8 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
-import automacao.framework.browser.pageobject.WebPage;
-import automacao.pageobject.CriarPropostaPO;
+import automacao.framework.iteraction.browser.pageobject.WebPage;
+import automacao.pageobject.testeWeb.CriarPropostaPO;
 
 public class CriarProposta extends WebPage {
 
@@ -55,7 +55,7 @@ public class CriarProposta extends WebPage {
 		Thread.sleep(5000);
 		quebraCritica();
 		Thread.sleep(5000);
-		String nomeCliente = proposta.nomeCliente().getText();
+		//String nomeCliente = proposta.nomeCliente().getText();
 		command.screenshot();
 		command.click(proposta.enviarProposta());
 		Thread.sleep(5000);
